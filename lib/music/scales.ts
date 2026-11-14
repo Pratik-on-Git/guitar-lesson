@@ -19,7 +19,11 @@ export type ScaleId =
   | "harmonic-minor"
   | "melodic-minor"
   | "chromatic"
-  | "whole-tone";
+  | "whole-tone"
+  | "kumoi"
+  | "pelog"
+  | "hirajoshi"
+  | "augmented";
 
 export type ScaleDef = {
   id: ScaleId;
@@ -45,6 +49,42 @@ export type ScaleDef = {
 };
 
 export const SCALES: ScaleDef[] = [
+  {
+    id: "kumoi", name: "Kumoi scale", short: "Kumoi", family: "Pentatonic · book variant",
+    formula: ["1", "2", "b3", "5", "6"], exampleRoot: 9,
+    positions: { perString: 2, label: "Generated 2-note-per-string fingering" },
+    notes: [
+      { type: "p", text: "The collection used on page 24 is Dorian with the fourth and seventh removed. From A: A B C E F♯. The natural sixth gives a brighter minor colour than Hirajoshi. Its steps are W H 4H W 3H." },
+      { type: "p", text: "Try it over Am6 or an Am7 vamp that supports F♯. The five notes contain the minor triad and sixth but no seventh. The book's harmonic table comes from the larger Dorian parent, rather than from stacking thirds within these five notes." },
+    ],
+  },
+  {
+    id: "pelog", name: "Pelog scale", short: "Pelog", family: "Pentatonic · book variant",
+    formula: ["1", "b2", "b3", "5", "b6"], exampleRoot: 9,
+    positions: { perString: 2, label: "Generated 2-note-per-string fingering" },
+    notes: [
+      { type: "p", text: "Page 25 uses the five-note guitar collection 1 ♭2 ♭3 5 ♭6: Phrygian with fourth and seventh omitted. From A: A B♭ C E F. Its semitone pairs and wide gaps create a strongly contrasted minor sound. Steps: H W 4H H 4H." },
+      { type: "p", text: "Here Pelog names the book's equal-tempered guitar adaptation. The traditional Javanese pelog tuning system is broader and is not defined by this single five-note Western formula. Over A minor, treat B♭ and F as deliberate colours and resolve them with care." },
+    ],
+  },
+  {
+    id: "hirajoshi", name: "Hirajoshi scale", short: "Hirajoshi", family: "Pentatonic · book variant",
+    formula: ["1", "2", "b3", "5", "b6"], exampleRoot: 9,
+    positions: { perString: 2, label: "Generated 2-note-per-string fingering" },
+    notes: [
+      { type: "p", text: "Page 26 uses Aeolian with the fourth and seventh omitted: 1 2 ♭3 5 ♭6. From A: A B C E F. Steps: W H 4H H 4H. Compare with Kumoi by lowering only the sixth, then compare with Pelog by lowering only the second." },
+      { type: "p", text: "Hirajoshi spellings and rotations vary between guitar references. This explorer follows the supplied book's explicit formula. Sustain the root in accompaniment, explore the B–C and E–F semitone pairs, and connect two-note motifs across adjacent positions." },
+    ],
+  },
+  {
+    id: "augmented", name: "Augmented scale", short: "Augmented", family: "Hexatonic · symmetrical",
+    formula: ["1", "#2", "3", "5", "b6", "7"], exampleRoot: 9,
+    notes: [
+      { type: "p", text: "Alternate three semitones and one semitone: 3H H 3H H 3H H. From A: A B♯ C♯ E F G♯. The harmonic respelling A C C♯ E E♯ G♯ describes the same pitches. The collection repeats after four frets and has four distinct transpositions." },
+      { type: "p", text: "It combines two augmented triads a semitone apart: A+ and G♯+. With suitable respelling it contains major, minor and augmented triads on A, C♯ and F, plus Amaj7, C♯maj7 and Fmaj7. It can colour major, augmented-major and minor-major harmony, depending on phrasing." },
+      { type: "callout", tone: "fix", title: "Corrected from page 52: contained chords", text: "E♭maj7 is not contained in A augmented: E♭ and B♭ lie outside the scale. The major-seventh chords related by this scale's symmetry are Amaj7, C♯maj7 and Fmaj7, four semitones apart." },
+    ],
+  },
   {
     id: "major",
     name: "Major scale",
