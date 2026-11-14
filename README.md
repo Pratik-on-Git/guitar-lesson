@@ -1,6 +1,6 @@
 # Guitar Notes
 
-A personal guitar study companion with 17 lesson topics (82 sections), 18 scales, 26 modes, 72 chord formulas, and an interactive circle of fifths. The supplied *Fretboard Concepts* (2019) is mapped into a chapter guide, all 63 original diagram sheets and 214 numbered practical assignments. Notes and fretboards are generated from spelled degrees in 12-tone equal temperament.
+A personal guitar study companion built from two supplied books, *Fretboard Concepts* (Papadopoulos, 2019) and *Music Theory: From Beginner to Expert* (Carter, 2018). It covers 30 lesson topics (157 sections), 18 scales, 26 modes, 76 chord formulas, an interactive circle of fifths, and labs for voicings, arpeggios, harmonization, progressions, rhythm, listening and composition. Every book illustration is drawn in code: the 63 Fretboard Concepts sheets come from an exact transcription (7,016 checked notes) and can be moved to any key, and the 61 Carter figures and the original notation examples are computed by the app's theory engine. `public/` ships no images. Chords appear as playable chord boxes as well as letter names.
 
 Start at `/book` for the learning path and source atlas. Use `/voicings`, `/arpeggios`, `/harmonization` and `/improvisation` to apply the lessons in any key. `/practice` includes spelling-aware theory questions, fretboard training, metronome, searchable chapter assignments and a browser-local practice log. Generated fingerings are distinguished from the book's numbered source boxes.
 
@@ -37,11 +37,14 @@ Browser tests use Chromium against a production server started automatically on 
 
 Lessons and explorers link their teaching references in the app. Definitions live under `lib/content` and `lib/music`. The original comparison is retained as a dated snapshot; the generated inventory reflects the current corrected definitions. Existing chord bookmarks continue to resolve after entries are renamed or consolidated.
 
-The credited diagram sheets come from the user-supplied PDF for this personal study app. To regenerate diagrams and the original assignment bank, keep the PDF in the repository root and run the following optional extraction tools (Python with `pymupdf` installed):
+The diagram data comes from the user-supplied PDFs for this personal study app. To regenerate it, keep the PDFs in the repository root and run the optional extraction tools (Python with `pymupdf`, `numpy` and `pillow`):
 
 ```powershell
-python scripts/extract-book-diagrams.py
+python scripts/extract-book-diagrams.py   # transcribes all 63 sheets into lib/content/fretboard-sheets.ts
 python scripts/extract-book-assignments.py
+python scripts/extract-theory-book.py      # figure list and audio-link provenance
 ```
+
+`extract-book-diagrams.py` reads each embedded diagram image, finds the strings, fret wires and printed fret numbers, classifies every marker (note, boxed anchor root, Double Note triangle) and fails if any marker is outside its sheet's formula. Visual components live in `components/visuals/` (neck diagrams, chord boxes, keyboards, interval grids, VexFlow notation, rhythm counts and charts). Notation uses [VexFlow](https://www.vexflow.com/) (MIT), loaded only on pages that show it.
 
 The app does not need Python or the PDF at runtime. Raw extracted prose and QA screenshots remain in ignored `.local/` files. Synthesized audio is generated in the browser after a play action; no recordings or external audio service are required. Historical key-character descriptions retain their separate sources and exact key spellings.

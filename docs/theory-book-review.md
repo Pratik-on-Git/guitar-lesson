@@ -53,3 +53,7 @@ Source: Nicolas Carter, third edition, copyright 2018, the user-supplied 220-pag
 ## Verification basis
 
 Spelled-degree arithmetic, set membership, transposition and rational rhythm durations are tested independently. Meter and modern-harmony terminology are cross-checked against primary educational sources: [Open Music Theory: meter](https://openmusictheory.github.io/meter.html), [University of Puget Sound: meter](https://musictheory.pugetsound.edu/mt21c/meter.html), and [University of Puget Sound: twelve-tone technique](https://musictheory.pugetsound.edu/mt21c/TwelveToneTechnique.html). The source's broad stylistic or historical generalizations are not treated as verified facts.
+
+## Figures
+
+All 61 instructional figures are redrawn in `components/visuals/theory-figures.tsx` rather than shipped as images: keyboards with step brackets, interval and mode grids, chord formula tables with playable chord boxes, the circle of fifths, rhythm counting diagrams with audio, a pitch-adjustment panel, slash and polychord notation and the major-key cheat sheet. Notes and spellings are computed, so source labelling slips (for example the harmonic-minor mode names) appear corrected. `lib/content/lesson-visuals.ts` places each figure in the lesson section it illustrates; the audit fails if a figure is not shown anywhere.
