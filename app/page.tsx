@@ -36,7 +36,7 @@ export default function Overview() {
     <div className="flex flex-col gap-6 md:gap-8">
       <PageHeader
         title="Guitar Theory Notes"
-        description="Everything from Guitar.docx, organised for study: foundations, scales, modes, chords and keys."
+        description="Guitar theory notes, checked and expanded for study: foundations, scales, modes, chords and keys."
         actions={<ContinueButton />}
       />
 

@@ -1,0 +1,218 @@
+# Current data inventory
+
+Generated with `node scripts/audit-music-data.mjs`. See [implemented corrections](data-corrections.md), [original comparison](data-audit.md), and [all 12 roots in JSON](data-audit-results.json).
+
+These are the application's current formulas, not proposed replacements. Formula arithmetic passing does not validate prose, chord naming, historical assertions, or every alias.
+
+## Topics
+
+| Topic | Sections |
+| --- | --- |
+| Sound & pitch | Sound and frequency; Notes; Timbre |
+| Notes, accidentals & octaves | Natural notes; Sharps, flats and naturals; Enharmonic equivalents; Octaves |
+| Rhythm & note values | Pulse, tempo and measures; Meter and time signatures; Note values and rests; Dotted notes |
+| Steps & intervals | Half steps and whole steps; What an interval is; Every interval from the root; Intervals above the octave; Direction: ascending, descending and harmonic; Chromatic and diatonic intervals; Augmented and diminished; Doubly and triply augmented or diminished; Intervals on the guitar |
+| What a scale is | Scales; Harmony, melody and the root; Scales by number of notes; Types of scale; The double note system |
+| What a mode is | What is a mode?; What "diatonic" means; The parent major scale; Find the notes of any mode |
+| Chords & scale degrees | What is a chord?; The scale degrees; Degree names above the octave; Chord symbols; Music by the numbers |
+| Harmony & substitutions | Harmony; Secondary dominants; Substitute dominants; Tritone substitution; Altered dominants; The perfect cadence |
+| Relative keys & modulation | Relative major and minor; Modulation; Modal interchange: borrowing from a parallel mode; Changing key with a perfect cadence |
+| Key characters | Characteristics of keys |
+
+## Scales
+
+| Scale | Current formula | Semitones | Arithmetic |
+| --- | --- | --- | --- |
+| Major scale | 1 2 3 4 5 6 7 | 0 2 4 5 7 9 11 | Matches reference |
+| Natural minor scale | 1 2 b3 4 5 b6 b7 | 0 2 3 5 7 8 10 | Matches reference |
+| Major pentatonic scale | 1 2 3 5 6 | 0 2 4 7 9 | Matches reference |
+| Minor pentatonic scale | 1 b3 4 5 b7 | 0 3 5 7 10 | Matches reference |
+| Major blues scale | 1 2 b3 3 5 6 | 0 2 3 4 7 9 | Matches reference |
+| Harmonic minor scale | 1 2 b3 4 5 b6 7 | 0 2 3 5 7 8 11 | Matches reference |
+| Melodic minor scale | 1 2 b3 4 5 6 7 | 0 2 3 5 7 9 11 | Matches reference |
+| Chromatic scale | 1 #1 2 #2 3 4 #4 5 #5 6 #6 7 | 0 1 2 3 4 5 6 7 8 9 10 11 | Matches reference |
+| Minor blues scale | 1 b3 4 b5 5 b7 | 0 3 5 6 7 10 | Matches reference |
+| Whole-half diminished scale | 1 2 b3 4 b5 b6 6 7 | 0 2 3 5 6 8 9 11 | Matches reference |
+| Half-whole diminished scale | 1 b2 b3 3 #4 5 6 b7 | 0 1 3 4 6 7 9 10 | Matches reference |
+| Major bebop scale | 1 2 3 4 5 #5 6 7 | 0 2 4 5 7 8 9 11 | Matches reference |
+| Dominant bebop scale | 1 2 3 4 5 6 b7 7 | 0 2 4 5 7 9 10 11 | Matches reference |
+| Whole-tone scale | 1 2 3 #4 #5 b7 | 0 2 4 6 8 10 | Matches reference |
+
+## Modes
+
+| Family | Mode | Current formula |
+| --- | --- | --- |
+| major | Ionian | 1 2 3 4 5 6 7 |
+| major | Dorian | 1 2 b3 4 5 6 b7 |
+| major | Phrygian | 1 b2 b3 4 5 b6 b7 |
+| major | Lydian | 1 2 3 #4 5 6 7 |
+| major | Mixolydian | 1 2 3 4 5 6 b7 |
+| major | Aeolian | 1 2 b3 4 5 b6 b7 |
+| major | Locrian | 1 b2 b3 4 b5 b6 b7 |
+| harmonic-minor | Aeolian ♯7 | 1 2 b3 4 5 b6 7 |
+| harmonic-minor | Locrian ♯6 | 1 b2 b3 4 b5 6 b7 |
+| harmonic-minor | Ionian ♯5 | 1 2 3 4 #5 6 7 |
+| harmonic-minor | Dorian ♯4 | 1 2 b3 #4 5 6 b7 |
+| harmonic-minor | Phrygian ♯3 | 1 b2 3 4 5 b6 b7 |
+| harmonic-minor | Lydian ♯2 | 1 #2 3 #4 5 6 7 |
+| harmonic-minor | Super Locrian 𝄫7 | 1 b2 b3 b4 b5 b6 bb7 |
+| melodic-minor | Dorian ♯7 | 1 2 b3 4 5 6 7 |
+| melodic-minor | Dorian ♭2 | 1 b2 b3 4 5 6 b7 |
+| melodic-minor | Lydian ♯5 | 1 2 3 #4 #5 6 7 |
+| melodic-minor | Lydian ♭7 | 1 2 3 #4 5 6 b7 |
+| melodic-minor | Mixolydian ♭6 | 1 2 3 4 5 b6 b7 |
+| melodic-minor | Locrian ♮2 | 1 2 b3 4 b5 b6 b7 |
+| melodic-minor | Altered | 1 b2 b3 b4 b5 b6 b7 |
+| minor-pentatonic | Mode 1 · Minor pentatonic | 1 b3 4 5 b7 |
+| minor-pentatonic | Mode 2 · Major pentatonic | 1 2 3 5 6 |
+| minor-pentatonic | Mode 3 | 1 2 4 5 b7 |
+| minor-pentatonic | Mode 4 | 1 b3 4 b6 b7 |
+| minor-pentatonic | Mode 5 | 1 2 4 5 6 |
+
+## All chord rows
+
+Notes are spelled from C. Extensions show pitch-class names without octave numbers. See the comparison for naming/voicing qualifications.
+
+| Current name | Current symbol | Current formula | Notes from C | Review |
+| --- | --- | --- | --- | --- |
+| Major | C | 1 3 5 | C E G | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor | Cm | 1 b3 5 | C E♭ G | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Power chord (no 3rd) | C5 | 1 5 | C G | A two-pitch-class dyad. Doubling the root or fifth at the octave does not turn it into a triad. |
+| Flat 5 | C(♭5) | 1 3 b5 | C E G♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Diminished | C° | 1 b3 b5 | C E♭ G♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Augmented | C+ | 1 3 #5 | C E G♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Added 6th | C6 | 1 3 5 6 | C E G A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 6 (no 5th) | C6(no5) | 1 3 6 | C E A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 6th | Cm6 | 1 b3 5 6 | C E♭ G A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 6/9 | C6/9 | 1 3 5 6 9 | C E G A D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 6/9 | Cm6/9 | 1 b3 5 6 9 | C E♭ G A D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 7/6 | C7/6 | 1 3 5 6 b7 | C E G A B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 6/9♯11 | C6/9♯11 | 1 3 5 6 9 #11 | C E G A D F♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 7th (dominant) | C7 | 1 3 5 b7 | C E G B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Major 7th | Cmaj7 | 1 3 5 7 | C E G B | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 7th | Cm7 | 1 b3 5 b7 | C E♭ G B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor-major 7th | Cm(maj7) | 1 b3 5 7 | C E♭ G B | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Major 7/6 | Cmaj7/6 | 1 3 5 6 7 | C E G A B | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 7th ♭5 | C7♭5 | 1 3 b5 b7 | C E G♭ B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 7♭5 | Cm7♭5 | 1 b3 b5 b7 | C E♭ G♭ B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Diminished 7th | C°7 | 1 b3 b5 bb7 | C E♭ G♭ B𝄫 | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 9♭5 | Cm9♭5 | 1 b3 b5 b7 9 | C E♭ G♭ B♭ D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 11♭5 | Cm11♭5 | 1 b3 b5 b7 9 11 | C E♭ G♭ B♭ D F | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 9th | C9 | 1 3 5 b7 9 | C E G B♭ D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Add 9th | Cadd9 | 1 3 5 9 | C E G D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Major 9th | Cmaj9 | 1 3 5 7 9 | C E G B D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 9th | Cm9 | 1 b3 5 b7 9 | C E♭ G B♭ D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor add 9th | Cm(add9) | 1 b3 5 9 | C E♭ G D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor major 7/9 | Cm(maj9) | 1 b3 5 7 9 | C E♭ G B D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 9♭5 | C9♭5 | 1 3 b5 b7 9 | C E G♭ B♭ D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 11th | C11 | 1 3 5 b7 9 11 | C E G B♭ D F | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Major 11th | Cmaj11 | 1 3 5 7 9 11 | C E G B D F | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 11th | Cm11 | 1 b3 5 b7 9 11 | C E♭ G B♭ D F | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 11th (no 5th) | Cm11(no5) | 1 b3 b7 9 11 | C E♭ B♭ D F | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor major 7/11 | Cm(maj11) | 1 b3 5 7 9 11 | C E♭ G B D F | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 7th ♯11 | C7♯11 | 1 3 5 b7 #11 | C E G B♭ F♯ | This reference formula omits the ninth. The original example C E G B♭ D F♯ includes it and can be labelled C9♯11 explicitly. Extended-chord voicings may include or omit members according to the symbol, arrangement and melody; the original example is not inherently wrong. |
+| Major 9th ♯11 | Cmaj9♯11 | 1 3 5 7 9 #11 | C E G B D F♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 13th | C13 | 1 3 5 b7 9 13 | C E G B♭ D A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Major 13th | Cmaj13 | 1 3 5 7 9 13 | C E G B D A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 13th | Cm13 | 1 b3 5 b7 9 11 13 | C E♭ G B♭ D F A | Your notes' example had B (a major 7th); the formula's ♭7 makes it B♭: C E♭ G B♭ D F A. |
+| Major 7♯11/13 | Cmaj13♯11 | 1 3 5 7 9 #11 13 | C E G B D F♯ A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| ♯11/13 | C13♯11 | 1 3 5 b7 9 #11 13 | C E G B♭ D F♯ A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor-major 9♭13 | Cm(maj9)♭13 | 1 b3 5 7 9 b13 | C E♭ G B D A♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Suspended 4th | Csus4 | 1 4 5 | C F G | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Suspended 2nd | Csus2 | 1 2 5 | C D G | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Suspended 6th | C6sus4(no5) | 1 4 6 | C F A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 7 suspended | C7sus4 | 1 4 5 b7 | C F G B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 9 suspended | C9sus4 | 1 4 5 b7 9 | C F G B♭ D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Augmented major 7th | C+maj7 | 1 3 #5 7 | C E G♯ B | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 7th ♯5 | C7♯5 | 1 3 #5 b7 | C E G♯ B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor + | Cm7♯5 | 1 b3 #5 b7 | C E♭ G♯ B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Minor 9+ | Cm9♯5 | 1 b3 #5 b7 9 | C E♭ G♯ B♭ D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Augmented nine | C+9 | 1 3 #5 b7 9 | C E G♯ B♭ D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Augmented eleven | C+11 | 1 3 #5 b7 9 11 | C E G♯ B♭ D F | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Augmented 11/13 | C+13 | 1 3 #5 b7 9 11 13 | C E G♯ B♭ D F A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Augmented add6/add9/add11 | C+add6(add9,add11) | 1 3 #5 6 9 11 | C E G♯ A D F | The sixth and thirteenth share a pitch class but describe different registers. This added-note formula includes 6, 9 and 11, with no seventh implied. |
+| Flat 9 | C7♭9 | 1 3 5 b7 b9 | C E G B♭ D♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Raised 9 | C7♯9 | 1 3 5 b7 #9 | C E G B♭ D♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| ♭9♭13 | C7♭9♭13 | 1 3 5 b7 b9 b13 | C E G B♭ D♭ A♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Raised nine flat thirteen | C7♯9♭13 | 1 3 5 b7 #9 b13 | C E G B♭ D♯ A♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Flat five raised 9 | C7♭5♯9 | 1 3 b5 b7 #9 | C E G♭ B♭ D♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Flat five flat 9 | C7♭5♭9 | 1 3 b5 b7 b9 | C E G♭ B♭ D♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Flat five raised 9 flat 13 | C7♭5♯9♭13 | 1 3 b5 b7 #9 b13 | C E G♭ B♭ D♯ A♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Flat five flat 9 flat 13 | C7♭5♭9♭13 | 1 3 b5 b7 b9 b13 | C E G♭ B♭ D♭ A♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 7♭5♭9♭13 (no 3rd) | C7♭5♭9♭13(no3) | 1 b5 b7 b9 b13 | C G♭ B♭ D♭ A♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Augmented flat nine | C+7♭9 | 1 3 #5 b7 b9 | C E G♯ B♭ D♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Augmented raised nine | C+7♯9 | 1 3 #5 b7 #9 | C E G♯ B♭ D♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 13♯9 | C13♯9 | 1 3 5 b7 #9 13 | C E G B♭ D♯ A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 13♭9 | C13♭9 | 1 3 5 b7 b9 13 | C E G B♭ D♭ A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 13♭5 | C13♭5 | 1 3 b5 b7 9 13 | C E G♭ B♭ D A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 13♭5♯9 | C13♭5♯9 | 1 3 b5 b7 #9 13 | C E G♭ B♭ D♯ A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| 13♭5♭9 | C13♭5♭9 | 1 3 b5 b7 b9 13 | C E G♭ B♭ D♭ A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+
+## Key signatures
+
+| Major | Relative minor | Sharps | Flats | Accidentals |
+| --- | --- | --- | --- | --- |
+| C | A | 0 | 0 | None |
+| G | E | 1 | 0 | F♯ |
+| D | B | 2 | 0 | F♯ C♯ |
+| A | F♯ | 3 | 0 | F♯ C♯ G♯ |
+| E | C♯ | 4 | 0 | F♯ C♯ G♯ D♯ |
+| B | G♯ | 5 | 0 | F♯ C♯ G♯ D♯ A♯ |
+| F# | D♯ | 6 | 0 | F♯ C♯ G♯ D♯ A♯ E♯ |
+| C# | A♯ | 7 | 0 | F♯ C♯ G♯ D♯ A♯ E♯ B♯ |
+| F | D | 0 | 1 | B♭ |
+| Bb | G | 0 | 2 | B♭ E♭ |
+| Eb | C | 0 | 3 | B♭ E♭ A♭ |
+| Ab | F | 0 | 4 | B♭ E♭ A♭ D♭ |
+| Db | B♭ | 0 | 5 | B♭ E♭ A♭ D♭ G♭ |
+| Gb | E♭ | 0 | 6 | B♭ E♭ A♭ D♭ G♭ C♭ |
+| Cb | A♭ | 0 | 7 | B♭ E♭ A♭ D♭ G♭ C♭ F♭ |
+
+## Historical key coverage
+
+24 entries. Missing by pitch class: None. Descriptions are only returned for their exact historical spellings; this count does not authorize transferring them to enharmonic keys.
+
+## Circle neighbour spellings
+
+| Selected major | IV | V | Spelling mismatch |
+| --- | --- | --- | --- |
+| C | F | G | None |
+| G | C | D | None |
+| D | G | A | None |
+| A | D | E | None |
+| E | A | B | None |
+| B | E | F♯ | None |
+| Cb | F♭ | G♭ | None |
+| F# | B | C♯ | None |
+| Gb | C♭ | D♭ | None |
+| Db | G♭ | A♭ | None |
+| C# | F♯ | G♯ | None |
+| Ab | D♭ | E♭ | None |
+| Eb | A♭ | B♭ | None |
+| Bb | E♭ | F | None |
+| F | B♭ | C | None |
+
+## Verification
+
+```json
+
+{
+  "counts": {
+    "scaleReferences": 14,
+    "modeReferences": 26,
+    "chordReferences": 31,
+    "transposedScales": 168,
+    "transposedModes": 312,
+    "transposedChords": 864,
+    "fretboardCases": 480,
+    "positionCases": 2520,
+    "keySignatures": 15,
+    "harmonyCases": 48,
+    "intervalCases": 15,
+    "regressionCases": 92
+  },
+  "failures": []
+}
+
+```
+

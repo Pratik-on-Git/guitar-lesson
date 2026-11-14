@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { CIRCLE, keyCharacter, keySignature, relativeMinor } from "@/lib/music/keys";
+import { HISTORY_REFERENCES } from "@/lib/content/references";
+import { References } from "@/components/content/references";
+import { CIRCLE, keyCharacter, keyNeighbours, keySignature, relativeMinor } from "@/lib/music/keys";
 import { buildScale, harmonize, noteName, parseDegree, parseNote } from "@/lib/music/theory";
 import { cn } from "@/lib/utils";
 import { Fact, FactGrid } from "@/components/app/facts";
@@ -43,8 +45,7 @@ export function CircleOfFifths() {
   const sig = keySignature(majorName);
   const minor = relativeMinor(majorName);
   const chords = harmonize(buildScale(parseNote(majorName), MAJOR));
-  const left = CIRCLE[(index + 11) % 12];
-  const right = CIRCLE[(index + 1) % 12];
+  const neighbours = keyNeighbours(majorName);
   const majorChar = keyCharacter(majorName, "major");
   const minorChar = keyCharacter(minor.replace("♯", "#").replace("♭", "b"), "minor");
 
@@ -145,8 +146,8 @@ export function CircleOfFifths() {
             }
           />
           <Fact label="Scale" value={sig.scale.join(" ")} />
-          <Fact label="Neighbours" value={`IV ${pretty(left.major)} · V ${pretty(right.major)}`} />
-          <Fact label="Perfect cadence (V → I)" value={`${chords[4].triad} → ${chords[0].triad}  ·  ${chords[4].seventh} → ${chords[0].triad}`} />
+          <Fact label="Neighbours" value={`IV ${neighbours.iv} · V ${neighbours.v}`} />
+          <Fact label="Authentic motion (V → I)" value={`${chords[4].triad} → ${chords[0].triad}  ·  ${chords[4].seventh} → ${chords[0].triad}`} />
           <Fact
             wide
             label="Diatonic chords"
@@ -170,13 +171,13 @@ export function CircleOfFifths() {
             }
           />
         </FactGrid>
-        {(majorChar || minorChar) && (
-          <div className="mt-5 flex flex-col gap-3">
-            {majorChar && <Character title={`${pretty(majorName)} major`} text={majorChar.text} />}
-            {minorChar && <Character title={`${minor} minor`} text={minorChar.text} />}
-          </div>
-        )}
+        <div className="mt-5 flex flex-col gap-3">
+          <p className="text-muted-foreground text-xs leading-5">Historical associations attributed to Schubart, not universal emotional rules. Original key spellings are kept distinct; equal-tempered enharmonic keys do not inherit each other&apos;s descriptions.</p>
+          <Character title={`${pretty(majorName)} major`} text={majorChar?.text ?? "No historical description has been transcribed for this exact key spelling."} />
+          <Character title={`${minor} minor`} text={minorChar?.text ?? "No historical description has been transcribed for this exact key spelling."} />
+        </div>
       </Panel>
+      <div className="xl:col-span-2"><References entries={HISTORY_REFERENCES} /></div>
     </div>
   );
 }

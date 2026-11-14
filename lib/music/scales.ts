@@ -11,6 +11,11 @@ export type ScaleId =
   | "major-pentatonic"
   | "minor-pentatonic"
   | "major-blues"
+  | "minor-blues"
+  | "diminished-whole-half"
+  | "diminished-half-whole"
+  | "bebop-major"
+  | "bebop-dominant"
   | "harmonic-minor"
   | "melodic-minor"
   | "chromatic"
@@ -27,8 +32,10 @@ export type ScaleDef = {
   /** Root pitch class the doc's own example uses. */
   exampleRoot: number;
   mood?: string;
-  /** Doc's harmonic formula where chords aren't built by stacking thirds. */
-  harmonicFormula?: string;
+  /** Contextual applications, distinct from chords contained in the collection. */
+  harmonyNotes?: string;
+  /** Classical descending form, ordered from the octave down to the root. */
+  descendingFormula?: string[];
   /** Pentatonic boxes (2 per string) or 3-notes-per-string patterns. */
   positions?: { perString: number; label: string };
   /** Related mode family page, if the scale has one. */
@@ -91,7 +98,7 @@ export const SCALES: ScaleDef[] = [
     id: "natural-minor",
     name: "Natural minor scale",
     short: "Natural minor",
-    aka: ["Aeolian mode", "relative minor"],
+    aka: ["Aeolian mode"],
     family: "Heptatonic · diatonic",
     formula: ["1", "2", "b3", "4", "5", "b6", "b7"],
     exampleRoot: 9,
@@ -104,14 +111,14 @@ export const SCALES: ScaleDef[] = [
         type: "facts",
         items: [
           { label: "Pattern", value: "1 whole tone + 1 half tone + 2 whole tones + 1 half tone + 2 whole tones" },
-          { label: "Example", value: "C – D – E♭ – F – G – A♭ – B♭ – C" },
+          { label: "Example in A", value: "A – B – C – D – E – F – G – A" },
           { label: "Minor chord theory", value: "Root + ♭3rd + 5th" },
           { label: "Progression", value: "min · dim · Maj · min · min · Maj · Maj" },
         ],
       },
       {
         type: "p",
-        text: "The natural minor scale uses the same notes as a major scale but begins and ends on La, scale degree 6. Built on degree 6 of a major scale, it is called that major scale's relative minor: C major and A minor share every note.",
+        text: "A major scale and its relative natural minor share a pitch collection but have different tonal centres. A is degree 6 of C major, so A minor is its relative minor. Emphasizing A as home through the bass, harmony and melodic resolutions distinguishes A minor from C major; changing the starting note alone need not do so.",
       },
       { type: "p", text: "A major scale is a diatonic scale, and so is the natural minor: it is the major scale's sixth mode." },
       {
@@ -129,7 +136,7 @@ export const SCALES: ScaleDef[] = [
     family: "Pentatonic",
     formula: ["1", "2", "3", "5", "6"],
     exampleRoot: 0,
-    harmonicFormula: "Imaj7 or I7 · II7 or IIm7 · IIIm7 or IIIø · Vmaj7 or V7 or Vm(maj7) or Vm7 · VIm7",
+    harmonyNotes: "C major pentatonic contains C, D, E, G and A. Its C–E–G triad and C–E–G–A sixth chord use only those pitches. Over Cmaj7, the backing chord adds B, while D and A can act as 9 and 13. That is a contextual chord-scale application, not a seventh-chord harmonization contained entirely in the pentatonic collection.",
     positions: { perString: 2, label: "5 pentatonic positions" },
     modesHref: "/modes/minor-pentatonic?mode=major-pentatonic",
     notes: [
@@ -140,7 +147,7 @@ export const SCALES: ScaleDef[] = [
           { label: "Example", value: "C – D – E – G – A – C" },
           { label: "Melodic formula", value: "W W 3H W 3H" },
           { label: "Notes", value: "Root + 2 + 3 + 5 + 6" },
-          { label: "Chords on each note", value: "Maj · min · min · Maj · min (I ii iii V vi of the parent major key)" },
+          { label: "Chords in the parent major key", value: "I · ii · iii · V · vi have roots in the pentatonic; their full chords may add pitches outside it" },
         ],
       },
       {
@@ -156,7 +163,7 @@ export const SCALES: ScaleDef[] = [
     family: "Pentatonic",
     formula: ["1", "b3", "4", "5", "b7"],
     exampleRoot: 9,
-    harmonicFormula: "Im7 · IIImaj7 or III7 · IV7 or IVm7 · Vm7 or Vø · VIImaj7 or VII7 or VIIm(maj7) or VIIm7",
+    harmonyNotes: "A minor pentatonic contains A, C, D, E and G, including the full Am7 chord A–C–E–G; D can act as its 11. Over a blues A7 backing, the chord's C♯ is outside the scale and contrasts with the scale's C. Choose that blues colour intentionally rather than assuming every pentatonic note belongs to every backing chord.",
     positions: { perString: 2, label: "5 pentatonic positions" },
     modesHref: "/modes/minor-pentatonic",
     notes: [
@@ -170,7 +177,7 @@ export const SCALES: ScaleDef[] = [
           { label: "Example", value: "A – C – D – E – G – A" },
           { label: "Melodic formula", value: "3H W W 3H W" },
           { label: "Notes", value: "Root + ♭3 + 4 + 5 + ♭7" },
-          { label: "Chords on each note", value: "min · Maj · min · min · Maj (i III iv v VII of the natural minor)" },
+          { label: "Chords in the parent natural minor", value: "i · III · iv · v · VII have roots in the pentatonic; their full chords may add pitches outside it" },
         ],
       },
       {
@@ -198,7 +205,7 @@ export const SCALES: ScaleDef[] = [
           { label: "Notes", value: "1 2 ♭3 3 5 6" },
         ],
       },
-      { type: "callout", tone: "todo", title: "Still to write", text: "The harmonic formula for the major blues scale is blank in your notes." },
+      { type: "p", text: "Use this collection as a melodic blues vocabulary rather than assigning one mandatory chord to each note. In A, C can move chromatically to C♯ over A or A7, while A, C♯ and E are the tonic major triad's chord tones. Listen to the backing harmony and resolve passing notes intentionally." },
     ],
   },
   {
@@ -226,7 +233,7 @@ export const SCALES: ScaleDef[] = [
       },
       {
         type: "p",
-        text: "Used in classical, neoclassical, advanced rock and jazz. Its V chord is a dominant 7th, exactly like its parallel major, which is where secondary dominants come from.",
+        text: "Used in classical, neoclassical, rock and jazz. Raising the seventh provides a leading tone and makes V major or dominant seventh: E or E7 in A minor. An applied dominant uses the same dominant-to-tonic relationship with a temporary tonic; it is not exclusive to harmonic minor.",
       },
     ],
   },
@@ -237,13 +244,14 @@ export const SCALES: ScaleDef[] = [
     aka: ["Jazz minor"],
     family: "Heptatonic",
     formula: ["1", "2", "b3", "4", "5", "6", "7"],
+    descendingFormula: ["8", "b7", "b6", "5", "4", "b3", "2", "1"],
     exampleRoot: 9,
     positions: { perString: 3, label: "3 notes per string" },
     modesHref: "/modes/melodic-minor",
     notes: [
       {
         type: "p",
-        text: "Take the harmonic minor and raise its minor 6th by a half step, so there is no longer a step-and-a-half gap between the 6th and the major 7th. The result is a new scale: the melodic minor.",
+        text: "The fixed ascending melodic-minor collection raises natural minor's sixth and seventh: 1 2 ♭3 4 5 6 7. Jazz minor uses this same collection in either direction; its seven modes are derived from this fixed form. In the conventional classical exercise, melodic minor descends as natural minor. Real minor-key melodies use these forms according to musical context.",
       },
       {
         type: "facts",
@@ -270,7 +278,7 @@ export const SCALES: ScaleDef[] = [
       },
       {
         type: "p",
-        text: "Ascending, it is written with sharps to point upward; descending, with flats to point downward.",
+        text: "Standalone chromatic exercises are often written with sharps ascending and flats descending. In actual music, the key, harmony and voice leading can require different spellings, so this is a useful convention rather than an absolute rule.",
       },
       {
         type: "figure",
@@ -288,6 +296,64 @@ export const SCALES: ScaleDef[] = [
         width: 688,
         height: 161,
       },
+    ],
+  },
+  {
+    id: "minor-blues",
+    name: "Minor blues scale",
+    short: "Minor blues",
+    family: "Hexatonic",
+    formula: ["1", "b3", "4", "b5", "5", "b7"],
+    exampleRoot: 9,
+    notes: [
+      { type: "p", text: "Add a chromatic passing ♭5 between the fourth and fifth of minor pentatonic. A minor blues is A C D E♭ E G. Treat the blue note as an expressive colour, often moving through it toward a chord tone." },
+      { type: "p", text: "This scale appears over minor blues and, with intentional major/minor-third tension, dominant blues harmony. A scale name alone does not guarantee every note will suit every chord; follow the melody and chord changes." },
+    ],
+  },
+  {
+    id: "diminished-whole-half",
+    name: "Whole-half diminished scale",
+    short: "Whole-half diminished",
+    family: "Octatonic · symmetrical",
+    formula: ["1", "2", "b3", "4", "b5", "b6", "6", "7"],
+    exampleRoot: 0,
+    notes: [
+      { type: "p", text: "Alternate whole steps and half steps, beginning with a whole step. From C: C D E♭ F G♭ A♭ A B. The C diminished seventh chord C E♭ G♭ B𝄫 is contained in the collection; A and B𝄫 are enharmonic here. This is a common scale choice for diminished-seventh harmony." },
+      { type: "p", text: "Eight-note scales cannot assign one unique letter to every note within an octave. Spellings here identify the chosen degrees; harmonic context may call for an enharmonic alternative." },
+    ],
+  },
+  {
+    id: "diminished-half-whole",
+    name: "Half-whole diminished scale",
+    short: "Half-whole diminished",
+    family: "Octatonic · symmetrical",
+    formula: ["1", "b2", "b3", "3", "#4", "5", "6", "b7"],
+    exampleRoot: 0,
+    notes: [
+      { type: "p", text: "Alternate half steps and whole steps, beginning with a half step. From C: C D♭ E♭ E F♯ G A B♭. Over C7 these supply the root, major third, fifth, minor seventh, ♭9, ♯9 (E♭ respelled D♯), ♯11 and 13." },
+      { type: "p", text: "Unlike the altered scale, this collection includes a natural fifth and natural thirteenth. Select it when those colours fit the dominant chord and melody." },
+    ],
+  },
+  {
+    id: "bebop-major",
+    name: "Major bebop scale",
+    short: "Major bebop",
+    family: "Octatonic · passing-note scale",
+    formula: ["1", "2", "3", "4", "5", "#5", "6", "7"],
+    exampleRoot: 0,
+    notes: [
+      { type: "p", text: "Add a chromatic passing note between the fifth and sixth of major: C D E F G G♯ A B. With suitable eighth-note phrasing, the added note helps major-sixth chord tones C E G A fall on the beats. Starting point, direction and rhythm determine the alignment." },
+    ],
+  },
+  {
+    id: "bebop-dominant",
+    name: "Dominant bebop scale",
+    short: "Dominant bebop",
+    family: "Octatonic · passing-note scale",
+    formula: ["1", "2", "3", "4", "5", "6", "b7", "7"],
+    exampleRoot: 7,
+    notes: [
+      { type: "p", text: "Add the major seventh as a chromatic passing note between the minor seventh and tonic of Mixolydian. From G: G A B C D E F F♯. G7's chord tones are G B D F; F♯ normally functions as a passing note rather than a stable added major seventh over that chord." },
     ],
   },
   {
@@ -322,11 +388,11 @@ export const COMPARISON_GROUPS: { title: string; scales: ScaleId[] }[] = [
 
 /* Scales described by how many notes they hold per octave. */
 export const SCALE_SIZES: { name: string; notes: string; text: string }[] = [
-  { name: "Chromatic / dodecatonic", notes: "12", text: "Every note." },
-  { name: "Nonatonic", notes: "9", text: "A chromatic variation of the heptatonic blues scale." },
-  { name: "Octatonic", notes: "8", text: "Used in jazz and modern classical music (bebop scales)." },
+  { name: "Chromatic / dodecatonic", notes: "12", text: "All 12 pitch classes in this app's equal-tempered octave." },
+  { name: "Nonatonic", notes: "9", text: "Any nine-pitch-class scale; the count does not specify one formula or style." },
+  { name: "Octatonic", notes: "8", text: "Eight pitch classes, including symmetrical diminished collections and distinct bebop passing-note scales." },
   { name: "Heptatonic", notes: "7", text: "The most common modern Western scale: major, minor and their modes." },
   { name: "Hexatonic", notes: "6", text: "Common in Western folk music; also the blues and whole-tone scales." },
-  { name: "Pentatonic", notes: "5", text: "The anhemitonic form (no semitones) is common in folk music, especially Asian music; also called the \"black note\" scale." },
-  { name: "Tetratonic, tritonic, ditonic", notes: "4 · 3 · 2", text: "Generally limited to prehistoric (\"primitive\") music." },
+  { name: "Pentatonic", notes: "5", text: "Any five-pitch-class scale. Major and minor pentatonic have no semitone steps; F♯ major pentatonic is one example playable using only black piano keys." },
+  { name: "Tetratonic, tritonic, ditonic", notes: "4 · 3 · 2", text: "Collections of four, three or two pitch classes. Small collections can occur across historical and contemporary styles; the count implies no cultural or historical ranking." },
 ];

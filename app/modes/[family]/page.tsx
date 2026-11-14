@@ -37,7 +37,7 @@ async function ModeFamilyPageBody({ params }: { params: PageProps<"/modes/[famil
     <div className="flex flex-col gap-6 md:gap-8">
       <PageHeader
         title={family.name}
-        description={`The ${family.modes.length} modes you get by starting the ${family.short.toLowerCase()} scale on each of its notes.`}
+        description={`The ${family.modes.length} modes formed by centring the ${family.short.toLowerCase()} collection on each of its notes.`}
         studyHref={`/modes/${family.id}`}
         meta={
           <>

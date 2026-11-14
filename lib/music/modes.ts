@@ -14,8 +14,6 @@ export type ModeDef = {
   /** One-line identity: what sets this mode apart. */
   summary: string;
   notes: Block[];
-  /** True when the mode is computed here but not yet written in the notes. */
-  computedOnly?: boolean;
 };
 
 export type ModeFamily = {
@@ -43,7 +41,7 @@ export const MODE_FAMILIES: ModeFamily[] = [
     intro: [
       {
         type: "p",
-        text: "The parent scale is the major scale, also called the Ionian mode. All the other major modes are permutations of it: keep the same set of pitches and start from a different note. C major started from D (D – E – F – G – A – B – C – D) is the second mode; started from E, the third.",
+        text: "The parent collection is the major scale. Rotating C major to D gives D E F G A B C, the notes of D Dorian. To hear Dorian, establish D as the tonal centre through the bass, harmony and melodic resolutions. Simply beginning a C-major phrase on D need not change its mode.",
       },
       {
         type: "p",
@@ -67,7 +65,7 @@ export const MODE_FAMILIES: ModeFamily[] = [
           { type: "p", text: "The Ionian mode is the modern major scale. The example made of natural notes begins on C and is the C major scale." },
           {
             type: "p",
-            text: "In modern tonal thinking the dominant (5th) degree, G here, is the next most important chord root after the tonic. G7 is a dominant seventh chord, so called because of its position in this mode, and only this mode.",
+            text: "In C major, G7 is the dominant-function chord on V. Dominant seventh also names a chord quality: a major triad with a minor seventh. That quality occurs elsewhere, including E7 on V of A harmonic minor and C7 on the tonic of C Mixolydian. Chord quality and harmonic function are related but distinct.",
           },
         ],
       },
@@ -159,7 +157,7 @@ export const MODE_FAMILIES: ModeFamily[] = [
     intro: [
       {
         type: "p",
-        text: "The harmonic minor modes' names look confusing, but each is just a diatonic mode's name plus the one note that differs. They describe how each mode relates to the natural minor and the other diatonic modes it comes from.",
+        text: "These modes rotate the harmonic-minor collection. Several names describe a one-note alteration to a familiar diatonic mode; others, such as Super Locrian 𝄫7, use a different reference collection. The displayed degree formula is the precise definition of each mode.",
       },
     ],
     modes: [
@@ -227,10 +225,10 @@ export const MODE_FAMILIES: ModeFamily[] = [
       {
         id: "super-locrian-bb7",
         name: "Super Locrian 𝄫7",
-        aka: ["Mixolydian ♯1", "Altered 𝄫7"],
+        aka: ["Altered 𝄫7"],
         start: 6,
         summary: "Altered scale with a diminished 7th.",
-        notes: [{ type: "p", text: "Every degree is flattened from the major scale, with the 7th lowered twice to a diminished 7th." }],
+        notes: [{ type: "p", text: "The root stays fixed. Relative to major, degrees 2 through 6 are lowered by a semitone and degree 7 by two semitones: 1 ♭2 ♭3 ♭4 ♭5 ♭6 𝄫7. The tonic seventh chord from stacked thirds is fully diminished." }],
       },
     ],
   },
@@ -245,7 +243,7 @@ export const MODE_FAMILIES: ModeFamily[] = [
     intro: [
       {
         type: "p",
-        text: "The melodic minor scale has seven modes, named after the diatonic modes they are formed from. Because the harmonic and melodic minor scales both come from the natural minor, every example here is in A.",
+        text: "These seven modes rotate the fixed ascending/jazz melodic-minor collection, used unchanged in either direction in jazz. Classical melodic-minor exercises conventionally descend as natural minor. The default examples share A melodic minor as their parent, so each mode has a different tonic from that collection.",
       },
     ],
     modes: [
@@ -271,7 +269,7 @@ export const MODE_FAMILIES: ModeFamily[] = [
       {
         id: "dorian-b2",
         name: "Dorian ♭2",
-        aka: ["Phrygian ♯6", "Javanese"],
+        aka: ["Phrygian ♯6"],
         start: 1,
         summary: "Phrygian with a major 6th.",
         notes: [
@@ -300,7 +298,7 @@ export const MODE_FAMILIES: ModeFamily[] = [
       {
         id: "mixolydian-b6",
         name: "Mixolydian ♭6",
-        aka: ["Aeolian ♯3", "Hindu"],
+        aka: ["Aeolian ♯3"],
         start: 4,
         summary: "Mixolydian with a minor 6th.",
         notes: [{ type: "p", text: "Mixolydian with a lowered 6th, or Aeolian with a raised 3rd." }],
@@ -316,13 +314,13 @@ export const MODE_FAMILIES: ModeFamily[] = [
       {
         id: "altered",
         name: "Altered",
-        aka: ["Super Locrian", "Ionian ♯1"],
+        aka: ["Super Locrian"],
         start: 6,
-        summary: "Every degree of the major scale altered.",
+        summary: "The seventh mode of jazz minor, used for altered dominant harmony.",
         notes: [
           {
             type: "p",
-            text: "As the name suggests, the altered scale has every note of the major scale altered by a semitone. It is the scale of altered dominant chords (♭9, ♯9, ♭5, ♯5).",
+            text: "The strict mode formula is 1 ♭2 ♭3 ♭4 ♭5 ♭6 ♭7; its root is unchanged. Over a dominant seventh, reinterpret the same pitch classes as 1 ♭9 ♯9 3 ♯11 ♭13 ♭7. In C, the theoretical F♭ becomes E, the dominant's major third, and E♭ can be spelled D♯ as its ♯9. The dominant-application panel shows that practical interpretation separately from the mode's theoretical third-stacking.",
           },
         ],
       },
@@ -369,7 +367,7 @@ export const MODE_FAMILIES: ModeFamily[] = [
       {
         id: "mode-3",
         name: "Mode 3",
-        aka: ["Suspended pentatonic", "Egyptian"],
+        aka: ["Suspended pentatonic"],
         start: 2,
         summary: "Root, major 2nd, perfect 4th, perfect 5th, minor 7th.",
         notes: [
@@ -382,32 +380,26 @@ export const MODE_FAMILIES: ModeFamily[] = [
       {
         id: "mode-4",
         name: "Mode 4",
-        aka: ["Blues minor", "Man Gong"],
+        aka: ["Minor pentatonic ♭6 (no 5)"],
         start: 3,
         summary: "Root, minor 3rd, perfect 4th, minor 6th, minor 7th.",
-        computedOnly: true,
         notes: [
           {
-            type: "callout",
-            tone: "todo",
-            title: "Not in your notes yet",
-            text: "Your notes stop after mode 3 (marked DUE). Mode 4 starts on the fourth note, E: E, G, A, C, D.",
+            type: "p",
+            text: "Mode 4 centres the fourth note of A minor pentatonic: E G A C D. Relative to E, these are 1 ♭3 4 ♭6 ♭7. The collection has no fifth, so its minor colour comes from G and its darker sixth from C. Sustain E or an E-centred accompaniment and resolve phrases to E to distinguish it from A minor pentatonic.",
           },
         ],
       },
       {
         id: "mode-5",
         name: "Mode 5",
-        aka: ["Blues major", "Ritsusen"],
+        aka: ["Major pentatonic with 4 instead of 3"],
         start: 4,
         summary: "Root, major 2nd, perfect 4th, perfect 5th, major 6th.",
-        computedOnly: true,
         notes: [
           {
-            type: "callout",
-            tone: "todo",
-            title: "Not in your notes yet",
-            text: "Mode 5 starts on the fifth note, G: G, A, C, D, E.",
+            type: "p",
+            text: "Mode 5 centres the fifth note of A minor pentatonic: G A C D E. Relative to G, these are 1 2 4 5 6. With no third or seventh, the collection leaves major/minor chord quality open. Try a sustained G or Gsus harmony, emphasize G, and compare its fourth C with the third B of ordinary G major pentatonic.",
           },
         ],
       },

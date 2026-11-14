@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Guitar Notes
 
-## Getting Started
+A personal guitar-theory study app with lessons, 14 scales, 26 modes, 72 chord formulas, and an interactive circle of fifths. Notes and fretboards are generated from spelled degrees in 12-tone equal temperament. Historical key-character descriptions are matched by exact key spelling.
 
-First, run the development server:
+## Run
 
-```bash
+```powershell
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`. Before changing framework behavior, read the bundled Next.js documentation indicated in [AGENTS.md](AGENTS.md).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verify
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```powershell
+npm run test:data
+npm run lint
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
 
-## Learn More
+The data audit uses Node's native TypeScript support (tested with Node 26.5.0). It checks formula references, transposition, spelling, fretboards, harmony, historical lookup, legacy chord IDs and targeted regressions. It regenerates the inventory and JSON results without fetching websites.
 
-To learn more about Next.js, take a look at the following resources:
+Browser tests use Chromium against a production server started automatically on port 3173. Build first. They cover all study routes, important interactions and mobile overflow, without requiring an existing development server. Generated Playwright reports and traces are ignored by Git.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Content and sources
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Implemented corrections and verification](docs/data-corrections.md)
+- [Current data inventory](docs/data-inventory.md)
+- [Generated notes for all selectable roots](docs/data-audit-results.json)
+- [Original internet comparison, before corrections](docs/data-audit.md)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Lessons and explorers link their teaching references in the app. Definitions live under `lib/content` and `lib/music`. The original comparison is retained as a dated snapshot; the generated inventory reflects the current corrected definitions. Existing chord bookmarks continue to resolve after entries are renamed or consolidated.

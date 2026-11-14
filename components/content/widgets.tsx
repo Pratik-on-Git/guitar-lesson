@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { WidgetName } from "@/lib/content/types";
-import { CIRCLE, KEY_CHARACTERS, keySignature, relativeMinor } from "@/lib/music/keys";
+import { CIRCLE, KEY_CHARACTERS, KEY_CHARACTER_SOURCE, keySignature, relativeMinor } from "@/lib/music/keys";
 import { MODE_FAMILIES } from "@/lib/music/modes";
 import { SCALE_SIZES } from "@/lib/music/scales";
 import {
@@ -14,7 +14,8 @@ import {
   intervalShort,
   invertDegree,
   modeDegrees,
-  noteFromLetter,
+  majorKeyDominants,
+  modeParentRoot,
   noteName,
   parseDegree,
   parseNote,
@@ -230,7 +231,7 @@ function StepKeyboards() {
 }
 
 const INTERVAL_DEGREES = ["1", "b2", "2", "b3", "3", "4", "#4", "5", "b6", "6", "b7", "7", "8"].map(parseDegree);
-const DIATONIC = new Set([0, 2, 4, 5, 7, 9, 11, 12]);
+const MAJOR_TONIC_INTERVALS = new Set([0, 2, 4, 5, 7, 9, 11, 12]);
 
 function IntervalTable() {
   const [rootPc, setRootPc] = useState(0);
@@ -246,7 +247,7 @@ function IntervalTable() {
               <th className={thCls}>Interval above {noteName(root)}</th>
               <th className={thCls}>Note</th>
               <th className={thCls}>Below (inversion)</th>
-              <th className={thCls}>Diatonic</th>
+              <th className={thCls}>In {noteName(root)} major</th>
             </tr>
           </thead>
           <tbody>
@@ -263,7 +264,7 @@ function IntervalTable() {
                       ? "Augmented 4th (tritone)"
                       : intervalLong(degree);
               const short = semis === 0 ? "P1" : semis === 12 ? "P8" : intervalShort(degree);
-              const inverted = semis === 0 || semis === 12 ? (semis === 0 ? "Perfect octave" : "Perfect unison") : tritone ? "Tritone" : intervalLong(invertDegree(degree));
+              const inverted = semis === 0 || semis === 12 ? (semis === 0 ? "Perfect octave" : "Perfect unison") : intervalLong(invertDegree(degree));
               return (
                 <tr key={semis}>
                   <td className={cn(tdCls, "tabular-nums")}>{semis}</td>
@@ -277,7 +278,7 @@ function IntervalTable() {
                   </td>
                   <td className={cn(tdCls, "text-muted-foreground")}>{inverted}</td>
                   <td className={tdCls}>
-                    {DIATONIC.has(semis) ? (
+                    {MAJOR_TONIC_INTERVALS.has(semis) ? (
                       <StatusBadge tone="success" dot>
                         Yes
                       </StatusBadge>
@@ -291,7 +292,7 @@ function IntervalTable() {
           </tbody>
         </table>
       </TableWrap>
-      <Caption>One semitone is one fret on the guitar, so the semitone count is also the fret distance on one string.</Caption>
+      <Caption>The last column checks membership in the selected root&apos;s major scale, not every possible diatonic interval. One semitone is one fret on a single guitar string.</Caption>
     </>
   );
 }
@@ -448,52 +449,39 @@ function useMajorKey(initial: number) {
 }
 
 function SecondaryDominants() {
-  const { rootPc, setRootPc, scale } = useMajorKey(9);
-  const pcs = new Set(scale.map((s) => pc(s.note)));
-  const cells = scale.map((s, i) => {
-    const dom = spellDegree(s.note, parseDegree("5"));
-    const diatonicRoot = pcs.has(pc(dom));
-    return {
-      chord: diatonicRoot ? `${noteName(dom)}7` : "–",
-      symbol: i === 0 ? "Primary dominant" : diatonicRoot ? `V7/${ROMAN[i]}` : "–",
-    };
-  });
+  const { rootPc, setRootPc, root } = useMajorKey(9);
+  const targets = majorKeyDominants(root);
   return (
     <>
       <RootPicker value={rootPc} onChange={setRootPc} label="Major key" className="mb-4" />
       <SimpleTable
-        columns={["Scale note", ...scale.map((s) => s.name)]}
+        columns={["Destination chord", ...targets.map((t) => t.target)]}
         firstColumnHeader
         rows={[
-          ["Secondary dominant", ...cells.map((c) => c.chord)],
-          ["Symbol", ...cells.map((c) => c.symbol)],
+          ["Dominant seventh", ...targets.map((t) => t.dominant ?? "Not a usual tonic target")],
+          ["Function", ...targets.map((t) => t.primary ? "Primary V7" : t.dominant ? `V7/${t.numeral}` : "–")],
         ]}
       />
-      <Caption>Each chord is the dominant 7th a perfect 5th above the note it resolves to.</Caption>
+      <Caption>The tonic has the primary dominant; ii, iii, IV, V and vi have conventional secondary dominants. The diminished vii° chord is not treated as an ordinary temporary tonic. Applied dominants can also be major triads.</Caption>
     </>
   );
 }
 
 function SubstituteDominants() {
-  const { rootPc, setRootPc, scale } = useMajorKey(9);
-  const pcs = new Set(scale.map((s) => pc(s.note)));
-  const cells = scale.map((s, i) => {
-    const sub = spellDegree(s.note, parseDegree("b2"));
-    const nonDiatonic = !pcs.has(pc(sub));
-    return { chord: nonDiatonic ? `${noteName(sub)}7` : "–", symbol: nonDiatonic ? `subV7/${ROMAN[i]}` : "–" };
-  });
+  const { rootPc, setRootPc, root } = useMajorKey(9);
+  const targets = majorKeyDominants(root);
   return (
     <>
       <RootPicker value={rootPc} onChange={setRootPc} label="Major key" className="mb-4" />
       <SimpleTable
-        columns={["Scale note", ...scale.map((s) => s.name)]}
+        columns={["Destination chord", ...targets.map((t) => t.target)]}
         firstColumnHeader
         rows={[
-          ["Substitute dominant", ...cells.map((c) => c.chord)],
-          ["Symbol", ...cells.map((c) => c.symbol)],
+          ["Tritone substitute", ...targets.map((t) => t.substitute ?? "Not a usual tonic target")],
+          ["Function", ...targets.map((t) => t.substitute ? `subV7/${t.numeral}` : "–")],
         ]}
       />
-      <Caption>Each chord is a dominant 7th a half step above the note it resolves to.</Caption>
+      <Caption>Each substitute is a dominant seventh a semitone above its destination, a tritone from that destination&apos;s dominant. It is included even when its root belongs to the home scale.</Caption>
     </>
   );
 }
@@ -575,7 +563,7 @@ function KeyCharacters() {
         className="mb-4"
       />
       <SimpleTable
-        columns={["Key", "Character"]}
+        columns={["Historical key spelling", "Historical association", "Source"]}
         rows={rows.map((k) => [
           <span key="k" className="whitespace-nowrap">
             {noteName(parseNote(k.key))} {k.mode}
@@ -583,6 +571,7 @@ function KeyCharacters() {
           <span key="t" className="text-foreground/85">
             {k.text}
           </span>,
+          <a key="source" href={k.source ?? KEY_CHARACTER_SOURCE} target="_blank" rel="noreferrer" className="text-primary hover:underline">{k.source ? "Paraphrase source" : "Transcribed source"}</a>,
         ])}
       />
     </>
@@ -598,7 +587,7 @@ function ModeParentFinder() {
   const parent = family.parentFormula.map(parseDegree);
   const degrees = modeDegrees(parent, start);
   const modeRoot = spellRoot(rootPc, degrees);
-  const parentRoot = noteFromLetter(modeRoot.letter - start, rootPc - degreeSemitones(parent[start]));
+  const parentRoot = modeParentRoot(modeRoot, parent, start);
   const parentScale = buildScale(parentRoot, parent);
   const modeNotes = [...parentScale.slice(start), ...parentScale.slice(0, start)];
   const sig = keySignature(noteName(parentRoot, true));

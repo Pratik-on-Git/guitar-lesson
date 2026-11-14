@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { CHORD_REFERENCES } from "@/lib/content/references";
+import { References } from "@/components/content/references";
 import { PenLine, Search, SearchX, X } from "lucide-react";
-import { CHORDS, CHORD_CATEGORIES, type ChordCategory } from "@/lib/music/chords";
+import { CHORDS, CHORD_CATEGORIES, getChord, type ChordCategory } from "@/lib/music/chords";
 import {
   degreeSemitones,
   intervalShort,
@@ -46,7 +48,7 @@ export function ChordLibrary() {
     });
   }, [query, category]);
 
-  const selected = CHORDS.find((c) => c.id === selectedId);
+  const selected = getChord(selectedId);
 
   return (
     <div className="flex flex-col gap-4 md:gap-6">
@@ -93,7 +95,7 @@ export function ChordLibrary() {
 
       <Panel
         title={`${results.length} Chord${results.length === 1 ? "" : "s"}`}
-        description="Select a chord to see it on the keyboard and the neck."
+        description="Reference formulas show chord members, not a single required voicing. Players may omit or rearrange tones; 11ths and 13ths especially depend on context. Select a chord to inspect it."
         action={category !== "All" ? <StatusBadge tone="brand">{category}</StatusBadge> : undefined}
       >
         {results.length === 0 ? (
@@ -131,7 +133,7 @@ export function ChordLibrary() {
                 {results.map((c) => {
                   const degrees = c.formula.map(parseDegree);
                   const root = spellRoot(rootPc, degrees);
-                  const active = c.id === selectedId;
+                  const active = c.id === selected?.id;
                   return (
                     <tr
                       key={c.id}
@@ -178,12 +180,13 @@ export function ChordLibrary() {
           </TableWrap>
         )}
       </Panel>
+      <References entries={CHORD_REFERENCES} />
     </div>
   );
 }
 
 function ChordDetail({ chordId, rootPc, onClose }: { chordId: string; rootPc: number; onClose: () => void }) {
-  const chord = CHORDS.find((c) => c.id === chordId)!;
+  const chord = getChord(chordId)!;
   const degrees = chord.formula.map(parseDegree);
   const root = spellRoot(rootPc, degrees);
   const semis = degrees.map(degreeSemitones);
@@ -233,6 +236,7 @@ function ChordDetail({ chordId, rootPc, onClose }: { chordId: string; rootPc: nu
           </span>
         </div>
       )}
+      {chord.note && <p role="note" className="text-muted-foreground mb-5 max-w-[72ch] text-sm leading-6">{chord.note}</p>}
       <Eyebrow>On the keyboard</Eyebrow>
       <Keyboard length={length} marks={marks} title={`${noteName(root)}${chord.symbol} stacked from the root on a keyboard`} />
       <p className="text-muted-foreground mt-2 mb-6 text-xs">Stacked from the root, so 9ths, 11ths and 13ths sit in the second octave.</p>

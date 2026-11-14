@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { getScale } from "@/lib/music/scales";
+import { SCALE_REFERENCES } from "@/lib/content/references";
+import { References } from "@/components/content/references";
 import {
   ROOTS,
   buildScale,
@@ -57,7 +59,16 @@ export function ScaleExplorer({ scaleId, notes }: { scaleId: string; notes: Reac
         <ScaleFacts scale={scale} />
       </Panel>
 
-      <Panel title="From your notes">{notes}</Panel>
+      <Panel title="Study notes">{notes}</Panel>
+
+      {def.descendingFormula && (
+        <Panel title="Classical descending melodic minor" description="The conventional classical exercise descends as natural minor; jazz minor keeps the ascending collection in both directions.">
+          <FactGrid>
+            <Fact label="Descending formula" value="8 ♭7 ♭6 5 4 ♭3 2 1" />
+            <Fact label={`Descending notes from ${noteName(root)}`} value={buildScale(root, def.descendingFormula.map(parseDegree)).map((n) => n.name).join(" → ")} />
+          </FactGrid>
+        </Panel>
+      )}
 
       <NeckPanel
         rootPc={rootPc}
@@ -80,13 +91,14 @@ export function ScaleExplorer({ scaleId, notes }: { scaleId: string; notes: Reac
       </div>
 
       {scale.length === 7 && <HarmonyPanel scale={scale} title={title} />}
-      {def.harmonicFormula && (
-        <Panel title="Harmonic formula" description="Chords that fit over each note of the scale, from your notes.">
-          <p className="bg-muted/50 rounded-lg px-3 py-2.5 font-mono text-sm font-medium">{def.harmonicFormula}</p>
+      {def.harmonyNotes && (
+        <Panel title="Harmony and application" description="Distinguish chords contained in the collection from contextual uses over other harmony.">
+          <p className="max-w-[72ch] text-sm leading-6">{def.harmonyNotes}</p>
         </Panel>
       )}
 
       <AllKeysPanel formula={def.formula} name={def.short} />
+      <References entries={SCALE_REFERENCES} />
     </div>
   );
 }
@@ -182,10 +194,10 @@ export function NeckPanel({
   );
 }
 
-export function HarmonyPanel({ scale, title }: { scale: ScaleNote[]; title: string }) {
+export function HarmonyPanel({ scale, title, theoretical = false }: { scale: ScaleNote[]; title: string; theoretical?: boolean }) {
   const chords = harmonize(scale);
   return (
-    <Panel title="Harmony" description={`Triads and seventh chords built on each degree of ${title}, by stacking 3rds.`}>
+    <Panel title={theoretical ? "Theoretical harmony from stacked thirds" : "Harmony"} description={theoretical ? "These chords follow the strict mode spelling. For the altered scale's jazz use, refer to the dominant-application panel above." : `Triads and seventh chords built on each degree of ${title}, by stacking 3rds.`}>
       <SimpleTable
         columns={["Degree", "Triad", "Quality", "Seventh", "Harmonic formula", "Chord tones"]}
         rows={chords.map((c) => [
@@ -222,7 +234,7 @@ export function AllKeysPanel({ formula, name }: { formula: string[]; name: strin
   return (
     <Panel
       title={`${name} in every key`}
-      description="Each key spelled with its usual key signature (fewest sharps or flats)."
+      description="One spelling per pitch class, chosen to favour fewer and simpler accidentals. Not every collection has one conventional key signature."
       action={
         sevenNotes ? (
           <Segmented

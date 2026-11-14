@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Blocks } from "@/components/content/blocks";
+import { References } from "@/components/content/references";
+import { TOPIC_REFERENCES } from "@/lib/content/references";
 import { PageHeader } from "@/components/app/page-header";
 import { Panel } from "@/components/app/panel";
 import { PageSkeleton } from "@/components/app/skeleton";
@@ -55,6 +57,7 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
               <Blocks blocks={section.blocks} />
             </Panel>
           ))}
+          <References entries={TOPIC_REFERENCES[topic.slug] ?? []} />
         </div>
         {topic.sections.length > 2 && (
           <nav aria-label="On this page" className="hidden xl:block">

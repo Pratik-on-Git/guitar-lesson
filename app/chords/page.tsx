@@ -13,7 +13,7 @@ export default function ChordsPage() {
     <div className="flex flex-col gap-6 md:gap-8">
       <PageHeader
         title="Chord Library"
-        description="Every chord formula from your notes, spelled in any key. Rows that were the same chord under two names are merged."
+        description="Reference chord formulas spelled in any key, with distinct chord qualities and voicing notes. Equivalent pitch collections are grouped together."
         studyHref="/chords"
         meta={
           <>

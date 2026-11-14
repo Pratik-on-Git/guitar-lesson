@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import { getFamily } from "@/lib/music/modes";
+import { MODE_REFERENCES } from "@/lib/content/references";
+import { References } from "@/components/content/references";
 import { getScale } from "@/lib/music/scales";
 import {
   buildScale,
+  ALTERED_DOMINANT_FORMULA,
   degreeSemitones,
   harmonize,
   modeDegrees,
-  noteFromLetter,
+  modeParentRoot,
   noteName,
   parseDegree,
   spellRoot,
@@ -41,9 +44,14 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
   const [rootPc, setRootPc] = useRootParam(defaultPc);
   const root = spellRoot(rootPc, degrees);
   const scale = buildScale(root, degrees);
-  const parentRoot = noteFromLetter(root.letter - mode.start, rootPc - degreeSemitones(parent[mode.start]));
+  const parentRoot = modeParentRoot(root, parent, mode.start);
   const title = `${noteName(root)} ${mode.name.replace(/^Mode \d · /, "")}`;
   const chords = harmonize(scale);
+  const dominantScale = mode.id === "altered"
+    ? buildScale(root, ALTERED_DOMINANT_FORMULA.map(parseDegree)).map((n) => ({ ...n, semis: n.semis % 12 }))
+    : undefined;
+  const diagramScale = dominantScale ?? scale;
+  const diagramTitle = dominantScale ? `${noteName(root)}7alt (dominant spelling)` : title;
 
   const facts: { label: string; value: string; wide?: boolean }[] = [
     { label: "Melodic formula", value: stepSizes(scale.map((s) => s.semis)).map(stepLabel).join(" ") },
@@ -56,9 +64,9 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
   ];
   if (chords.length) {
     facts.push(
-      { label: "Tonic triad · seventh", value: `${chords[0].triad} · ${chords[0].seventh}` },
-      { label: "Dominant triad · seventh", value: `${chords[4].triad} · ${chords[4].seventh}` },
-      { label: "Harmonic formula", value: chords.map((c) => c.seventhNumeral).join(" "), wide: true },
+      { label: dominantScale ? "Theoretical tonic from stacked thirds" : "Tonic triad · seventh", value: `${chords[0].triad} · ${chords[0].seventh}` },
+      { label: "Fifth-degree triad · seventh", value: `${chords[4].triad} · ${chords[4].seventh}` },
+      { label: dominantScale ? "Theoretical seventh-chord sequence" : "Harmonic formula", value: chords.map((c) => c.seventhNumeral).join(" "), wide: true },
       { label: "Triads", value: chords.map((c) => c.triad).join(" · "), wide: true },
       { label: "Quadriads", value: chords.map((c) => c.seventh).join(" · "), wide: true },
     );
@@ -116,23 +124,36 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
         </FactGrid>
       </Panel>
 
-      <Panel title="From your notes">{modeNotes[mode.id]}</Panel>
+      {dominantScale && (
+        <Panel title={`${noteName(root)}7alt · dominant application`} description="The same seven pitch classes interpreted as a dominant chord and its altered tensions. The diagrams below use this practical spelling.">
+          <StepPattern scale={dominantScale} />
+          <FactGrid className="mt-5">
+            <Fact label="Dominant formula" value="1 ♭9 ♯9 3 ♯11 ♭13 ♭7" />
+            <Fact label="Dominant notes" value={dominantScale.map((n) => n.name).join(" ")} />
+            <Fact label="Basic dominant chord tones" value={dominantScale.filter((n) => ["R", "3", "♭7"].includes(n.label)).map((n) => n.name).join(" ")} />
+            <Fact label="Use" value="Resolve tensions according to the melody and destination chord; natural 5, 9 and 13 are outside this collection." />
+          </FactGrid>
+        </Panel>
+      )}
+
+      <Panel title="Study notes">{modeNotes[mode.id]}</Panel>
 
       <NeckPanel
         key={mode.id}
         rootPc={rootPc}
-        scale={scale}
-        title={title}
+        scale={diagramScale}
+        title={diagramTitle}
         positions={scale.length === 5 ? { perString: 2, label: "2 notes per string" } : { perString: 3, label: "3 notes per string" }}
       />
 
       <Panel title="On the keyboard" description="One octave from the root, with the degree on each key.">
-        <Keyboard length={24} marks={keyboardMarks(scale, rootPc)} title={`${title} on a piano keyboard`} />
+        <Keyboard length={24} marks={keyboardMarks(diagramScale, rootPc)} title={`${diagramTitle} on a piano keyboard`} />
       </Panel>
 
-      {scale.length === 7 && <HarmonyPanel scale={scale} title={title} />}
+      {scale.length === 7 && <HarmonyPanel scale={scale} title={title} theoretical={Boolean(dominantScale)} />}
 
       <FamilyMatrix familyId={family.id} parentRoot={parentRoot} activeStart={mode.start} />
+      <References entries={MODE_REFERENCES} />
     </div>
   );
 }
@@ -146,12 +167,12 @@ function FamilyMatrix({ familyId, parentRoot, activeStart }: { familyId: string;
   const [view, setView] = useState<"notes" | "degrees">("notes");
   const parent = family.parentFormula.map(parseDegree);
   const parentScale = buildScale(parentRoot, parent);
-  const columns = ["R", "m2", "M2", "m3", "M3", "P4", "TT", "P5", "m6", "M6", "m7", "M7", "8"];
+  const columns = Array.from({ length: 13 }, (_, semi) => String(semi));
 
   return (
     <Panel
       title={`All ${family.short.toLowerCase()} modes from ${noteName(parentRoot)}`}
-      description="Same notes, different starting point. Each row is laid out by semitones above its own root."
+      description="Same pitch collection, different tonal centre. Column numbers are semitones above each row's tonic; degree labels preserve the actual spelling (for example, ♯2 and ♭3 both span three semitones)."
       action={
         <Segmented
           label="Show"

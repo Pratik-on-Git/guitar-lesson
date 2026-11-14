@@ -39,7 +39,8 @@ export function noteName(note: Note, ascii = false): string {
 }
 
 export function parseNote(text: string): Note {
-  const match = /^([A-Ga-g])(#{1,2}|b{1,2}|♯|♭)?$/.exec(text.trim());
+  const normalized = text.trim().replaceAll("𝄪", "##").replaceAll("𝄫", "bb").replaceAll("♯", "#").replaceAll("♭", "b");
+  const match = /^([A-Ga-g])(#{1,2}|b{1,2})?$/.exec(normalized);
   if (!match) throw new Error(`Not a note: ${text}`);
   const letter = LETTERS.indexOf(match[1].toUpperCase() as (typeof LETTERS)[number]);
   const accText = match[2] ?? "";
@@ -254,6 +255,12 @@ export function modeDegrees(parent: Degree[], start: number): Degree[] {
   return rotated.map((note) => degreeBetween(rotated[0], note));
 }
 
+/** Reverse the parent degree by letter distance as well as pitch class. */
+export function modeParentRoot(root: Note, parent: Degree[], start: number): Note {
+  const degree = parent[start];
+  return noteFromLetter(root.letter - degree.num + 1, pc(root) - degreeSemitones(degree));
+}
+
 /* ------------------------------------------------------------------ chords */
 
 const TRIADS: Record<string, { suffix: string; name: string }> = {
@@ -320,6 +327,30 @@ export function harmonize(scale: ScaleNote[]): DiatonicChord[] {
 /** Spell a chord from a formula like ["1", "b3", "5", "b7"]. */
 export function chordNotes(root: Note, formula: string[]): string[] {
   return formula.map((token) => noteName(spellDegree(root, parseDegree(token))));
+}
+
+export const ALTERED_DOMINANT_FORMULA = ["1", "b9", "#9", "3", "#11", "b13", "b7"];
+
+export type DominantTarget = {
+  target: string;
+  numeral: string;
+  dominant: string | null;
+  substitute: string | null;
+  primary: boolean;
+};
+
+/** Conventional major-key tonicization targets: tonic plus ii, iii, IV, V and vi. */
+export function majorKeyDominants(root: Note): DominantTarget[] {
+  const scale = buildScale(root, ["1", "2", "3", "4", "5", "6", "7"].map(parseDegree));
+  const chords = harmonize(scale);
+  const numerals = ["I", "ii", "iii", "IV", "V", "vi", "vii°"];
+  return scale.map((tone, i) => ({
+    target: chords[i].triad,
+    numeral: numerals[i],
+    dominant: i === 6 ? null : `${noteName(spellDegree(tone.note, parseDegree("5")))}7`,
+    substitute: i === 6 ? null : `${noteName(spellDegree(tone.note, parseDegree("b2")))}7`,
+    primary: i === 0,
+  }));
 }
 
 /* ------------------------------------------------------------------ guitar */

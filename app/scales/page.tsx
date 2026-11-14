@@ -20,7 +20,7 @@ export default function ScalesPage() {
     <div className="flex flex-col gap-6 md:gap-8">
       <PageHeader
         title="Scale Explorer"
-        description="Every scale in your notes. Open one to play it in any key, on the neck and the keyboard."
+        description="Explore scales in any key, on the neck and the keyboard, with notes, intervals and practical applications."
         meta={<StatusBadge tone="brand">{SCALES.length} scales</StatusBadge>}
       />
 

@@ -1,4 +1,4 @@
-import { buildScale, noteName, parseDegree, parseNote, pc, type Note } from "./theory.ts";
+import { buildScale, noteName, parseDegree, parseNote, spellDegree, type Note } from "./theory.ts";
 
 /*
  * Circle of fifths, key signatures and the key characters table from
@@ -53,16 +53,30 @@ export function relativeMinor(majorTonic: string): string {
   return scale[5].name;
 }
 
-/** Key name → "key characters" description from the notes. */
-export const KEY_CHARACTERS: { key: string; mode: "major" | "minor"; text: string }[] = [
+/** Spell IV and V from the selected tonic, including its enharmonic spelling. */
+export function keyNeighbours(majorTonic: string): { iv: string; v: string } {
+  const tonic = parseNote(majorTonic);
+  return {
+    iv: noteName(spellDegree(tonic, parseDegree("4"))),
+    v: noteName(spellDegree(tonic, parseDegree("5"))),
+  };
+}
+
+export const KEY_CHARACTER_SOURCE = "https://biteyourownelbow.com/keychar.htm";
+const MINOR_CHARACTER_SOURCE = "https://mediatum.ub.tum.de/doc/1138386/1138386.pdf#page=4";
+
+/** Historical excerpts retained from the notes; new entries are labelled paraphrases. */
+export const KEY_CHARACTERS: { key: string; mode: "major" | "minor"; text: string; source?: string }[] = [
   { key: "C", mode: "major", text: "Completely pure. Its character is innocence, simplicity, naivety, children's talk." },
   { key: "C", mode: "minor", text: "Declaration of love and at the same time the lament of unhappy love. All languishing, longing, sighing of the love-sick soul lies in this key." },
+  { key: "C#", mode: "minor", text: "Historical paraphrase: remorseful grief and longing after disappointed affection or friendship.", source: MINOR_CHARACTER_SOURCE },
   { key: "Db", mode: "major", text: "A leering key, degenerating into grief and rapture. It cannot laugh, but it can smile; it cannot howl, but it can at least grimace its crying. Only unusual characters and feelings can be brought out in this key." },
   { key: "D", mode: "major", text: "The key of triumph, of Hallelujahs, of war-cries, of victory-rejoicing. The inviting symphonies, the marches, holiday songs and heaven-rejoicing choruses are set in this key." },
   { key: "D", mode: "minor", text: "Melancholy womanliness, the spleen and humours brood." },
   { key: "D#", mode: "minor", text: "Feelings of the anxiety of the soul's deepest distress, of brooding despair, of blackest depression, of the gloomiest condition of the soul. Every fear, every hesitation of the shuddering heart breathes out of horrible D♯ minor. If ghosts could speak, their speech would approximate this key." },
   { key: "Eb", mode: "major", text: "The key of love, of devotion, of intimate conversation with God." },
   { key: "E", mode: "major", text: "Noisy shouts of joy, laughing pleasure and not yet complete, full delight lies in E major." },
+  { key: "E", mode: "minor", text: "Historical paraphrase: youthful innocence and a gentle expression of love.", source: MINOR_CHARACTER_SOURCE },
   { key: "F", mode: "major", text: "Complaisance and calm." },
   { key: "F", mode: "minor", text: "Deep depression, funereal lament, groans of misery and longing for the grave." },
   { key: "F#", mode: "major", text: "Triumph over difficulty, the free sigh of relief uttered when hurdles are surmounted; the echo of a soul which has fiercely struggled and finally conquered lies in all uses of this key." },
@@ -79,8 +93,8 @@ export const KEY_CHARACTERS: { key: string; mode: "major" | "minor"; text: strin
   { key: "B", mode: "minor", text: "The key of patience, of calm awaiting one's fate and of submission to divine dispensation." },
 ];
 
-/** Find the character for a key by pitch class, so G♯ minor finds A♭ minor. */
+/** Historical spellings remain distinct, even when modern pitch classes coincide. */
 export function keyCharacter(key: string, mode: "major" | "minor") {
-  const target = pc(parseNote(key));
-  return KEY_CHARACTERS.find((k) => k.mode === mode && pc(parseNote(k.key)) === target);
+  const target = noteName(parseNote(key), true);
+  return KEY_CHARACTERS.find((k) => k.mode === mode && k.key === target);
 }
