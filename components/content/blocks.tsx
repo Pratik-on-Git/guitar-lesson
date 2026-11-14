@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CircleAlert, ExternalLink, Headphones, Lightbulb, PenLine, type LucideIcon } from "lucide-react";
 import type { Block } from "@/lib/content/types";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,8 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
 
 function BlockView({ block }: { block: Block }) {
   switch (block.type) {
+    case "links":
+      return <div className="flex flex-wrap gap-3">{block.items.map((item) => <Link key={item.href} href={item.href} className="text-primary rounded-lg border px-3 py-2 text-sm font-medium hover:bg-primary/5">{item.label} →</Link>)}</div>;
     case "p":
       return <p className="text-foreground/90 max-w-[72ch] text-sm leading-6">{block.text}</p>;
 

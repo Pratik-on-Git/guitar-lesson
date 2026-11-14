@@ -32,6 +32,7 @@ export type Block =
   | { type: "callout"; tone: "tip" | "fix" | "todo"; title?: string; text: string }
   | { type: "figure"; src: string; alt: string; caption?: string; width: number; height: number }
   | { type: "audio"; href: string; label: string }
+  | { type: "links"; items: { label: string; href: string }[] }
   | { type: "widget"; name: WidgetName };
 
 export type Section = {
