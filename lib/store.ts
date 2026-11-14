@@ -128,3 +128,8 @@ const practiceSessionStore = createStore<PracticeSession[]>("gl-practice-session
 export const usePracticeSessions = () => useStore(practiceSessionStore);
 const practiceTaskStore = createStore<string[]>("gl-practice-tasks", []);
 export const usePracticeTasks = () => useStore(practiceTaskStore);
+
+export type CompositionDraft = { title: string; root: number; family: string; progression: string; bpm: number; melody: (number | null)[] };
+export const DEFAULT_COMPOSITION: CompositionDraft = { title: "My four-bar idea", root: 0, family: "major", progression: "common-1", bpm: 84, melody: [0, 1, 2, 4, 2, 1, 0, null, 3, 4, 5, 3, 4, 2, 1, 0] };
+const compositionStore = createStore<CompositionDraft>("gl-composition", DEFAULT_COMPOSITION);
+export const useCompositionDraft = () => useStore(compositionStore);

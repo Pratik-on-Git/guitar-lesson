@@ -1,5 +1,6 @@
 export type Reference = { title: string; href: string };
 import { BOOK_TITLE, BOOK_TOPIC_PAGES } from "./book.ts";
+import { THEORY_BOOK, THEORY_TOPIC_PAGES } from "./theory-book.ts";
 
 const acoustics = { title: "UNSW · Sound, frequency and pitch", href: "https://phys.unsw.edu.au/jw/musFAQ.html" };
 const major = { title: "Open Music Theory · Major scales and key signatures", href: "https://viva.pressbooks.pub/openmusictheory/chapter/major-scales/" };
@@ -18,6 +19,7 @@ export const HISTORY_REFERENCES: Reference[] = [
 ];
 
 export const TOPIC_REFERENCES: Record<string, Reference[]> = {
+  ...Object.fromEntries(Object.entries(THEORY_TOPIC_PAGES).map(([slug, pages]) => [slug, [{ title: `${THEORY_BOOK.title} · PDF pp. ${pages} · chapter guide & corrections`, href: THEORY_BOOK.href }]])),
   ...Object.fromEntries(Object.entries(BOOK_TOPIC_PAGES).map(([slug, pages]) => [slug, [{ title: `${BOOK_TITLE} · pp. ${pages} · book guide`, href: "/book" }]])),
   "sound-and-pitch": [acoustics],
   notes: [major, intervals],

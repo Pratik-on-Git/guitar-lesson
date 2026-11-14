@@ -36,16 +36,16 @@ export default function Overview() {
     <div className="flex flex-col gap-6 md:gap-8">
       <PageHeader
         title="Guitar Theory Notes"
-        description="From theory to the whole fretboard: study Fretboard Concepts, explore scales and voicings, and build a daily practice routine."
+        description="From first principles to the whole fretboard: connect two source books through lessons, listening, rhythm, harmony and composition."
         actions={<ContinueButton />}
       />
 
-      <Panel title="Study Fretboard Concepts" description="The complete 2019 book mapped into lessons, original diagrams and practical tools.">
+      <Panel title="Study, listen and make music" description="Follow either book's chapter order, or use the integrated study map below.">
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{[
-          { title: "Book guide & atlas", text: "All 63 diagram sheets with chapter and page references.", href: "/book" },
-          { title: "Chords into sound", text: "Inversions, drop voicings and arpeggios in any key.", href: "/voicings" },
-          { title: "Connect the material", text: "Harmonization, modal colour and scale choices.", href: "/harmonization" },
-          { title: "Daily practice", text: "Theory exercises, metronome and a saved practice log.", href: "/practice" },
+          { title: "Source library", text: "Both book guides, 124 source illustrations and chapter references.", href: "/books" },
+          { title: "Hear the theory", text: "Intervals, modes over a drone, tuning and expression.", href: "/listening" },
+          { title: "Build the rhythm", text: "17 units, four-bar patterns, meters and cross-rhythms.", href: "/rhythm-lab" },
+          { title: "Write a phrase", text: "Compose, hear, save and export a four-bar sketch.", href: "/composition" },
         ].map((item) => <Link key={item.href} href={item.href} className="rounded-xl border bg-muted/20 p-4 transition-colors hover:border-primary hover:bg-primary/5"><h2 className="text-sm font-semibold text-primary">{item.title} →</h2><p className="mt-2 text-sm text-muted-foreground">{item.text}</p></Link>)}</div>
       </Panel>
 

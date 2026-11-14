@@ -5,6 +5,8 @@ import { SCALES } from "./music/scales.ts";
 import { NAV } from "./nav.ts";
 import { BOOK_DIAGRAMS } from "./content/book.ts";
 import { BOOK_ASSIGNMENTS } from "./content/book-assignments.ts";
+import { THEORY_CHAPTERS, THEORY_CORRECTIONS } from "./content/theory-book.ts";
+import { THEORY_FIGURES } from "./content/theory-book-assets.ts";
 
 /* Flat index for the Ctrl+K search: pages, sections, scales, modes and chords. */
 
@@ -23,6 +25,9 @@ const plain = (text: string) =>
 
 function build(): SearchEntry[] {
   const entries: SearchEntry[] = [];
+  for (const figure of THEORY_FIGURES) entries.push({ title: `${figure.title} · PDF p. ${figure.page}`, context: "Carter · source atlas", href: `/books/music-theory?figure=${figure.id}#source-figures`, kind: "Section", keywords: "Nicolas Carter Music Theory From Beginner to Expert original figure comparison table" });
+  for (const chapter of THEORY_CHAPTERS) entries.push({ title: chapter.title, context: "Music Theory book guide", href: `/books/music-theory#${chapter.id}`, kind: "Section", keywords: `${chapter.summary} ${chapter.lessons.map((l) => l.title).join(" ")}` });
+  for (const entry of THEORY_CORRECTIONS) entries.push({ title: entry.title, context: "Carter · source corrections", href: "/books/music-theory#corrections", kind: "Section", keywords: entry.text });
   for (const sheet of BOOK_DIAGRAMS) entries.push({ title: `${sheet.title} · source p. ${sheet.page}`, context: `Book atlas · ${sheet.chapter}`, href: `/book?page=${sheet.page}`, kind: "Section", keywords: `Yiannis Papadopoulos Fretboard Concepts source diagram boxes positions ${sheet.chapter}` });
   for (const chapter of new Set(BOOK_ASSIGNMENTS.map((a) => a.chapter))) entries.push({ title: `${chapter} assignments`, context: "Practice studio · source exercise bank", href: "/practice#source-assignments", kind: "Section", keywords: BOOK_ASSIGNMENTS.filter((a) => a.chapter === chapter).map((a) => a.prompt).join(" ") });
 

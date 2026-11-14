@@ -555,271 +555,271 @@ export const THEORY_ORIGINAL_AUDIO = [
   {
     "id": "audio-1",
     "page": 40,
-    "label": "In A, the scale is: A, C, D, E, G. Here’s how this scale, or mode 1, sounds:        Minor Pentatonic Scale Mode 1 audio example in A",
+    "label": "Minor pentatonic · mode 1 · A tonic",
     "href": "http://goo.gl/ixb9BQ"
   },
   {
     "id": "audio-2",
     "page": 41,
-    "label": "simply: Major pentatonic scale.          Minor Pentatonic Mode 2 audio example in A",
+    "label": "Minor pentatonic · mode 2 · A tonic",
     "href": "http://goo.gl/x6ExEb"
   },
   {
     "id": "audio-3",
     "page": 42,
-    "label": "give us the sound of the mode 3 of the minor pentatonic scale.          Minor Pentatonic Mode 3 audio example in A",
+    "label": "Minor pentatonic · mode 3 · A tonic",
     "href": "http://goo.gl/1aQJcV"
   },
   {
     "id": "audio-4",
     "page": 43,
-    "label": "and are responsible for its characteristic sound.          Minor Pentatonic Mode 4 audio example in A",
+    "label": "Minor pentatonic · mode 4 · A tonic",
     "href": "http://goo.gl/e8BXnq"
   },
   {
     "id": "audio-5",
     "page": 43,
-    "label": "A(R) – T – B(M2) – TS – D(P4) – T – E(P5) – T – F#(M6) – TS – A(O)         Minor Pentatonic Mode 5 audio example in A",
+    "label": "Minor pentatonic · mode 5 · A tonic",
     "href": "http://goo.gl/ngqWWY"
   },
   {
     "id": "audio-6",
     "page": 61,
-    "label": "say regular C major scale.                 Ionian mode audio example in C",
+    "label": "Major family · Ionian · C tonic",
     "href": "http://goo.gl/szNpFJ"
   },
   {
     "id": "audio-7",
     "page": 63,
-    "label": "Can you explain why we used b’s to write out these notes and not #’s?                Dorian mode audio example in C",
+    "label": "Major family · Dorian · C tonic",
     "href": "http://goo.gl/EiwnD7"
   },
   {
     "id": "audio-8",
     "page": 63,
-    "label": "C (R) – Db (m2) – Eb (m3) – F (P4) – G (P5) – Ab (m6) – Bb (m7)                Phrygian mode audio example in C",
+    "label": "Major family · Phrygian · C tonic",
     "href": "http://goo.gl/dvr2ke"
   },
   {
     "id": "audio-9",
     "page": 64,
-    "label": "C (R) – D (M2) – E (M3) – F# (Aug4) – G (P5) – A (M6) – B (M7)               Lydian mode audio example in C",
+    "label": "Major family · Lydian · C tonic",
     "href": "http://goo.gl/YtV1MW"
   },
   {
     "id": "audio-10",
     "page": 64,
-    "label": "C (R) – D (M2) – E (M3) – F (P4) – G (P5) – A (M6) – Bb (m7)              Mixolydian mode audio example in C",
+    "label": "Major family · Mixolydian · C tonic",
     "href": "http://goo.gl/nKAPRv"
   },
   {
     "id": "audio-11",
     "page": 65,
-    "label": "C (R) – D (M2) – Eb (m3) – F (P4) – G (P5) – Ab (m6) – Bb (m7)                Aeolian mode audio example in C",
+    "label": "Major family · Aeolian · C tonic",
     "href": "http://goo.gl/kkGZLh"
   },
   {
     "id": "audio-12",
     "page": 65,
-    "label": "C (R) – Db (m2) – Eb (m3) – F (P4) – Gb (dim5) – Ab (m6) – Bb (m7)                Locrian mode audio example in C",
+    "label": "Major family · Locrian · C tonic",
     "href": "http://goo.gl/i6DVRG"
   },
   {
     "id": "audio-13",
     "page": 74,
-    "label": "Harmonic minor mode 1 –                 Aeolian #7 audio example in A",
+    "label": "Harmonic minor · mode 1 · A tonic",
     "href": "http://goo.gl/f62mgA"
   },
   {
     "id": "audio-14",
     "page": 75,
-    "label": "Harmonic minor mode 2 –                Locrian #6 audio example in A",
+    "label": "Harmonic minor · mode 2 · A tonic",
     "href": "http://goo.gl/LY6Vav"
   },
   {
     "id": "audio-15",
     "page": 75,
-    "label": "Harmonic minor mode 3 –                  Ionian #5 audio example in A",
+    "label": "Harmonic minor · mode 3 · A tonic",
     "href": "http://goo.gl/UeyjgR"
   },
   {
     "id": "audio-16",
     "page": 76,
-    "label": "Harmonic minor mode 4 –                Dorian #4 audio example in A",
+    "label": "Harmonic minor · mode 4 · A tonic",
     "href": "http://goo.gl/3YbEBr"
   },
   {
     "id": "audio-17",
     "page": 76,
-    "label": "Harmonic minor mode 5 –               Phrygian #3 audio example in A",
+    "label": "Harmonic minor · mode 5 · A tonic",
     "href": "http://goo.gl/zaHsHv"
   },
   {
     "id": "audio-18",
     "page": 77,
-    "label": "showcase this mode.      Harmonic minor mode 6 – Lydian #2 audio example in A",
+    "label": "Harmonic minor · mode 6 · A tonic",
     "href": "http://goo.gl/qiJKtq"
   },
   {
     "id": "audio-19",
     "page": 78,
-    "label": "Harmonic minor mode 7 –              Super Locrian audio example in A",
+    "label": "Harmonic minor · mode 7 · A tonic",
     "href": "http://goo.gl/3u9yuv"
   },
   {
     "id": "audio-20",
     "page": 83,
-    "label": "Melodic minor mode 1 –                Dorian #7 audio example in A",
+    "label": "Melodic minor · mode 1 · A tonic",
     "href": "http://goo.gl/NRFEp7"
   },
   {
     "id": "audio-21",
     "page": 84,
-    "label": "Melodic minor mode 2 –                Phrygian #6 audio example in A",
+    "label": "Melodic minor · mode 2 · A tonic",
     "href": "http://goo.gl/367PSE"
   },
   {
     "id": "audio-22",
     "page": 84,
-    "label": "Melodic minor mode 3 –                Lydian #5 audio example in A",
+    "label": "Melodic minor · mode 3 · A tonic",
     "href": "http://goo.gl/iL4SYR"
   },
   {
     "id": "audio-23",
     "page": 85,
-    "label": "Melodic minor mode 4 –               Mixolydian #4 audio example in A",
+    "label": "Melodic minor · mode 4 · A tonic",
     "href": "http://goo.gl/xkHiZ8"
   },
   {
     "id": "audio-24",
     "page": 85,
-    "label": "Melodic minor mode 5 –                 Aeolian #3 audio example in A",
+    "label": "Melodic minor · mode 5 · A tonic",
     "href": "http://goo.gl/6NoSa6"
   },
   {
     "id": "audio-25",
     "page": 85,
-    "label": "Melodic minor mode 6 –                Locrian #2 audio example in A",
+    "label": "Melodic minor · mode 6 · A tonic",
     "href": "http://goo.gl/khYa9U"
   },
   {
     "id": "audio-26",
     "page": 87,
-    "label": "Melodic minor mode 7 –            The Altered Scale audio example in A",
+    "label": "Melodic minor · mode 7 · A tonic",
     "href": "http://goo.gl/qfqcju"
   },
   {
     "id": "audio-27",
     "page": 163,
-    "label": "pattern try to play along with each. Here’s how this one sounds:                   Quarter notes audio example",
+    "label": "Rhythm unit 1",
     "href": "http://goo.gl/JrVHPW"
   },
   {
     "id": "audio-28",
     "page": 163,
-    "label": "in between.                             8th notes audio example",
+    "label": "Rhythm unit 2",
     "href": "http://goo.gl/cTd87u"
   },
   {
     "id": "audio-29",
     "page": 163,
-    "label": "considered an off-beat.                          16th notes audio example",
+    "label": "Rhythm unit 3",
     "href": "http://goo.gl/5LLCSC"
   },
   {
     "id": "audio-30",
     "page": 163,
-    "label": "So now we play an eight note which is then followed by two 16th notes (and a).                         8th – 16th – 16th audio example",
+    "label": "Rhythm unit 4",
     "href": "http://goo.gl/R235EB"
   },
   {
     "id": "audio-31",
     "page": 164,
-    "label": "Here, two sixteenths (1 e) are immediately followed by an eight note (and).                 16th – 16th – 8th audio example",
+    "label": "Rhythm unit 5",
     "href": "http://goo.gl/wTXXuD"
   },
   {
     "id": "audio-32",
     "page": 164,
-    "label": "at the end (a).                  16th – 8th – 16th audio example",
+    "label": "Rhythm unit 6",
     "href": "http://goo.gl/UNQiyh"
   },
   {
     "id": "audio-33",
     "page": 164,
-    "label": "parenthesis so they are not played on because of the dotted 8th at the beginning.                       8th. – 16th audio example",
+    "label": "Rhythm unit 7",
     "href": "http://goo.gl/1EJMRz"
   },
   {
     "id": "audio-34",
     "page": 164,
-    "label": "‘and’ and ‘a’.                     16th – 8th. audio example",
+    "label": "Rhythm unit 8",
     "href": "http://goo.gl/TjsnsW"
   },
   {
     "id": "audio-35",
     "page": 165,
-    "label": "bar, will do wonders for your sense of timing. Here’s how eight note triplets sound:                   8th note triplets audio example",
+    "label": "Rhythm unit 9",
     "href": "http://goo.gl/hgKKPg"
   },
   {
     "id": "audio-36",
     "page": 165,
-    "label": "across 4 bars.           4-Bar Sequence Exercise 1 audio example",
+    "label": "Four-bar sequence 1",
     "href": "http://goo.gl/dLoj3s"
   },
   {
     "id": "audio-37",
     "page": 166,
-    "label": "You’ll notice that this is a common reggae rhythm. Here’s how it sounds:               Syncopated 8ths audio example",
+    "label": "Rhythm unit 10",
     "href": "http://goo.gl/yr7aqe"
   },
   {
     "id": "audio-38",
     "page": 166,
-    "label": "off-beats (e and a).            Syncopated 16th notes audio example",
+    "label": "Rhythm unit 11",
     "href": "http://goo.gl/xFDo8m"
   },
   {
     "id": "audio-39",
     "page": 166,
-    "label": "8th note rest (50% of the beat) is followed by two 16th notes (another 50%).         8th note rest – 16th note – 16th note audio example",
+    "label": "Rhythm unit 12",
     "href": "http://goo.gl/Gyt2Hx"
   },
   {
     "id": "audio-40",
     "page": 166,
-    "label": "tapping all this, then (a) is treated the same way as |1| — it’s not played.         16th note rest – 16th note – 8th note audio example",
+    "label": "Rhythm unit 13",
     "href": "http://goo.gl/si5qG2"
   },
   {
     "id": "audio-41",
     "page": 166,
-    "label": "is an eight note here and if you’re playing a pitched note it needs to last until ‘a’.        16th note rest – 8th note – 16th note audio example",
+    "label": "Rhythm unit 14",
     "href": "http://goo.gl/5FeUXG"
   },
   {
     "id": "audio-42",
     "page": 167,
-    "label": "8th note rest . – 16th note audio example",
+    "label": "Rhythm unit 15",
     "href": "http://goo.gl/owmMgr"
   },
   {
     "id": "audio-43",
     "page": 167,
-    "label": "eight note) is held for the duration of ‘and’ and ‘a’.                   16th note rest – 8th note . audio example",
+    "label": "Rhythm unit 16",
     "href": "http://goo.gl/VfXfA4"
   },
   {
     "id": "audio-44",
     "page": 167,
-    "label": "waltz:           Syncopated 8th note triplets audio example",
+    "label": "Rhythm unit 17",
     "href": "http://goo.gl/1RWGze"
   },
   {
     "id": "audio-45",
     "page": 167,
-    "label": "answer under the Cheat Sheet section.            4-Bar Sequence Exercise 2 audio example",
+    "label": "Four-bar sequence 2",
     "href": "http://goo.gl/3KwQ24"
   }
 ];

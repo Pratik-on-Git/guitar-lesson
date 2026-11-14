@@ -69,7 +69,13 @@ with pymupdf.open(SOURCE) as document:
         pages.append(f"=== PDF PAGE {number} ===\n{source_text}")
         for match in re.finditer(r"https?://goo\.gl/[A-Za-z0-9]+", source_text):
             lead = source_text[max(0, match.start() - 150):match.start()]
-            label = " ".join(lead.splitlines()[-3:]).strip().removesuffix("->").strip()
+            labels = ([f"Minor pentatonic · mode {i} · A tonic" for i in range(1, 6)]
+                + [f"Major family · {name} · C tonic" for name in ["Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian"]]
+                + [f"Harmonic minor · mode {i} · A tonic" for i in range(1, 8)]
+                + [f"Melodic minor · mode {i} · A tonic" for i in range(1, 8)]
+                + [f"Rhythm unit {i}" for i in range(1, 10)] + ["Four-bar sequence 1"]
+                + [f"Rhythm unit {i}" for i in range(10, 18)] + ["Four-bar sequence 2"])
+            label = labels[len(audio)]
             audio.append({"id": f"audio-{len(audio)+1}", "page": number,
                           "label": label, "href": match.group(0)})
         if number not in titles:

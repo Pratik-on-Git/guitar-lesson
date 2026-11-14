@@ -12,6 +12,8 @@ import { TOPICS, getTopic } from "@/lib/content/topics";
 import { NAV } from "@/lib/nav";
 import { BookSource } from "@/components/content/book-source";
 import { BOOK_TOPIC_PAGES } from "@/lib/content/book";
+import { THEORY_TOPIC_PAGES } from "@/lib/content/theory-book";
+import { TheoryBookSource } from "@/components/content/theory-book-source";
 import Link from "next/link";
 
 export function generateStaticParams() {
@@ -62,6 +64,7 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
           ))}
           <References entries={TOPIC_REFERENCES[topic.slug] ?? []} />
           {BOOK_TOPIC_PAGES[topic.slug] && <BookSource pages={BOOK_TOPIC_PAGES[topic.slug]} />}
+          {THEORY_TOPIC_PAGES[topic.slug] && <TheoryBookSource pages={THEORY_TOPIC_PAGES[topic.slug]} />}
           <nav aria-label="Continue studying" className="flex flex-wrap justify-between gap-4 text-sm font-medium text-primary">
             <Link href="/">← Study map</Link>
             <Link href="/practice">Put this into practice →</Link>

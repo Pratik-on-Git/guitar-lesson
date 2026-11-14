@@ -112,6 +112,10 @@ const ROWS: Row[] = [
 
   ["Suspended 4th", "sus4", "1 4 5", "Suspended", { aliases: ["Sus", "Sus4"] }],
   ["Suspended 2nd", "sus2", "1 2 5", "Suspended"],
+  ["Suspended 2nd flat fifth", "sus2(♭5)", "1 2 b5", "Suspended", { aliases: ["Diminished suspended 2nd"], note: "Carter's altered-fifth suspended triad; no third is implied." }],
+  ["Suspended 4th flat fifth", "sus4(♭5)", "1 4 b5", "Suspended", { aliases: ["Diminished suspended 4th"] }],
+  ["Suspended 2nd sharp fifth", "sus2(♯5)", "1 2 #5", "Suspended", { aliases: ["Augmented suspended 2nd"] }],
+  ["Suspended 4th sharp fifth", "sus4(♯5)", "1 4 #5", "Suspended", { aliases: ["Augmented suspended 4th"] }],
   ["Suspended 6th", "6sus4(no5)", "1 4 6", "Suspended"],
   ["7 suspended", "7sus4", "1 4 5 b7", "Suspended"],
   ["9 suspended", "9sus4", "1 4 5 b7 9", "Suspended"],
