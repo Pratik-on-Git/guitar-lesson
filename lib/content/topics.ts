@@ -573,6 +573,14 @@ export const TOPICS: Topic[] = [
     description: "Relative major and minor, borrowing, tonicization, and ways to establish a new key.",
     sections: [
       {
+        id: "reading-signatures", title: "Read a key signature", blocks: [
+          { type: "table", columns: ["Kind", "Order", "Major-key shortcut"], rows: [["Sharps", "F♯ C♯ G♯ D♯ A♯ E♯ B♯", "One semitone above the final actual sharp"], ["Flats", "B♭ E♭ A♭ D♭ G♭ C♭ F♭", "The penultimate flat names the major tonic"]] },
+          { type: "p", text: "Three sharps F♯ C♯ G♯ give A major: G♯ up one semitone is A. Three flats B♭ E♭ A♭ give E♭ major. Exceptions to the penultimate-flat shortcut are zero accidentals (C major) and one flat (F major). The relative natural minor starts on degree six. A signature alone does not establish the actual tonal centre or mode." },
+          { type: "callout", tone: "fix", title: "Corrected from page 13: final sharp", text: "Count one half step above the sharp itself. The source's whole-step wording uses the unaltered letter in its example; applying a whole step to G♯ would incorrectly produce A♯ instead of A." },
+          { type: "links", items: [{ label: "Key-signature exercises", href: "/practice?exercise=signatures" }, { label: "Circle of fifths", href: "/circle-of-fifths" }] },
+        ],
+      },
+      {
         id: "relative",
         title: "Relative major and minor",
         blocks: [

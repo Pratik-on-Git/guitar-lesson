@@ -122,3 +122,9 @@ export const useSidebarCollapsed = () => useStore(sidebarStore);
 export type FretLabel = "degree" | "note" | "interval";
 const fretLabelStore = createStore<FretLabel>("gl-fret-label", "degree");
 export const useFretLabel = () => useStore(fretLabelStore);
+
+export type PracticeSession = { id: string; date: string; root: string; focus: string; minutes: number; bpm: number; tasks: string[] };
+const practiceSessionStore = createStore<PracticeSession[]>("gl-practice-sessions", []);
+export const usePracticeSessions = () => useStore(practiceSessionStore);
+const practiceTaskStore = createStore<string[]>("gl-practice-tasks", []);
+export const usePracticeTasks = () => useStore(practiceTaskStore);
