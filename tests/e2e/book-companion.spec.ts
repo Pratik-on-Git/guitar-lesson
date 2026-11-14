@@ -7,11 +7,11 @@ test("every diagram sheet is drawn as code and atlas filters preserve deep links
   expect(FRET_SHEETS).toHaveLength(63);
   await page.goto("/book?page=55");
   await expect(page.getByLabel("Diagram sheet")).toHaveValue("55");
-  await expect(page.getByRole("group", { name: /Augmented diagram sheet, page 55/ })).toBeVisible();
+  await expect(page.getByRole("group", { name: /^Augmented \(Scales & modes\), page 55$/ })).toBeVisible();
   await expect(page.getByRole("img", { name: /^Position 1: A-root shape/ })).toBeVisible();
   await page.getByRole("radio", { name: "C", exact: true }).click();
   await expect(page.getByRole("img", { name: /^Position 1: C-root shape/ })).toBeVisible();
-  await page.getByRole("radio", { name: "Drop 3", exact: true }).click();
+  await page.getByRole("radio", { name: /^Drop 3(?!\d)/ }).click();
   await page.getByLabel("Diagram sheet").selectOption("80");
   await expect(page).toHaveURL(/page=80/);
   await page.reload();

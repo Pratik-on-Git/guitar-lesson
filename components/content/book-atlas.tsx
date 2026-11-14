@@ -48,7 +48,7 @@ export function BookAtlas() {
           <p className="text-muted-foreground text-xs">{index + 1} of {sheets.length} · {markers} notes on this sheet</p>
           <Link className={buttonVariants({ variant: "soft", size: "sm" })} href={selected.href}>Open interactive lesson →</Link>
         </div>
-        <div className="rounded-xl border p-3 sm:p-5" role="group" aria-label={`${selected.chapter} · ${selected.title} diagram sheet, page ${selected.page}`}>
+        <div className="rounded-xl border p-3 sm:p-5" role="group" aria-label={`${selected.title} (${selected.chapter}), page ${selected.page}`}>
           <FretSheetView key={sheet.page} sheet={sheet} rootPc={rootPc} labels={labels === "note" ? "note" : "degree"} />
         </div>
         <p className="text-muted-foreground text-xs">{selected.chapter} · {selected.title} · p. {selected.page} · Shapes © 2019 Yiannis Papadopoulos, transcribed from the supplied PDF and redrawn for study.</p>

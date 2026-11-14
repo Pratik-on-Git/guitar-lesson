@@ -89,6 +89,14 @@ test("circle uses correct enharmonic neighbours and exact historical lookup", as
   await expect(page.getByText("No historical description has been transcribed for this exact key spelling.", { exact: true })).toHaveCount(1);
 });
 
+test("chords are shown as playable chord boxes", async ({ page }) => {
+  await page.goto("/chords?chord=7th-dominant&key=g");
+  await expect(page.getByRole("img", { name: /^G7 chord diagram, low to high strings: 3 2 0 0 0 1$/ })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Chords with a playable shape" }).getByRole("img").first()).toBeVisible();
+  await page.goto("/progressions?key=c");
+  await expect(page.getByRole("list", { name: "Chord shapes for this progression" }).getByRole("img")).toHaveCount(4);
+});
+
 test("renamed and merged chord bookmarks resolve and remain selectable", async ({ page }) => {
   for (const [id, symbol] of [
     ["minor-9-suspended", "Cm11"],
@@ -96,7 +104,7 @@ test("renamed and merged chord bookmarks resolve and remain selectable", async (
     ["augmented-flat-nine-flat-thirteen", "C+7♭9"],
     ["6-sharp-11", "C6/9♯11"],
   ]) {
-    await page.goto(`/chords?chord=${id}&key=c`);
+    await page.goto(`/chords?chord=${id}&key=c&view=table`);
     await expect(page.getByRole("heading", { name: symbol, exact: true })).toBeVisible();
     await expect(page.getByRole("row", { selected: true })).toHaveCount(1);
   }

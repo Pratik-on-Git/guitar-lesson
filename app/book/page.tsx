@@ -20,7 +20,7 @@ export default function BookPage() {
       </Link>)}</div>
     </Panel>
     <Panel title="How to use this companion">
-      <p className="max-w-[75ch] text-sm leading-6">Lessons explain the concepts in new wording, while explorers compute correctly spelled notes in all 12 roots. The atlas redraws the book's exact A-root diagrams, including all five- and seven-position systems, and moves them to any key. Generated positions use their own starting-degree or fret-window controls; consult the atlas for the book&apos;s numbered boxes. Your study and practice progress stay in this browser.</p>
+      <p className="max-w-[75ch] text-sm leading-6">Lessons explain the concepts in new wording, while explorers compute correctly spelled notes in all 12 roots. The atlas redraws the book&apos;s exact A-root diagrams, including all five- and seven-position systems, and moves them to any key. Generated positions use their own starting-degree or fret-window controls; consult the atlas for the book&apos;s numbered boxes. Your study and practice progress stay in this browser.</p>
     </Panel>
     <Panel title="The book in numbers" description="Every diagram sheet and assignment is mapped into the app.">
       <div className="space-y-8"><TheoryVisual id="chart-fc-diagrams" /><TheoryVisual id="chart-fc-assignments" /></div>
