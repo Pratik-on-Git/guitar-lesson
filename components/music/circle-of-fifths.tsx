@@ -15,17 +15,20 @@ import { Segmented } from "@/components/ui/segmented";
 const MAJOR = ["1", "2", "3", "4", "5", "6", "7"].map(parseDegree);
 const C = 180;
 
+// Rounded so server and client produce identical attribute strings.
+const round = (n: number) => Math.round(n * 100) / 100;
+
 function arc(r1: number, r2: number, a0: number, a1: number) {
   const p = (r: number, a: number) => {
     const rad = ((a - 90) * Math.PI) / 180;
-    return `${C + r * Math.cos(rad)} ${C + r * Math.sin(rad)}`;
+    return `${round(C + r * Math.cos(rad))} ${round(C + r * Math.sin(rad))}`;
   };
   return `M ${p(r2, a0)} A ${r2} ${r2} 0 0 1 ${p(r2, a1)} L ${p(r1, a1)} A ${r1} ${r1} 0 0 0 ${p(r1, a0)} Z`;
 }
 
 function label(r: number, a: number) {
   const rad = ((a - 90) * Math.PI) / 180;
-  return [C + r * Math.cos(rad), C + r * Math.sin(rad)] as const;
+  return [round(C + r * Math.cos(rad)), round(C + r * Math.sin(rad))] as const;
 }
 
 const pretty = (name: string) => noteName(parseNote(name));

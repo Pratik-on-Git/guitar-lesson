@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { Blocks } from "@/components/content/blocks";
 import { PageHeader, Tag } from "@/components/app/page-header";
 import { Panel } from "@/components/app/panel";
-import { ExplorerSkeleton } from "@/components/app/skeleton";
+import { ExplorerSkeleton, PageSkeleton } from "@/components/app/skeleton";
 import { ModeExplorer } from "@/components/music/mode-explorer";
 import { SimpleTable } from "@/components/ui/table";
 import { MAJOR_MODE_TABLE, MODE_FAMILIES, getFamily } from "@/lib/music/modes";
@@ -17,7 +17,16 @@ export async function generateMetadata({ params }: PageProps<"/modes/[family]">)
   return { title: getFamily((await params).family)?.name };
 }
 
-export default async function ModeFamilyPage({ params }: PageProps<"/modes/[family]">) {
+// Params are awaited inside Suspense so navigation never blocks on URL data.
+export default function ModeFamilyPage({ params }: PageProps<"/modes/[family]">) {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <ModeFamilyPageBody params={params} />
+    </Suspense>
+  );
+}
+
+async function ModeFamilyPageBody({ params }: { params: PageProps<"/modes/[family]">["params"] }) {
   const family = getFamily((await params).family);
   if (!family) notFound();
 

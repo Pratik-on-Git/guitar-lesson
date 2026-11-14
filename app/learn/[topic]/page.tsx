@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { Blocks } from "@/components/content/blocks";
 import { PageHeader } from "@/components/app/page-header";
 import { Panel } from "@/components/app/panel";
+import { PageSkeleton } from "@/components/app/skeleton";
 import { TOPICS, getTopic } from "@/lib/content/topics";
 
 export function generateStaticParams() {
@@ -14,7 +16,16 @@ export async function generateMetadata({ params }: PageProps<"/learn/[topic]">):
   return { title: topic?.title, description: topic?.description };
 }
 
-export default async function TopicPage({ params }: PageProps<"/learn/[topic]">) {
+// Params are awaited inside Suspense so navigation never blocks on URL data.
+export default function TopicPage({ params }: PageProps<"/learn/[topic]">) {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <TopicPageBody params={params} />
+    </Suspense>
+  );
+}
+
+async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["params"] }) {
   const topic = getTopic((await params).topic);
   if (!topic) notFound();
   const href = `/learn/${topic.slug}`;

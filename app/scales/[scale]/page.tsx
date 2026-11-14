@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { Blocks } from "@/components/content/blocks";
 import { PageHeader, Tag } from "@/components/app/page-header";
 import { ScaleExplorer } from "@/components/music/scale-explorer";
-import { ExplorerSkeleton } from "@/components/app/skeleton";
+import { ExplorerSkeleton, PageSkeleton } from "@/components/app/skeleton";
 import { SCALES, getScale } from "@/lib/music/scales";
 import { prettyDegree } from "@/lib/music/theory";
 
@@ -17,7 +17,16 @@ export async function generateMetadata({ params }: PageProps<"/scales/[scale]">)
   return { title: scale?.name };
 }
 
-export default async function ScalePage({ params }: PageProps<"/scales/[scale]">) {
+// Params are awaited inside Suspense so navigation never blocks on URL data.
+export default function ScalePage({ params }: PageProps<"/scales/[scale]">) {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <ScalePageBody params={params} />
+    </Suspense>
+  );
+}
+
+async function ScalePageBody({ params }: { params: PageProps<"/scales/[scale]">["params"] }) {
   const scale = getScale((await params).scale);
   if (!scale) notFound();
 

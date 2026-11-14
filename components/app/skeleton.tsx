@@ -8,3 +8,12 @@ export function ExplorerSkeleton() {
     </div>
   );
 }
+
+export function PageSkeleton() {
+  return (
+    <div className="flex flex-col gap-8" aria-busy="true" aria-label="Loading">
+      <div className="h-24 max-w-[560px] animate-pulse rounded-2xl bg-card/60" />
+      <ExplorerSkeleton />
+    </div>
+  );
+}

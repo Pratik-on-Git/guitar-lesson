@@ -1,5 +1,7 @@
 import { ROOTS, mod } from "@/lib/music/theory";
 
+const round = (n: number) => Math.round(n * 100) / 100;
+
 /*
  * The 12-note circle. With `pcs`, the scale's notes are joined into a
  * polygon, which is how the doc pictures a 7-note scale.
@@ -19,7 +21,8 @@ export function NoteCircle({
   const r = 104;
   const point = (pc: number, radius = r) => {
     const angle = ((pc * 30 - 90) * Math.PI) / 180;
-    return [c + radius * Math.cos(angle), c + radius * Math.sin(angle)] as const;
+    // Rounded so server and client produce identical attribute strings.
+    return [round(c + radius * Math.cos(angle)), round(c + radius * Math.sin(angle))] as const;
   };
   const inScale = new Set(pcs ?? []);
   const polygon = pcs?.map((p) => point(p).join(",")).join(" ");
