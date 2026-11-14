@@ -6,7 +6,7 @@
     "chordReferences": 31,
     "transposedScales": 216,
     "transposedModes": 312,
-    "transposedChords": 864,
+    "transposedChords": 912,
     "fretboardCases": 528,
     "positionCases": 2700,
     "keySignatures": 15,
@@ -16,12 +16,12 @@
   },
   "failures": [],
   "inventory": {
-    "topics": 17,
-    "sections": 82,
+    "topics": 30,
+    "sections": 157,
     "scales": 18,
     "modeFamilies": 4,
     "modes": 26,
-    "chords": 72,
+    "chords": 76,
     "keyCharacters": 24,
     "circlePositions": 12
   },
@@ -13416,6 +13416,466 @@
             "B",
             "C♯",
             "F♯"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suspended-2nd-flat-fifth",
+      "name": "Suspended 2nd flat fifth",
+      "symbol": "sus2(♭5)",
+      "formula": [
+        "1",
+        "2",
+        "b5"
+      ],
+      "semitones": [
+        0,
+        2,
+        6
+      ],
+      "duplicatePitchClasses": [],
+      "review": "Carter's altered-fifth suspended triad; no third is implied.",
+      "roots": [
+        {
+          "root": "C",
+          "notes": [
+            "C",
+            "D",
+            "G♭"
+          ]
+        },
+        {
+          "root": "C♯",
+          "notes": [
+            "C♯",
+            "D♯",
+            "G"
+          ]
+        },
+        {
+          "root": "D",
+          "notes": [
+            "D",
+            "E",
+            "A♭"
+          ]
+        },
+        {
+          "root": "D♯",
+          "notes": [
+            "D♯",
+            "E♯",
+            "A"
+          ]
+        },
+        {
+          "root": "E",
+          "notes": [
+            "E",
+            "F♯",
+            "B♭"
+          ]
+        },
+        {
+          "root": "F",
+          "notes": [
+            "F",
+            "G",
+            "C♭"
+          ]
+        },
+        {
+          "root": "F♯",
+          "notes": [
+            "F♯",
+            "G♯",
+            "C"
+          ]
+        },
+        {
+          "root": "G",
+          "notes": [
+            "G",
+            "A",
+            "D♭"
+          ]
+        },
+        {
+          "root": "G♯",
+          "notes": [
+            "G♯",
+            "A♯",
+            "D"
+          ]
+        },
+        {
+          "root": "A",
+          "notes": [
+            "A",
+            "B",
+            "E♭"
+          ]
+        },
+        {
+          "root": "A♯",
+          "notes": [
+            "A♯",
+            "B♯",
+            "E"
+          ]
+        },
+        {
+          "root": "B",
+          "notes": [
+            "B",
+            "C♯",
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suspended-4th-flat-fifth",
+      "name": "Suspended 4th flat fifth",
+      "symbol": "sus4(♭5)",
+      "formula": [
+        "1",
+        "4",
+        "b5"
+      ],
+      "semitones": [
+        0,
+        5,
+        6
+      ],
+      "duplicatePitchClasses": [],
+      "review": "Declared formula checked in all 12 roots; see correction log for naming and voicing conventions.",
+      "roots": [
+        {
+          "root": "C",
+          "notes": [
+            "C",
+            "F",
+            "G♭"
+          ]
+        },
+        {
+          "root": "C♯",
+          "notes": [
+            "C♯",
+            "F♯",
+            "G"
+          ]
+        },
+        {
+          "root": "D",
+          "notes": [
+            "D",
+            "G",
+            "A♭"
+          ]
+        },
+        {
+          "root": "D♯",
+          "notes": [
+            "D♯",
+            "G♯",
+            "A"
+          ]
+        },
+        {
+          "root": "E",
+          "notes": [
+            "E",
+            "A",
+            "B♭"
+          ]
+        },
+        {
+          "root": "F",
+          "notes": [
+            "F",
+            "B♭",
+            "C♭"
+          ]
+        },
+        {
+          "root": "F♯",
+          "notes": [
+            "F♯",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "root": "G",
+          "notes": [
+            "G",
+            "C",
+            "D♭"
+          ]
+        },
+        {
+          "root": "G♯",
+          "notes": [
+            "G♯",
+            "C♯",
+            "D"
+          ]
+        },
+        {
+          "root": "A",
+          "notes": [
+            "A",
+            "D",
+            "E♭"
+          ]
+        },
+        {
+          "root": "A♯",
+          "notes": [
+            "A♯",
+            "D♯",
+            "E"
+          ]
+        },
+        {
+          "root": "B",
+          "notes": [
+            "B",
+            "E",
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suspended-2nd-sharp-fifth",
+      "name": "Suspended 2nd sharp fifth",
+      "symbol": "sus2(♯5)",
+      "formula": [
+        "1",
+        "2",
+        "#5"
+      ],
+      "semitones": [
+        0,
+        2,
+        8
+      ],
+      "duplicatePitchClasses": [],
+      "review": "Declared formula checked in all 12 roots; see correction log for naming and voicing conventions.",
+      "roots": [
+        {
+          "root": "C",
+          "notes": [
+            "C",
+            "D",
+            "G♯"
+          ]
+        },
+        {
+          "root": "D♭",
+          "notes": [
+            "D♭",
+            "E♭",
+            "A"
+          ]
+        },
+        {
+          "root": "D",
+          "notes": [
+            "D",
+            "E",
+            "A♯"
+          ]
+        },
+        {
+          "root": "E♭",
+          "notes": [
+            "E♭",
+            "F",
+            "B"
+          ]
+        },
+        {
+          "root": "E",
+          "notes": [
+            "E",
+            "F♯",
+            "B♯"
+          ]
+        },
+        {
+          "root": "F",
+          "notes": [
+            "F",
+            "G",
+            "C♯"
+          ]
+        },
+        {
+          "root": "G♭",
+          "notes": [
+            "G♭",
+            "A♭",
+            "D"
+          ]
+        },
+        {
+          "root": "G",
+          "notes": [
+            "G",
+            "A",
+            "D♯"
+          ]
+        },
+        {
+          "root": "A♭",
+          "notes": [
+            "A♭",
+            "B♭",
+            "E"
+          ]
+        },
+        {
+          "root": "A",
+          "notes": [
+            "A",
+            "B",
+            "E♯"
+          ]
+        },
+        {
+          "root": "B♭",
+          "notes": [
+            "B♭",
+            "C",
+            "F♯"
+          ]
+        },
+        {
+          "root": "B",
+          "notes": [
+            "B",
+            "C♯",
+            "F𝄪"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suspended-4th-sharp-fifth",
+      "name": "Suspended 4th sharp fifth",
+      "symbol": "sus4(♯5)",
+      "formula": [
+        "1",
+        "4",
+        "#5"
+      ],
+      "semitones": [
+        0,
+        5,
+        8
+      ],
+      "duplicatePitchClasses": [],
+      "review": "Declared formula checked in all 12 roots; see correction log for naming and voicing conventions.",
+      "roots": [
+        {
+          "root": "C",
+          "notes": [
+            "C",
+            "F",
+            "G♯"
+          ]
+        },
+        {
+          "root": "D♭",
+          "notes": [
+            "D♭",
+            "G♭",
+            "A"
+          ]
+        },
+        {
+          "root": "D",
+          "notes": [
+            "D",
+            "G",
+            "A♯"
+          ]
+        },
+        {
+          "root": "E♭",
+          "notes": [
+            "E♭",
+            "A♭",
+            "B"
+          ]
+        },
+        {
+          "root": "E",
+          "notes": [
+            "E",
+            "A",
+            "B♯"
+          ]
+        },
+        {
+          "root": "F",
+          "notes": [
+            "F",
+            "B♭",
+            "C♯"
+          ]
+        },
+        {
+          "root": "G♭",
+          "notes": [
+            "G♭",
+            "C♭",
+            "D"
+          ]
+        },
+        {
+          "root": "G",
+          "notes": [
+            "G",
+            "C",
+            "D♯"
+          ]
+        },
+        {
+          "root": "A♭",
+          "notes": [
+            "A♭",
+            "D♭",
+            "E"
+          ]
+        },
+        {
+          "root": "A",
+          "notes": [
+            "A",
+            "D",
+            "E♯"
+          ]
+        },
+        {
+          "root": "B♭",
+          "notes": [
+            "B♭",
+            "E♭",
+            "F♯"
+          ]
+        },
+        {
+          "root": "B",
+          "notes": [
+            "B",
+            "E",
+            "F𝄪"
           ]
         }
       ]

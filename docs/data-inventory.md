@@ -8,6 +8,19 @@ These are the application's current formulas, not proposed replacements. Formula
 
 | Topic | Sections |
 | --- | --- |
+| Tuning, frequency & cents | Pitch names and tuning standards; Octaves and equal semitones; What cents measure; Calculate a detuned pitch; Tuning systems and enharmonic spelling; Listen before looking at a tuner |
+| Listening & relative-pitch practice | Hear relationships; Melodic and harmonic intervals; Hear a mode over a drone; Compare relative and parallel modes; A short listening routine |
+| Melody, motifs & phrase shape | Three ways to describe one passage; Start with a small motif; Contour and register; Tension, release and landing notes; Develop instead of replacing |
+| Extended & altered chord language | From a triad to a thirteenth; Formula membership and practical voicing; The third and natural eleventh; Added tone, suspension or seventh extension?; An altered fifth is not an added sharp eleventh; Borrowed chords and altered dominants |
+| Slash chords, quartal harmony & polychords | Root, bass and tonic are different; Read a slash as a bass note; Figured bass versus lead-sheet sixths; Stack fourths instead of thirds; Combine two identifiable chords; Recognize a chord from an unordered voicing |
+| Progressions, cadences & transposition | Roman numerals describe relationships; The source's ten common progressions; Cadences and degrees of closure; Count a real twelve-bar blues; Follow each voice through the changes; Transpose structure, then check spelling |
+| Meter, tuplets & cross-rhythms | Simple versus compound meter; Additive and changing meters; Tuplets are ratios; Seventeen beat-building units; Accents, rests and syncopation; Polyrhythm versus polymeter |
+| Expression, tone & extended techniques | Change the sound, not just the notes; Dynamics and envelope; Articulation shapes the connection; Consonance and dissonance in context; Density, silence and dramatic shape; Extended techniques as musical choices |
+| Harmonic function & note context | Quality is not function; Tonic, predominant and dominant; One pitch, several simultaneous roles; Guide tones and extensions; Hear the phrase, then assign a label |
+| Composition & improvisation workflow | Compose a small, revisable structure; Choose a useful constraint; Statement, variation, answer, ending; Choose when chords change; Revise one parameter at a time; Prepare for real-time decisions |
+| Tonal, modal & layered harmony | Tonal harmony and directed function; Modal music can have a strong centre; Polytonality and layered materials; Polymodality and common pitch sets; Atonality and serial organization; Free approaches and personal interpretation |
+| Reharmonization & substitutions | Keep the root, change the chord; Change bass placement or change the root; Add or remove chords within a fixed span; Series substitution and major-third centres; Substitution within a collection versus borrowing; Use a substitution as a melodic upper structure |
+| Chromatic & outside approaches | Chromatic does not automatically mean atonal; Passing tones and bebop alignment; Slide a shape out and return; Containment and phrasing both matter; Introduce one contrasting layer; Practise beyond a fixed progression |
 | Fretboard & Double Note system | Standard tuning and fretboard notes; Read the source diagrams; The Double Note construction; Five-box and seven-box root anchors; Parent-box offsets and the H marker; Connect one position at a time |
 | Inversions & drop voicings | Inversion is determined by the bass; Five root-position shapes; Drop 2: lower the second-highest voice; Drop 3: lower the third-highest voice; Practise voice leading |
 | Arpeggios & chord-tone phrasing | A chord played one note at a time; Four triad families; Seven seventh-chord families; Connect scale and arpeggio shapes; Two arpeggios can outline a scale |
@@ -131,6 +144,10 @@ Notes are spelled from C. Extensions show pitch-class names without octave numbe
 | Minor-major 9♭13 | Cm(maj9)♭13 | 1 b3 5 7 9 b13 | C E♭ G B D A♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | Suspended 4th | Csus4 | 1 4 5 | C F G | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | Suspended 2nd | Csus2 | 1 2 5 | C D G | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Suspended 2nd flat fifth | Csus2(♭5) | 1 2 b5 | C D G♭ | Carter's altered-fifth suspended triad; no third is implied. |
+| Suspended 4th flat fifth | Csus4(♭5) | 1 4 b5 | C F G♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Suspended 2nd sharp fifth | Csus2(♯5) | 1 2 #5 | C D G♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
+| Suspended 4th sharp fifth | Csus4(♯5) | 1 4 #5 | C F G♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | Suspended 6th | C6sus4(no5) | 1 4 6 | C F A | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | 7 suspended | C7sus4 | 1 4 5 b7 | C F G B♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | 9 suspended | C9sus4 | 1 4 5 b7 9 | C F G B♭ D | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
@@ -214,7 +231,7 @@ Notes are spelled from C. Extensions show pitch-class names without octave numbe
     "chordReferences": 31,
     "transposedScales": 216,
     "transposedModes": 312,
-    "transposedChords": 864,
+    "transposedChords": 912,
     "fretboardCases": 528,
     "positionCases": 2700,
     "keySignatures": 15,

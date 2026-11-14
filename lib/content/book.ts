@@ -47,6 +47,5 @@ export const BOOK_TOPIC_PAGES: Record<string, string> = {
   "sound-and-pitch": "5–6, 104", notes: "104–106", rhythm: "106–107", intervals: "9–10, 108, 110", scales: "11, 18–19", modes: "11–12, 15–16", chords: "10–11, 15", harmony: "15–17", keys: "12–14", "fretboard-system": "6–8, 104–105", voicings: "11, 58–81", arpeggios: "82–93", "symmetric-scales": "51–57", harmonization: "27, 58, 66, 74, 94–95", improvisation: "75–81, 96–103", "pentatonic-substitutions": "100–103",
 };
 
-export const diagramSrc = (page: number) => `/book/${String(page).padStart(3, "0")}.webp`;
 export function scaleBookPage(id: string) { return BOOK_DIAGRAMS.find((s) => s.href === `/scales/${id}`)?.page ?? ({ major: 28, "natural-minor": 33, "harmonic-minor": 36, "melodic-minor": 44 } as Record<string, number>)[id]; }
 export function modeBookPage(family: string, start: number) { const base = ({ major: 28, "harmonic-minor": 36, "melodic-minor": 44 } as Record<string, number>)[family]; return base ? base + start : undefined; }

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
-import { BOOK_DIAGRAMS, BOOK_CHORD_TYPES, diagramSrc } from "../lib/content/book.ts";
+import { BOOK_DIAGRAMS, BOOK_CHORD_TYPES } from "../lib/content/book.ts";
+import { FRET_SHEETS } from "../lib/content/fretboard-sheets.ts";
+import { parseMarks } from "../lib/content/fretboard-sheet-types.ts";
 import { BOOK_ASSIGNMENTS } from "../lib/content/book-assignments.ts";
 import { assignmentMaterial } from "../lib/content/assignment-links.ts";
 import { TOPICS } from "../lib/content/topics.ts";
@@ -34,7 +35,19 @@ for (const topic of TOPICS) {
 }
 verify(() => assert.equal(new Set(STUDY_PAGES.map((p) => p.href)).size, STUDY_PAGES.length));
 for (const sheet of BOOK_DIAGRAMS) {
-  verify(() => assert.ok(existsSync(new URL(`../public${diagramSrc(sheet.page)}`, import.meta.url)), `Missing source asset ${sheet.page}`));
+  const data = FRET_SHEETS.find((s) => s.page === sheet.page);
+  verify(() => assert.ok(data, `Missing transcribed sheet ${sheet.page}`));
+  for (const group of data?.groups ?? []) {
+    const allowed = new Set(group.formula.map((d) => mod(degreeSemitones(parseDegree(d)), 12)));
+    for (const diagram of [data.neck, ...group.diagrams].filter(Boolean)) {
+      const marks = parseMarks(diagram.marks);
+      verify(() => assert.ok(marks.every((m) => allowed.has(mod(TUNING[m.string] + m.fret - 9, 12))), `p. ${sheet.page} ${diagram.label}: note outside ${group.formula.join(" ")}`));
+      verify(() => assert.ok(marks.filter((m) => m.kind === "root").every((m) => mod(TUNING[m.string] + m.fret - 9, 12) === 0), `p. ${sheet.page} ${diagram.label}: boxed marker is not A`));
+      verify(() => assert.ok(marks.every((m) => m.fret >= diagram.from && m.fret <= diagram.to), `p. ${sheet.page} ${diagram.label}: marker outside window`));
+      if (diagram !== data.neck) verify(() => assert.equal(marks.filter((m) => m.kind === "root").length, 1, `p. ${sheet.page} ${diagram.label}: one anchor root`));
+      if (diagram !== data.neck && group.formula.length === 7 && data.kind === "scale") verify(() => assert.equal(marks.filter((m) => m.kind === "double").length, 1, `p. ${sheet.page} ${diagram.label}: one Double Note`));
+    }
+  }
   const url = new URL(sheet.href, "https://local.invalid");
   verify(() => assert.ok(navHrefs.has(url.pathname), `Broken source lesson: ${sheet.href}`));
   if (url.pathname.startsWith("/modes/")) {
