@@ -1,42 +1,78 @@
+import { cn } from "@/lib/utils";
 import { StudyToggle } from "./study-toggle";
 
-/** Title block at the top of every page, with the studied toggle. */
+/*
+ * The page-context block every screen opens with (emp-dashboard
+ * `page-header.tsx`): a bold display title, a muted description, actions
+ * right-aligned from `sm` up (full-width on phones), then any meta row.
+ */
 export function PageHeader({
   title,
   description,
   studyHref,
   meta,
   actions,
+  className,
 }: {
-  title: string;
+  title: React.ReactNode;
   description?: React.ReactNode;
   /** Progress key; omit on pages that aren't study material. */
   studyHref?: string;
+  /** Status chips under the description: family, note count, aliases. */
   meta?: React.ReactNode;
   actions?: React.ReactNode;
+  className?: string;
 }) {
+  const hasActions = Boolean(studyHref || actions);
   return (
-    <header className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
-      <div className="min-w-0 max-w-[720px]">
-        {meta && <div className="mb-3 flex flex-wrap items-center gap-2">{meta}</div>}
-        <h1 className="text-[32px] leading-[1.15] tracking-[-0.02em] text-foreground sm:text-[40px]">{title}</h1>
-        {description && <p className="mt-3 text-subheading text-muted-foreground">{description}</p>}
-      </div>
-      {(studyHref || actions) && (
-        <div className="flex flex-wrap items-center gap-2">
-          {actions}
-          {studyHref && <StudyToggle href={studyHref} />}
+    <header className={cn("space-y-3", className)}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+        {/* `min-w-48`: the title keeps real room, so a wide action cluster wraps instead of crushing it. */}
+        <div className="min-w-48 flex-1 space-y-1">
+          <h1 className="text-display text-foreground font-bold tracking-tight text-balance">{title}</h1>
+          {description ? <p className="text-body text-muted-foreground max-w-3xl">{description}</p> : null}
         </div>
-      )}
+        {hasActions ? (
+          <div className="flex min-w-0 flex-wrap items-center gap-2 max-sm:w-full max-sm:*:flex-1">
+            {actions}
+            {studyHref ? <StudyToggle href={studyHref} /> : null}
+          </div>
+        ) : null}
+      </div>
+      {meta ? <div className="flex flex-wrap items-center gap-1.5">{meta}</div> : null}
     </header>
   );
 }
 
-/** Pill tag for meta info under a title (family, note count…). */
-export function Tag({ children }: { children: React.ReactNode }) {
+// A titled block inside a page: the same heading weight and optional trailing action for every grouping.
+export function Section({
+  title,
+  description,
+  action,
+  children,
+  className,
+  id,
+}: {
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+  id?: string;
+}) {
+  const headingId = id ? `${id}-title` : undefined;
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-[13px] font-medium text-foreground">
+    <section id={id} aria-labelledby={headingId} className={cn("min-w-0 scroll-mt-24 space-y-3", className)}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="min-w-0 space-y-0.5">
+          <h2 id={headingId} className="text-heading text-foreground font-semibold">
+            {title}
+          </h2>
+          {description ? <p className="text-body text-muted-foreground">{description}</p> : null}
+        </div>
+        {action ? <div className="shrink-0">{action}</div> : null}
+      </div>
       {children}
-    </span>
+    </section>
   );
 }

@@ -1,6 +1,11 @@
 import { cn } from "@/lib/utils";
+import { Card, CardAction, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
-/** White card shell for one block of study material. */
+/*
+ * One block of study material, on the design system's Card: a hairline ring
+ * card with a title row (title, description, trailing action) separated from
+ * the body by a rule, as the dashboards' data cards are.
+ */
 export function Panel({
   id,
   title,
@@ -19,35 +24,26 @@ export function Panel({
   children: React.ReactNode;
 }) {
   const titleId = id ? `${id}-title` : undefined;
+  const hasHeader = Boolean(title || action);
   return (
-    <section
-      id={id}
-      aria-labelledby={title ? titleId : undefined}
-      className={cn("min-w-0 scroll-mt-24 rounded-card bg-card p-5 text-card-foreground shadow-soft sm:p-7", className)}
-    >
-      {(title || action) && (
-        <header className="mb-5 flex flex-wrap items-start justify-between gap-3">
-          <div className="min-w-0">
-            {title && (
-              <h2 id={titleId} className="text-heading-sm text-foreground">
-                {title}
-              </h2>
-            )}
-            {description && <p className="mt-1 text-caption leading-[1.45] text-muted-foreground">{description}</p>}
-          </div>
-          {action && <div className="flex shrink-0 flex-wrap items-center gap-2">{action}</div>}
-        </header>
-      )}
-      <div className={cn("min-w-0", bodyClassName)}>{children}</div>
-    </section>
+    <Card as="section" id={id} aria-labelledby={title ? titleId : undefined} className={cn("min-w-0 scroll-mt-24", className)}>
+      {hasHeader ? (
+        <CardHeader className="border-b">
+          {title ? (
+            <h2 id={titleId} data-slot="card-title" className="text-title text-foreground leading-normal font-semibold">
+              {title}
+            </h2>
+          ) : null}
+          {description ? <CardDescription className="text-body">{description}</CardDescription> : null}
+          {action ? <CardAction className="flex flex-wrap items-center gap-2 max-sm:col-span-2 max-sm:col-start-1 max-sm:row-span-1 max-sm:row-start-3 max-sm:justify-self-start max-sm:pt-2">{action}</CardAction> : null}
+        </CardHeader>
+      ) : null}
+      <CardContent className={cn("min-w-0", bodyClassName)}>{children}</CardContent>
+    </Card>
   );
 }
 
-/** Small uppercase-free label used above controls and sub-blocks. */
+/** A small muted label above a control or a sub-block. */
 export function Eyebrow({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={cn("mb-2 text-caption font-medium text-muted-foreground", className)}>{children}</p>;
-}
-
-export function EmberDot({ className }: { className?: string }) {
-  return <span aria-hidden className={cn("inline-block size-2 shrink-0 rounded-full bg-ember", className)} />;
+  return <p className={cn("text-muted-foreground mb-2 text-xs font-medium tracking-wide uppercase", className)}>{children}</p>;
 }

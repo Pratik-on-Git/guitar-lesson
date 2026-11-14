@@ -3,15 +3,56 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useState } from "react";
-import { Check, ChevronRight } from "lucide-react";
+import { ChevronRight, CircleCheck } from "lucide-react";
 import { NAV, isActive, type NavItem } from "@/lib/nav";
 import { useStudied } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { Tooltip } from "@/components/ui/tooltip";
 
 /*
- * Grouped navigation, shared by the desktop sidebar and the mobile drawer.
- * `collapsed` shows an icon rail; titles move into tooltips.
+ * Grouped navigation for the desktop sidebar and the phone sheet, styled
+ * after emp-dashboard's `Sidebar.tsx`. Hover is neutral and selection is
+ * tinted, so "where I am" never looks like "where my mouse is"; the selected
+ * page also gets a bar, so it is marked by shape and not by colour alone.
+ *
+ * `collapsed` is the icon rail: labels fade out (they stay in the DOM so the
+ * width animation never shows them clipped), titles move into tooltips, and
+ * group labels give way to a short divider.
  */
+
+// Everything that changes with the rail reads the sidebar's `data-collapsed`.
+const RAIL = "group-data-[collapsed=true]/sidebar";
+
+const LABEL_FADE = cn(
+  "transition-opacity duration-200 delay-75",
+  `${RAIL}:opacity-0 ${RAIL}:duration-100 ${RAIL}:delay-0`,
+);
+
+const ITEM = cn(
+  "relative flex h-9 w-full items-center gap-3 rounded-lg px-2.5 text-sm font-medium text-foreground outline-none",
+  "transition-[color,background-color,width,padding] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
+  "hover:bg-sidebar-foreground/5 active:bg-sidebar-foreground/10 focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+  "[&>svg]:size-4 [&>svg]:shrink-0",
+  "data-[active=true]:bg-sidebar-primary/10 data-[active=true]:text-sidebar-primary data-[active=true]:hover:bg-sidebar-primary/15",
+  `${RAIL}:w-9 ${RAIL}:px-2.5`,
+);
+
+const ACTIVE_BAR = cn(
+  "before:absolute before:inset-y-2 before:left-0 before:w-[3px] before:rounded-r-full before:bg-sidebar-primary",
+  "before:opacity-0 before:transition-opacity data-[active=true]:before:opacity-100",
+  `${RAIL}:before:opacity-0!`,
+);
+
+const SUB_ITEM = cn(
+  "flex h-8 w-full items-center gap-2 rounded-md px-2.5 text-sm text-foreground outline-none transition-colors",
+  "hover:bg-sidebar-foreground/5 active:bg-sidebar-foreground/10 focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+  "data-[active=true]:bg-sidebar-primary/10 data-[active=true]:font-medium data-[active=true]:text-sidebar-primary",
+);
+
+// Lights the guide line beside the selected child.
+const SUB_ROW =
+  "relative before:absolute before:inset-y-1.5 before:-left-2.5 before:w-0.5 before:rounded-full before:bg-sidebar-primary before:opacity-0 has-data-[active=true]:before:opacity-100";
+
 export function SidebarNav({ collapsed = false, onNavigate }: { collapsed?: boolean; onNavigate?: () => void }) {
   return (
     <Suspense fallback={<NavList pathname="" collapsed={collapsed} onNavigate={onNavigate} />}>
@@ -28,15 +69,29 @@ function NavWithPath(props: { collapsed: boolean; onNavigate?: () => void }) {
 function NavList({ pathname, collapsed, onNavigate }: { pathname: string; collapsed: boolean; onNavigate?: () => void }) {
   const { isStudied } = useStudied();
   return (
-    <nav aria-label="Study topics" className="flex flex-col gap-5">
-      {NAV.map((group) => (
-        <div key={group.title}>
-          {collapsed ? (
-            <div aria-hidden className="mx-auto mb-2 h-px w-6 bg-border" />
-          ) : (
-            <p className="mb-1.5 px-3 text-[12px] font-medium text-muted-foreground">{group.title}</p>
-          )}
-          <ul className="flex flex-col gap-0.5">
+    <nav aria-label="Study topics" className="flex flex-col">
+      {NAV.map((group, index) => (
+        <div key={group.title} className="relative flex flex-col p-2.5 pt-1.5">
+          {index > 0 ? (
+            // The rail has no room for a group label; a short rule keeps the groups apart.
+            <span
+              aria-hidden
+              className={cn("bg-sidebar-border absolute top-1 left-1/2 h-px w-6 -translate-x-1/2 opacity-0 transition-opacity", `${RAIL}:opacity-100`)}
+            />
+          ) : null}
+          {group.title !== "Study" ? (
+            <p
+              className={cn(
+                "text-sidebar-foreground/70 flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium whitespace-nowrap",
+                "transition-[margin,opacity] duration-200 ease-linear",
+                `${RAIL}:-mt-8 ${RAIL}:opacity-0`,
+              )}
+              aria-hidden={collapsed || undefined}
+            >
+              {group.title}
+            </p>
+          ) : null}
+          <ul className="flex flex-col gap-1">
             {group.items.map((item) => (
               <NavEntry
                 key={item.href + item.title}
@@ -54,12 +109,6 @@ function NavList({ pathname, collapsed, onNavigate }: { pathname: string; collap
   );
 }
 
-const itemClass = (active: boolean) =>
-  cn(
-    "group/item flex min-h-9 w-full items-center gap-2.5 rounded-[10px] px-3 py-1.5 text-caption font-medium outline-none transition-[background-color,box-shadow,color] focus-visible:ring-3 focus-visible:ring-ring/50",
-    active ? "bg-card text-foreground shadow-soft" : "text-iron hover:bg-card/60 hover:text-foreground dark:text-fog",
-  );
-
 function NavEntry({
   item,
   pathname,
@@ -76,85 +125,96 @@ function NavEntry({
   const childActive = item.children?.some((c) => isActive(pathname, c.href)) ?? false;
   const selfActive = !item.children && isActive(pathname, item.href);
   const [open, setOpen] = useState<boolean | null>(null);
-  const expanded = open ?? childActive;
   const Icon = item.icon;
 
-  if (collapsed) {
+  // Leaves, and every item in the rail, are links. In the rail a branch goes to its parent page.
+  if (!item.children || collapsed) {
+    const active = selfActive || childActive;
+    const studied = !item.children && item.href !== "/" && isStudied(item.href);
     return (
       <li>
-        <Link
-          href={item.href}
-          title={item.title}
-          aria-label={item.title}
-          aria-current={selfActive || childActive ? "page" : undefined}
-          className={cn(itemClass(selfActive || childActive), "justify-center px-0")}
-        >
-          <Icon className="size-[18px] shrink-0" strokeWidth={1.75} aria-hidden />
-        </Link>
+        <Tooltip content={item.title} side="right" sideOffset={14} disabled={!collapsed}>
+          <Link
+            href={item.href}
+            onClick={onNavigate}
+            data-active={active}
+            aria-current={selfActive ? "page" : undefined}
+            aria-label={collapsed ? item.title : undefined}
+            className={cn(ITEM, ACTIVE_BAR)}
+          >
+            <Icon aria-hidden />
+            <span className={cn("min-w-0 flex-1 truncate", LABEL_FADE)}>{item.title}</span>
+            {studied ? (
+              <CircleCheck className={cn("text-success size-3.5! shrink-0", LABEL_FADE)} aria-label="Studied" />
+            ) : null}
+          </Link>
+        </Tooltip>
       </li>
     );
   }
 
-  if (!item.children) {
-    return (
-      <li>
-        <Link href={item.href} onClick={onNavigate} aria-current={selfActive ? "page" : undefined} className={itemClass(selfActive)}>
-          <Icon className="size-[18px] shrink-0" strokeWidth={1.75} aria-hidden />
-          <span className="min-w-0 flex-1 truncate">{item.title}</span>
-          {item.href !== "/" && isStudied(item.href) && <StudiedMark />}
-        </Link>
-      </li>
-    );
-  }
-
+  // Open while one of its pages is current, until the reader folds it.
+  const expanded = open ?? childActive;
   const done = item.children.filter((c) => isStudied(c.href)).length;
+  const total = item.children.length;
+  const complete = done === total;
+  const listId = `nav-${item.href.replace(/\W+/g, "-")}`;
+
   return (
     <li>
       <button
         type="button"
         aria-expanded={expanded}
+        aria-controls={listId}
         onClick={() => setOpen(!expanded)}
-        className={itemClass(false)}
+        className={cn(ITEM, childActive && !expanded && "bg-sidebar-primary/10 text-sidebar-primary", childActive && "text-sidebar-primary")}
       >
-        <Icon className="size-[18px] shrink-0" strokeWidth={1.75} aria-hidden />
-        <span className={cn("min-w-0 flex-1 truncate text-left", childActive && "text-foreground")}>{item.title}</span>
-        <span className="text-[12px] tabular-nums text-muted-foreground">
-          {done}/{item.children.length}
+        <Icon aria-hidden />
+        <span className="min-w-0 flex-1 truncate text-left">{item.title}</span>
+        <span
+          className={cn(
+            "max-w-24 shrink-0 truncate rounded-full px-1.5 text-xs tabular-nums",
+            complete ? "bg-success/10 text-success" : "bg-sidebar-primary/10 text-sidebar-primary",
+          )}
+          aria-label={`${done} of ${total} studied`}
+        >
+          {done}/{total}
         </span>
         <ChevronRight
-          className={cn("size-3.5 shrink-0 text-muted-foreground transition-transform", expanded && "rotate-90")}
-          strokeWidth={2}
           aria-hidden
+          className={cn("size-3.5! shrink-0 transition-transform duration-200 motion-reduce:transition-none", expanded && "rotate-90")}
         />
       </button>
-      {expanded && (
-        <ul className="mt-0.5 ml-[21px] flex flex-col gap-0.5 border-l border-border pl-2.5">
+
+      {/* Grid rows animate the height without measuring; `inert` keeps folded links out of the tab order. */}
+      <div
+        id={listId}
+        inert={!expanded}
+        className={cn(
+          "grid transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none",
+          expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+        )}
+      >
+        <ul className="border-sidebar-border mt-0.5 ml-[1.0625rem] flex min-h-0 flex-col gap-0.5 overflow-hidden border-l py-0.5 pl-2.5">
           {item.children.map((child) => {
             const active = isActive(pathname, child.href);
             return (
-              <li key={child.href}>
+              <li key={child.href} className={SUB_ROW}>
                 <Link
                   href={child.href}
                   onClick={onNavigate}
+                  data-active={active}
                   aria-current={active ? "page" : undefined}
-                  className={cn(itemClass(active), "min-h-8 py-1")}
+                  className={SUB_ITEM}
                 >
                   <span className="min-w-0 flex-1 truncate">{child.title}</span>
-                  {isStudied(child.href) && <StudiedMark />}
+                  {isStudied(child.href) ? <CircleCheck className="text-success size-3.5 shrink-0" aria-label="Studied" /> : null}
                 </Link>
               </li>
             );
           })}
         </ul>
-      )}
+      </div>
     </li>
-  );
-}
-
-function StudiedMark() {
-  return (
-    <span className="grid size-4 shrink-0 place-items-center rounded-full bg-foreground/10" title="Studied">
-      <Check className="size-2.5 text-foreground" strokeWidth={3} aria-label="Studied" />
-    </span>
   );
 }

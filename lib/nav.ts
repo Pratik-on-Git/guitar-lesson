@@ -100,16 +100,37 @@ export const STUDY_PAGES: (NavLeaf & { group: string })[] = NAV.slice(1).flatMap
   ),
 );
 
-/** Breadcrumb trail for a pathname: group › item › child. */
-export function trailFor(pathname: string): string[] {
+export type Crumb = { label: string; href?: string };
+
+/**
+ * Breadcrumb trail for a pathname: Overview › group › item › child. Groups
+ * are labels, not pages, so they carry no href; the last crumb is the
+ * current page.
+ */
+export function crumbsFor(pathname: string): Crumb[] {
+  const home: Crumb = { label: "Overview", href: "/" };
   for (const group of NAV) {
     for (const item of group.items) {
       const child = item.children?.find((c) => c.href === pathname);
-      if (child) return [group.title, item.title, child.title];
-      if (item.href === pathname) return group.title === "Study" ? [item.title] : [group.title, item.title];
+      if (child) {
+        // A parent whose href is one of its own children (Mode families → Major) is not a separate page.
+        const parentIsPage = !item.children?.some((c) => c.href === item.href);
+        return [home, { label: group.title }, { label: item.title, href: parentIsPage ? item.href : undefined }, { label: child.title }];
+      }
+      if (item.href === pathname) return group.title === "Study" ? [{ label: item.title }] : [home, { label: group.title }, { label: item.title }];
     }
   }
   return [];
+}
+
+/** The same trail as plain labels. */
+export function trailFor(pathname: string): string[] {
+  return crumbsFor(pathname).map((c) => c.label);
+}
+
+/** The first page not yet marked studied, in reading order. */
+export function nextUnstudied(studied: string[]) {
+  return STUDY_PAGES.find((p) => !studied.includes(p.href));
 }
 
 export function isActive(pathname: string, href: string): boolean {

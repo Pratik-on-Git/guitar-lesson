@@ -5,199 +5,590 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system: "warm editorial atelier"
- * Cream paper, charcoal ink, one ember-orange point of emphasis.
- *
- * Spacing: the reference scale (8, 10, 12, 14, 16, 18, 22, 24, 32, 40, 54,
- * 58, 72, 74, 100, 122px) maps cleanly onto Tailwind's 4px spacing base
- * (2, 2.5, 3, 3.5, 4, 4.5, 5.5, 6, 8, 10, 13.5, 14.5, 18, 18.5, 25, 30.5),
- * so no custom spacing tokens are defined. Redefining --spacing-8 etc. would
- * silently change what p-8 / h-8 mean across every component.
+ * Design system: Subtrait (ported from admin-frontend's @subtrait/ui theme.css).
+ * White and deep-slate surfaces, one brand blue (--primary), semantic status
+ * colours, hairline ring cards and a dense, fluid type scale. The tokens below
+ * are copied value for value; only the font wiring differs, because Next loads
+ * DM Sans and JetBrains Mono through `next/font` (see app/layout.tsx).
  */
 
-/* Raw design tokens */
-@theme {
-  /* Palette */
-  --color-cream-paper: #e4dfd9;
-  --color-pure-white: #ffffff;
-  --color-charcoal-ink: #000000;
-  --color-near-black: #050505;
-  --color-pressed-graphite: #171717;
-  --color-slate: #737373;
-  --color-iron: #4b4b4b;
-  --color-stone: #999694;
-  --color-pewter: #666666;
-  --color-fog: #c7c7c7;
-  /* The single chromatic accent: status dots, headline period, match badges. Never fills. */
-  --color-ember: #ff6a1f;
-
-  /* Type scale (size / line-height / tracking = -0.02em) */
-  --text-caption: 14px;
-  --text-caption--line-height: 1.2;
-  --text-caption--letter-spacing: -0.28px;
-  --text-body: 16px;
-  --text-body--line-height: 1.5;
-  --text-body--letter-spacing: -0.32px;
-  --text-subheading: 19px;
-  --text-subheading--line-height: 1.4;
-  --text-subheading--letter-spacing: -0.38px;
-  --text-heading-sm: 23px;
-  --text-heading-sm--line-height: 1.4;
-  --text-heading-sm--letter-spacing: -0.46px;
-  --text-heading: 28px;
-  --text-heading--line-height: 1.4;
-  --text-heading--letter-spacing: -0.56px;
-  --text-display: 69px;
-  --text-display--line-height: 1.1;
-  --text-display--letter-spacing: -1.38px;
-
-  /* The only elevation in the system */
-  --shadow-soft: rgba(0, 0, 0, 0.07) 0px 6px 27px 0px;
-
-  /* Named radii */
-  --radius-card: 20px;
-  --radius-input: 12px;
-  --radius-button: 8px;
-  --radius-icon: 8px;
-
-  /* Layout */
-  --container-page: 1200px;
-}
-
-/* Semantic tokens (shadcn) and fonts wired to runtime variables */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* Functional text: neutral system sans. Headlines: --font-display. */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, sans-serif;
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-display);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  /* Reference radii: lg 8 / xl 12 / 2xl 16 / 3xl 20 */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-3xl: 20px;
-  --radius-4xl: 24px;
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-input-background: var(--input-background);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-neutral: var(--neutral);
+  --color-neutral-foreground: var(--neutral-foreground);
+
+  /* next/font sets --font-dm-sans and --font-jetbrains-mono on <html>. */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-serif: Georgia, "Times New Roman", serif;
+
+  /* Type scale: the only sizes for app copy, never below 12px. Each matches a Tailwind step's size
+     and line-height. Sizes above 16px are fluid: the desktop size from a 768px viewport, easing down
+     to a phone size at 360px. */
+  --text-overline: 0.75rem;
+  --text-overline--line-height: 1rem;
+  --text-overline--letter-spacing: 0.06em;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.25rem;
+  --text-title: clamp(0.9375rem, 0.8824rem + 0.2451vw, 1rem);
+  --text-title--line-height: 1.5;
+  --text-heading: clamp(1.0625rem, 1.0074rem + 0.2451vw, 1.125rem);
+  --text-heading--line-height: calc(1.75 / 1.125);
+  --text-display: clamp(1.5rem, 1.2794rem + 0.9804vw, 1.75rem);
+  --text-display--line-height: calc(2.25 / 1.75);
+  --text-metric-sm: clamp(1.125rem, 1.0147rem + 0.4902vw, 1.25rem);
+  --text-metric-sm--line-height: 1.4;
+  --text-metric: clamp(1.3125rem, 1.1471rem + 0.7353vw, 1.5rem);
+  --text-metric--line-height: calc(2 / 1.5);
+  --text-metric-lg: clamp(1.75rem, 1.5294rem + 0.9804vw, 2rem);
+  --text-metric-lg--line-height: 1.25;
+
+  /* Tailwind's own steps above 16px, made fluid the same way. xs/sm/base stay fixed. */
+  --text-lg: clamp(1.0625rem, 1.0074rem + 0.2451vw, 1.125rem);
+  --text-xl: clamp(1.125rem, 1.0147rem + 0.4902vw, 1.25rem);
+  --text-2xl: clamp(1.3125rem, 1.1471rem + 0.7353vw, 1.5rem);
+  --text-3xl: clamp(1.5625rem, 1.2868rem + 1.2255vw, 1.875rem);
+  --text-4xl: clamp(1.8125rem, 1.4265rem + 1.7157vw, 2.25rem);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+
+  /* The logo's wordmark lavender; --primary is the logo's blue. */
+  --color-brand-lavender: #e8def8;
 }
 
 :root {
-  --background: #e4dfd9; /* cream paper */
-  --foreground: #050505; /* near black */
-  --card: #ffffff;
-  --card-foreground: #050505;
-  --popover: #ffffff;
-  --popover-foreground: #050505;
-  --primary: #171717; /* pressed graphite, never pure black */
-  --primary-foreground: #ffffff;
-  --secondary: #ffffff;
-  --secondary-foreground: #000000;
-  --muted: #d9d3cc; /* cream, one step down, for hovers and wells */
-  --muted-foreground: #737373; /* slate */
-  --accent: #d9d3cc;
-  --accent-foreground: #000000;
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: #c7c7c7; /* fog hairline */
-  --input: #c7c7c7;
-  --ring: #737373;
-  --chart-1: #171717;
-  --chart-2: #4b4b4b;
-  --chart-3: #737373;
-  --chart-4: #999694;
-  --chart-5: #c7c7c7;
-  --radius: 8px;
-  --sidebar: #e4dfd9;
-  --sidebar-foreground: #050505;
-  --sidebar-primary: #171717;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #d9d3cc;
-  --sidebar-accent-foreground: #000000;
-  --sidebar-border: #c7c7c7;
-  --sidebar-ring: #737373;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.2697 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2697 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2697 0 0);
+  --primary: oklch(0.5296 0.1863 258.1459);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.9686 0.0035 247.859);
+  --secondary-foreground: oklch(0.2697 0 0);
+  --muted: oklch(0.9696 0 0);
+  --muted-foreground: oklch(0.5547 0 0);
+  --accent: oklch(0.9633 0.0154 255.0359);
+  --accent-foreground: oklch(0.443 0.1522 257.9241);
+  --destructive: oklch(0.5409 0.2143 28.4788);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.861 0 0);
+  --input: oklch(0.9234 0 0);
+  --ring: oklch(0.5296 0.1863 258.1459);
+  --chart-1: oklch(0.5296 0.1863 258.1459);
+  --chart-2: oklch(0.6902 0.1481 162.3676);
+  --chart-3: oklch(0.6683 0.1657 54.1917);
+  --chart-4: oklch(0.5815 0.2477 311.265);
+  --chart-5: oklch(0.6057 0.2357 11.9397);
+  --sidebar: oklch(0.9848 0 0);
+  --sidebar-foreground: oklch(0.3705 0 0);
+  --sidebar-primary: oklch(0.5296 0.1863 258.1459);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9498 0.0109 255.0143);
+  --sidebar-accent-foreground: oklch(0.443 0.1522 257.9241);
+  --sidebar-border: oklch(0.9234 0 0);
+  --sidebar-ring: oklch(0.5296 0.1863 258.1459);
+  --radius: 0.4rem;
+  --shadow-2xs: 0px 1px 4px 0px hsl(0 0% 0% / 0.03);
+  --shadow-xs: 0px 1px 4px 0px hsl(0 0% 0% / 0.03);
+  --shadow-sm: 0px 1px 4px 0px hsl(0 0% 0% / 0.05), 0px 1px 2px -1px hsl(0 0% 0% / 0.05);
+  --shadow: 0px 1px 4px 0px hsl(0 0% 0% / 0.05), 0px 1px 2px -1px hsl(0 0% 0% / 0.05);
+  --shadow-md: 0px 1px 4px 0px hsl(0 0% 0% / 0.05), 0px 2px 4px -1px hsl(0 0% 0% / 0.05);
+  --shadow-lg: 0px 1px 4px 0px hsl(0 0% 0% / 0.05), 0px 4px 6px -1px hsl(0 0% 0% / 0.05);
+  --shadow-xl: 0px 1px 4px 0px hsl(0 0% 0% / 0.05), 0px 8px 10px -1px hsl(0 0% 0% / 0.05);
+  --shadow-2xl: 0px 1px 4px 0px hsl(0 0% 0% / 0.13);
+
+  /* Semantic status colours */
+  --success: oklch(0.6902 0.1481 162.3676);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.6683 0.1657 54.1917);
+  --warning-foreground: oklch(1 0 0);
+  --info: oklch(0.5296 0.1863 258.1459);
+  --info-foreground: oklch(1 0 0);
+  --neutral: oklch(0.5547 0 0);
+  --neutral-foreground: oklch(1 0 0);
+
+  --input-background: var(--background);
+  --button-primary-hover: oklch(0.48 0.1863 258.1459);
+  --button-sheen: oklch(0.97 0.04 225);
 }
 
-/* The reference is a light-only system; this is a graphite inversion for completeness. */
+/* Deep slate surfaces with a faint brand-blue tint; primary stays a solid blue with white text.
+   Primary clears 4.5:1 as text on background and card, so text-primary stays readable. */
 .dark {
-  --background: #171717;
-  --foreground: #e4dfd9;
-  --card: #050505;
-  --card-foreground: #e4dfd9;
-  --popover: #050505;
-  --popover-foreground: #e4dfd9;
-  --primary: #e4dfd9;
-  --primary-foreground: #171717;
-  --secondary: #050505;
-  --secondary-foreground: #e4dfd9;
-  --muted: #262626;
-  --muted-foreground: #999694;
-  --accent: #262626;
-  --accent-foreground: #e4dfd9;
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: #4b4b4b;
-  --input: #4b4b4b;
-  --ring: #999694;
-  --chart-1: #e4dfd9;
-  --chart-2: #c7c7c7;
-  --chart-3: #999694;
-  --chart-4: #737373;
-  --chart-5: #4b4b4b;
-  --sidebar: #171717;
-  --sidebar-foreground: #e4dfd9;
-  --sidebar-primary: #e4dfd9;
-  --sidebar-primary-foreground: #171717;
-  --sidebar-accent: #262626;
-  --sidebar-accent-foreground: #e4dfd9;
-  --sidebar-border: #4b4b4b;
-  --sidebar-ring: #999694;
+  --background: oklch(0.17 0.012 262);
+  --foreground: oklch(0.96 0.004 262);
+  --card: oklch(0.21 0.014 262);
+  --card-foreground: oklch(0.96 0.004 262);
+  --popover: oklch(0.23 0.014 262);
+  --popover-foreground: oklch(0.96 0.004 262);
+  --primary: oklch(0.62 0.19 259);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.27 0.014 262);
+  --secondary-foreground: oklch(0.96 0.004 262);
+  --muted: oklch(0.25 0.012 262);
+  --muted-foreground: oklch(0.71 0.015 262);
+  --accent: oklch(0.28 0.055 262);
+  --accent-foreground: oklch(0.86 0.07 255);
+  --destructive: oklch(0.62 0.21 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.3 0.016 262);
+  --input: oklch(0.32 0.016 262);
+  --ring: oklch(0.68 0.16 259);
+  --chart-1: oklch(0.68 0.16 259);
+  --chart-2: oklch(0.775 0.1362 166.9055);
+  --chart-3: oklch(0.838 0.1371 82.1273);
+  --chart-4: oklch(0.6863 0.1603 305.6668);
+  --chart-5: oklch(0.6856 0.1898 352.1927);
+  --sidebar: oklch(0.155 0.012 262);
+  --sidebar-foreground: oklch(0.9 0.006 262);
+  --sidebar-primary: oklch(0.62 0.19 259);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.27 0.03 262);
+  --sidebar-accent-foreground: oklch(0.96 0.004 262);
+  --sidebar-border: oklch(0.27 0.014 262);
+  --sidebar-ring: oklch(0.68 0.16 259);
+  --shadow-2xs: 0px 2px 6px 0px hsl(0 0% 0% / 0.07);
+  --shadow-xs: 0px 2px 6px 0px hsl(0 0% 0% / 0.07);
+  --shadow-sm: 0px 2px 6px 0px hsl(0 0% 0% / 0.15), 0px 1px 2px -1px hsl(0 0% 0% / 0.15);
+  --shadow: 0px 2px 6px 0px hsl(0 0% 0% / 0.15), 0px 1px 2px -1px hsl(0 0% 0% / 0.15);
+  --shadow-md: 0px 2px 6px 0px hsl(0 0% 0% / 0.15), 0px 2px 4px -1px hsl(0 0% 0% / 0.15);
+  --shadow-lg: 0px 2px 6px 0px hsl(0 0% 0% / 0.15), 0px 4px 6px -1px hsl(0 0% 0% / 0.15);
+  --shadow-xl: 0px 2px 6px 0px hsl(0 0% 0% / 0.15), 0px 8px 10px -1px hsl(0 0% 0% / 0.15);
+  --shadow-2xl: 0px 2px 6px 0px hsl(0 0% 0% / 0.38);
+
+  --success: oklch(0.775 0.1362 166.9055);
+  --success-foreground: oklch(0.2074 0.0625 252.2461);
+  --warning: oklch(0.75 0.15 70);
+  --warning-foreground: oklch(0.2074 0.0625 252.2461);
+  --info: oklch(0.68 0.16 259);
+  --info-foreground: oklch(0.15 0.03 259);
+  --neutral: oklch(0.7244 0 0);
+  --neutral-foreground: oklch(0.2074 0.0625 252.2461);
+
+  --input-background: oklch(1 0 0 / 6%);
+  --button-primary-hover: oklch(0.57 0.2 260);
 }
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
   }
   html {
     @apply font-sans;
+    background: var(--background);
+    /* Reserve the scrollbar's width so centred columns never jog sideways between short and tall pages. */
+    scrollbar-gutter: stable;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
   body {
-    @apply bg-background text-body text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
+    min-width: 320px;
   }
-  h1,
-  h2,
-  h3,
-  h4 {
-    /* Weight 500 is the signature restraint: never bold headlines. */
-    @apply font-display font-medium tracking-[-0.02em];
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+  input,
+  textarea,
+  select {
+    background: var(--input-background);
+    color: var(--foreground);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--muted-foreground);
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 22%, transparent);
+  }
+
+  /* A popover or tooltip never runs off a phone screen, whatever width its call site set. */
+  [data-slot="tooltip-positioner"] > * {
+    max-width: calc(100vw - 1rem);
+  }
+
+  /* Touch: small controls keep their look but take a 40px hit area from an invisible ::after. */
+  @media (pointer: coarse) {
+    :where([data-slot="button"]:not([data-size="lg"], [data-size="icon-lg"]), [data-slot="segmented-item"]) {
+      position: relative;
+    }
+    :where([data-slot="button"]:not([data-size="lg"], [data-size="icon-lg"]), [data-slot="segmented-item"])::after {
+      content: "";
+      position: absolute;
+      inset-block: min(0px, calc((100% - 2.5rem) / 2));
+      inset-inline: min(0px, calc((100% - 2.5rem) / 2));
+    }
+  }
+}
+
+/* Pointer affordance on every interactive element, as in the dashboards. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+[role="radio"]:not(:disabled),
+[role="tab"]:not(:disabled),
+[role="option"],
+label[for] {
+  cursor: pointer;
+}
+
+/* iOS zooms into any field under 16px on focus. Unlayered on purpose so it beats a call site's text-sm. */
+@media (pointer: coarse) and (max-width: 47.999rem) {
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="file"], [type="color"], [type="hidden"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────── */
+
+@theme inline {
+  /* Route fallbacks: held back a beat so a fast load never flashes a skeleton. */
+  --animate-fallback-in: fallback-in 360ms cubic-bezier(0.22, 1, 0.36, 1) 140ms both;
+  /* Sidebar progress meter and overview bars grow into their width. */
+  --animate-meter-grow: meter-grow 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fallback-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes meter-grow {
+    from {
+      width: 0;
+    }
+  }
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────── */
+
+@layer utilities {
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--muted) 0%,
+      color-mix(in srgb, var(--foreground) 8%, transparent) 50%,
+      var(--muted) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
+  .minimal-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--ring) 70%, transparent) transparent;
+  }
+  .minimal-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .minimal-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    margin-block: 4px;
+  }
+  .minimal-scrollbar::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--ring) 70%, transparent);
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    background-clip: content-box;
+    min-height: 36px;
+  }
+
+  /* Table chrome: a plain header row on the card surface with a hairline rule, not a filled band. */
+  .table-unified {
+    border-collapse: collapse;
+  }
+  .table-unified thead {
+    border-bottom: 1px solid var(--border);
+  }
+  .table-unified th {
+    padding: 0.75rem 1rem;
+    color: var(--muted-foreground);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .table-unified td,
+  .table-unified tbody th {
+    padding: 0.875rem 1rem;
+    vertical-align: middle;
+  }
+  /* Row headers read as body cells, not as column labels. */
+  .table-unified tbody th {
+    color: var(--foreground);
+    font-size: inherit;
+    white-space: normal;
+  }
+  .table-unified tbody tr {
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    transition: background-color 150ms ease;
+  }
+  .table-unified tbody tr:hover {
+    background: color-mix(in srgb, var(--muted) 55%, transparent);
+  }
+  .table-unified tbody tr:last-child {
+    border-bottom: none;
+  }
+  @media (max-width: 39.999rem) {
+    .table-unified th {
+      padding: 0.625rem 0.75rem;
+    }
+    .table-unified td,
+    .table-unified tbody th {
+      padding: 0.75rem;
+    }
+  }
+}
+
+/* Brand-coloured icon tiles: solid for the logo and headers, soft for list rows. */
+@utility brand-tile {
+  background: linear-gradient(135deg, var(--primary), color-mix(in oklch, var(--primary) 55%, var(--color-brand-lavender)));
+  color: #fff;
+  box-shadow:
+    0 6px 16px -6px color-mix(in oklch, var(--primary) 60%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 0.25);
+}
+@utility brand-tile-soft {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--primary) 14%, transparent),
+    color-mix(in oklch, var(--color-brand-lavender) 45%, transparent)
+  );
+  color: var(--primary);
+  &:where(.dark *) {
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklch, var(--primary) 22%, transparent),
+      color-mix(in oklch, var(--color-brand-lavender) 10%, transparent)
+    );
+  }
+}
+
+/* Primary-button hover: a light band sweeps across and settles as a soft sheen, with a glow. */
+.button-sheen {
+  background-image: linear-gradient(
+    110deg,
+    color-mix(in oklch, var(--button-sheen) 6%, transparent) 0%,
+    color-mix(in oklch, var(--button-sheen) 20%, transparent) 18%,
+    color-mix(in oklch, var(--button-sheen) 10%, transparent) 33%,
+    color-mix(in oklch, var(--button-sheen) 34%, transparent) 46%,
+    transparent 58%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  transition:
+    background-position 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 200ms ease,
+    box-shadow 250ms ease,
+    color 150ms ease,
+    border-color 150ms ease,
+    opacity 150ms ease,
+    translate 150ms ease;
+}
+.button-sheen:hover {
+  background-position: 0 0;
+  --tw-shadow:
+    0 6px 18px -6px color-mix(in oklch, var(--primary) 60%, transparent),
+    0 2px 6px -2px color-mix(in oklch, var(--primary) 35%, transparent);
+  --tw-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), inset 0 -1px 0 rgb(0 0 0 / 0.12);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.button-sheen svg:is(.lucide-arrow-right, .lucide-chevron-right) {
+  transition: translate 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.button-sheen:hover svg:is(.lucide-arrow-right, .lucide-chevron-right) {
+  translate: 2px 0;
+}
+
+/* The dashboards' hero surface (reports KPI tile, sidebar plan card): a primary gradient with a corner
+   orb, a dot field fading out from the bottom-right and a slow drifting light. */
+.hero-surface {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--primary-foreground);
+  background: linear-gradient(
+    140deg,
+    color-mix(in oklab, var(--primary) 82%, white) 0%,
+    var(--primary) 48%,
+    color-mix(in oklab, var(--primary) 86%, black) 100%
+  );
+  box-shadow: 0 6px 18px -10px color-mix(in oklab, var(--primary) 70%, transparent);
+  transition: box-shadow 250ms ease;
+}
+.hero-surface:hover {
+  box-shadow: 0 12px 28px -12px color-mix(in oklab, var(--primary) 80%, transparent);
+}
+.hero-surface__orb {
+  position: absolute;
+  z-index: -1;
+  right: -56px;
+  bottom: -110px;
+  width: 210px;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 40% 35%,
+    color-mix(in oklab, var(--primary-foreground) 13%, transparent),
+    color-mix(in oklab, var(--primary-foreground) 4%, transparent) 70%,
+    transparent 71%
+  );
+  pointer-events: none;
+  transition: scale 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-surface:hover .hero-surface__orb {
+  scale: 1.1;
+}
+.hero-surface__dots {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--primary-foreground) 32%, transparent) 1px,
+    transparent 1.5px
+  );
+  background-size: 12px 12px;
+  mask-image: radial-gradient(ellipse at 100% 100%, black 0%, rgb(0 0 0 / 0.5) 34%, transparent 72%);
+  pointer-events: none;
+  transition: background-position 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-surface:hover .hero-surface__dots {
+  background-position: 6px 6px;
+}
+.hero-surface__glow {
+  position: absolute;
+  z-index: -1;
+  top: -45%;
+  left: -35%;
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: radial-gradient(circle, color-mix(in oklab, var(--primary-foreground) 16%, transparent), transparent 70%);
+  pointer-events: none;
+}
+
+/* A meter on the hero surface: a row of dots with the fill laid on top. */
+.hero-meter-track {
+  background-image: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--primary-foreground) 45%, transparent) 1.5px,
+    transparent 2px
+  );
+  background-size: 6px 100%;
+  background-position: 1px center;
+  background-repeat: repeat-x;
+}
+.hero-meter-fill {
+  background: linear-gradient(90deg, color-mix(in oklab, var(--primary-foreground) 55%, transparent), var(--primary-foreground));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-surface__glow {
+    animation: hero-drift 14s ease-in-out infinite alternate;
+  }
+  @keyframes hero-drift {
+    from {
+      transform: translate(0, 0) scale(1);
+    }
+    to {
+      transform: translate(80%, 60%) scale(1.15);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-sheen,
+  .hero-surface__orb,
+  .hero-surface__dots {
+    transition-duration: 0ms;
+  }
+  .button-sheen:hover svg {
+    translate: none;
   }
 }

@@ -1,26 +1,32 @@
-import type { Metadata } from "next";
-import { Geist_Mono, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { DM_Sans, JetBrains_Mono } from "next/font/google";
 import { AppShell } from "@/components/app/app-shell";
 import { THEME_SCRIPT } from "@/lib/theme-script";
 import "./globals.css";
 
-// Stand-in for the editorial display face (Rules Font), used at weight 500 only.
-const inter = Inter({
-  variable: "--font-inter",
+// The design system's two families (Subtrait's fonts.css loads the same pair from Google Fonts).
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: ["500"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: { default: "Guitar notes", template: "%s · Guitar notes" },
+  title: { default: "Guitar Notes", template: "%s · Guitar Notes" },
   description: "Personal guitar theory study notes: scales, modes, intervals, chords and keys.",
   // A private study tool, not a public site.
   robots: { index: false, follow: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f1218" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -28,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

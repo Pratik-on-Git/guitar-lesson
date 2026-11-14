@@ -1,14 +1,22 @@
 import { cn } from "@/lib/utils";
 
-/* Hairline tables in the design system: fog rules, slate headers, no fills. */
+/*
+ * Tables in the dashboards' `table-unified` style (globals.css): a plain
+ * header row in muted text over a hairline, soft row rules and a hover tint.
+ * The cell classes are exported for tables that lay out their own rows.
+ */
 
 export function TableWrap({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("-mx-1 overflow-x-auto px-1", className)}>{children}</div>;
+  return (
+    <div data-slot="table-container" className={cn("minimal-scrollbar relative -mx-1 w-[calc(100%+0.5rem)] overflow-x-auto px-1", className)}>
+      {children}
+    </div>
+  );
 }
 
-export const tableCls = "w-full border-collapse text-left text-caption";
-export const thCls = "border-b border-border py-2.5 pr-4 align-bottom text-[13px] font-medium whitespace-nowrap text-muted-foreground";
-export const tdCls = "border-b border-border/70 py-2.5 pr-4 align-top text-foreground";
+export const tableCls = "table-unified w-full text-left text-sm";
+export const thCls = "text-left align-bottom";
+export const tdCls = "text-foreground align-middle";
 
 export function SimpleTable({
   columns,
@@ -26,7 +34,7 @@ export function SimpleTable({
   return (
     <TableWrap className={className}>
       <table className={tableCls}>
-        {caption && <caption className="mb-2 text-left text-caption text-muted-foreground">{caption}</caption>}
+        {caption && <caption className="text-muted-foreground mb-2 caption-top text-left text-body">{caption}</caption>}
         <thead>
           <tr>
             {columns.map((c, i) => (
@@ -41,7 +49,7 @@ export function SimpleTable({
             <tr key={r}>
               {row.map((cell, i) =>
                 i === 0 && firstColumnHeader ? (
-                  <th key={i} scope="row" className={cn(tdCls, "font-medium text-muted-foreground")}>
+                  <th key={i} scope="row" className={cn(tdCls, "text-muted-foreground! font-medium whitespace-nowrap")}>
                     {cell}
                   </th>
                 ) : (
