@@ -20,27 +20,32 @@ import { Tooltip } from "@/components/ui/tooltip";
  * group labels give way to a short divider.
  */
 
-// Everything that changes with the rail reads the sidebar's `data-collapsed`.
-const RAIL = "group-data-[collapsed=true]/sidebar";
+/*
+ * Everything that changes with the rail reads the sidebar's `data-collapsed`
+ * through `group-data-[collapsed=true]/sidebar:`. Those classes are written
+ * out in full on purpose: Tailwind only generates classes it can find
+ * literally in the source, so a variant assembled from a template string
+ * silently produces no CSS at all.
+ */
 
-const LABEL_FADE = cn(
-  "transition-opacity duration-200 delay-75",
-  `${RAIL}:opacity-0 ${RAIL}:duration-100 ${RAIL}:delay-0`,
-);
+const LABEL_FADE =
+  "overflow-hidden whitespace-nowrap transition-opacity duration-200 delay-75 group-data-[collapsed=true]/sidebar:opacity-0 group-data-[collapsed=true]/sidebar:duration-100 group-data-[collapsed=true]/sidebar:delay-0";
 
 const ITEM = cn(
-  "relative flex h-9 w-full items-center gap-3 rounded-lg px-2.5 text-sm font-medium text-foreground outline-none",
-  "transition-[color,background-color,width,padding] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
+  "relative flex h-9 w-full items-center gap-3 overflow-hidden rounded-lg px-2.5 text-sm font-medium text-foreground outline-none",
+  "transition-[color,background-color,width,padding] duration-300 ease-[cubic-bezier(0.2,0,0,1)] motion-reduce:transition-none",
   "hover:bg-sidebar-foreground/5 active:bg-sidebar-foreground/10 focus-visible:ring-2 focus-visible:ring-sidebar-ring",
   "[&>svg]:size-4 [&>svg]:shrink-0",
   "data-[active=true]:bg-sidebar-primary/10 data-[active=true]:text-sidebar-primary data-[active=true]:hover:bg-sidebar-primary/15",
-  `${RAIL}:w-9 ${RAIL}:px-2.5`,
+  // The rail: a 36px square, icon centred by the 10px padding.
+  "group-data-[collapsed=true]/sidebar:w-9 group-data-[collapsed=true]/sidebar:gap-0",
 );
 
+// The rail marks the page by its fill alone; the bar would sit against the square's edge.
 const ACTIVE_BAR = cn(
   "before:absolute before:inset-y-2 before:left-0 before:w-[3px] before:rounded-r-full before:bg-sidebar-primary",
   "before:opacity-0 before:transition-opacity data-[active=true]:before:opacity-100",
-  `${RAIL}:before:opacity-0!`,
+  "group-data-[collapsed=true]/sidebar:before:opacity-0!",
 );
 
 const SUB_ITEM = cn(
@@ -71,20 +76,24 @@ function NavList({ pathname, collapsed, onNavigate }: { pathname: string; collap
   return (
     <nav aria-label="Study topics" className="flex flex-col">
       {NAV.map((group, index) => (
-        <div key={group.title} className="relative flex flex-col p-2.5 pt-1.5">
+        <div
+          key={group.title}
+          className="relative flex flex-col p-2.5 pt-1.5 transition-[padding] duration-200 group-data-[collapsed=true]/sidebar:pt-3"
+        >
           {index > 0 ? (
             // The rail has no room for a group label; a short rule keeps the groups apart.
             <span
               aria-hidden
-              className={cn("bg-sidebar-border absolute top-1 left-1/2 h-px w-6 -translate-x-1/2 opacity-0 transition-opacity", `${RAIL}:opacity-100`)}
+              className="bg-sidebar-border absolute top-1 left-1/2 h-px w-6 -translate-x-1/2 opacity-0 transition-opacity duration-200 group-data-[collapsed=true]/sidebar:opacity-100"
             />
           ) : null}
           {group.title !== "Study" ? (
+            // Slides up under the items and fades, so the rail keeps no gap where the label was.
             <p
               className={cn(
-                "text-sidebar-foreground/70 flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium whitespace-nowrap",
+                "text-sidebar-foreground/70 flex h-8 shrink-0 items-center overflow-hidden rounded-md px-2 text-xs font-medium whitespace-nowrap",
                 "transition-[margin,opacity] duration-200 ease-linear",
-                `${RAIL}:-mt-8 ${RAIL}:opacity-0`,
+                "group-data-[collapsed=true]/sidebar:pointer-events-none group-data-[collapsed=true]/sidebar:-mt-8 group-data-[collapsed=true]/sidebar:opacity-0",
               )}
               aria-hidden={collapsed || undefined}
             >

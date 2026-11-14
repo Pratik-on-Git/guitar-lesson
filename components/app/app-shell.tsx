@@ -68,7 +68,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         >
           <div className="bg-sidebar text-sidebar-foreground flex h-full flex-col overflow-hidden rounded-xl border">
             <SidebarBrand collapsed={collapsed} />
-            <div className="minimal-scrollbar min-h-0 flex-1 overflow-x-hidden overflow-y-auto border-t pt-1">
+            {/* The rail still scrolls on short screens, but without a bar: one would eat the icons' width. */}
+            <div
+              className={cn(
+                "minimal-scrollbar min-h-0 flex-1 overflow-x-hidden overflow-y-auto border-t pt-1",
+                collapsed && "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+              )}
+            >
               <SidebarNav collapsed={collapsed} />
             </div>
             <div className="border-t py-2.5">

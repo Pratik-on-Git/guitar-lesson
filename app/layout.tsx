@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { AppShell } from "@/components/app/app-shell";
 import { THEME_SCRIPT } from "@/lib/theme-script";
 import "./globals.css";
 
-// The design system's two families (Subtrait's fonts.css loads the same pair from Google Fonts).
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+// The theme's two families: Inter for everything, JetBrains Mono for formulas and key chips.
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -24,8 +24,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f1218" },
+    // --background in each theme, as hex (browser UI chrome doesn't take oklch everywhere).
+    { media: "(prefers-color-scheme: light)", color: "#fbfdfc" },
+    { media: "(prefers-color-scheme: dark)", color: "#050f0d" },
   ],
 };
 
@@ -34,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
