@@ -14,7 +14,7 @@ test("every study route renders and exposes its sources", async ({ page }) => {
     ...TOPICS.map((t) => `/learn/${t.slug}`),
     ...SCALES.map((s) => `/scales/${s.id}`),
     ...MODE_FAMILIES.map((f) => `/modes/${f.id}`),
-    "/chords", "/circle-of-fifths",
+    "/chords", "/circle-of-fifths", "/book", "/voicings", "/arpeggios", "/harmonization", "/improvisation", "/practice",
   ];
   for (const route of routes) {
     const response = await page.goto(route);

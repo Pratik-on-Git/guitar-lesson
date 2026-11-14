@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { BOOK_DIAGRAMS, BOOK_CHORD_TYPES, diagramSrc } from "../lib/content/book.ts";
+import { BOOK_ASSIGNMENTS } from "../lib/content/book-assignments.ts";
+import { assignmentMaterial } from "../lib/content/assignment-links.ts";
 import { TOPICS } from "../lib/content/topics.ts";
 import { NAV, STUDY_PAGES } from "../lib/nav.ts";
 import { SCALES, getScale } from "../lib/music/scales.ts";
@@ -8,13 +10,24 @@ import { MODE_FAMILIES } from "../lib/music/modes.ts";
 import { COLLECTIONS, SCALE_CHOICES, PENTATONIC_RECIPES } from "../lib/music/applications.ts";
 import { chordVoices, doubleNotePosition, guitarVoicings, STRING_SETS, modeColour } from "../lib/music/performance.ts";
 import { checkExerciseAnswer, exerciseQuestion, EXERCISE_TYPES } from "../lib/music/exercises.ts";
-import { buildScale, degreeSemitones, mod, parseDegree, pc, TUNING, parseNote } from "../lib/music/theory.ts";
+import { buildScale, degreeSemitones, mod, parseDegree, pc, TUNING, parseNote, noteWithOctave } from "../lib/music/theory.ts";
 
 let checks = 0;
 function verify(fn) { fn(); checks++; }
+verify(() => assert.equal(noteWithOctave(parseNote("B#"), 60), "B♯3"));
+verify(() => assert.equal(noteWithOctave(parseNote("Cb"), 59), "C♭4"));
 assert.equal(BOOK_DIAGRAMS.length, 63);
 assert.equal(new Set(BOOK_DIAGRAMS.map((s) => s.page)).size, 63);
+assert.equal(BOOK_ASSIGNMENTS.length, 214);
+assert.equal(new Set(BOOK_ASSIGNMENTS.map((a) => a.id)).size, 214);
 const navHrefs = new Set(NAV.flatMap((g) => g.items.flatMap((i) => [i.href, ...(i.children ?? []).map((c) => c.href)])));
+for (const assignment of BOOK_ASSIGNMENTS) {
+  const url = new URL(assignmentMaterial(assignment), "https://local.invalid");
+  verify(() => { assert.ok(navHrefs.has(url.pathname)); assert.ok(assignment.prompt.endsWith(".")); assert.ok(!assignment.prompt.includes("SUGGESTED")); });
+  if (url.pathname.startsWith("/modes/")) verify(() => assert.ok(MODE_FAMILIES.find((f) => url.pathname === `/modes/${f.id}`)?.modes.some((m) => m.id === url.searchParams.get("mode"))));
+}
+verify(() => assert.equal(assignmentMaterial(BOOK_ASSIGNMENTS.find((a) => a.id === "p19-part1-13")), "/scales/hirajoshi?key=a-sharp"));
+verify(() => assert.ok(assignmentMaterial(BOOK_ASSIGNMENTS.find((a) => a.id === "p43-part1-10")).includes("mode=lydian-dominant")));
 for (const topic of TOPICS) {
   verify(() => assert.ok(navHrefs.has(`/learn/${topic.slug}`), `Lesson must be discoverable: ${topic.slug}`));
   verify(() => assert.equal(new Set(topic.sections.map((s) => s.id)).size, topic.sections.length));
@@ -71,6 +84,10 @@ verify(() => assert.ok(checkExerciseAnswer(exerciseQuestion("intervals", 0), "m2
 verify(() => assert.ok(!checkExerciseAnswer(exerciseQuestion("intervals", 0), "M2")));
 verify(() => assert.ok(checkExerciseAnswer(exerciseQuestion("missing-note", 12), "Eb")));
 verify(() => assert.ok(!checkExerciseAnswer(exerciseQuestion("missing-note", 12), "D#")));
+verify(() => assert.equal(exerciseQuestion("chord-notes", 8).answer, "D♭ F A♭ C"));
+verify(() => assert.equal(exerciseQuestion("chord-notes", 20).answer, "A C E♭ G♭"));
+verify(() => assert.equal(exerciseQuestion("chord-name", 9).answer, "C♭maj7"));
+verify(() => assert.equal(exerciseQuestion("chord-name", 21).answer, "G°7"));
 // Symmetry periods and independent corrected dominant-substitution relationships.
 for (const [id, period] of [["whole-tone", 2], ["augmented", 4], ["diminished-half-whole", 3], ["diminished-whole-half", 3]]) {
   const semis = getScale(id).formula.map((d) => degreeSemitones(parseDegree(d)));
