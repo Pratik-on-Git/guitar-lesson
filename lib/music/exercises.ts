@@ -1,4 +1,5 @@
 import { BOOK_CHORD_TYPES } from "../content/book.ts";
+import { carterQuestion } from "./carter-exercises.ts";
 import { keySignature } from "./keys.ts";
 import { buildScale, degreeBetween, intervalLong, intervalShort, mod, noteName, parseDegree, parseNote, prettyDegree, ROOTS, spellDegree, TUNING } from "./theory.ts";
 
@@ -6,6 +7,10 @@ export const EXERCISE_TYPES = [
   { value: "intervals", label: "Identify an interval" }, { value: "missing-note", label: "Spell an interval's top note" },
   { value: "chord-notes", label: "Spell a chord" }, { value: "chord-name", label: "Identify a chord" },
   { value: "fretboard", label: "Name a fretboard note" }, { value: "signatures", label: "Read a key signature" },
+  { value: "carter-intervals", label: "Carter book · directional intervals" },
+  { value: "carter-parents", label: "Carter book · parent-major exercise" },
+  { value: "carter-scales", label: "Carter book · spell major scales" },
+  { value: "carter-review", label: "Carter book · tuning, rhythm & chord review" },
 ];
 export type ExerciseKind = (typeof EXERCISE_TYPES)[number]["value"];
 export type Question = { prompt: string; answer: string; accepted: string[]; explanation: string; caseSensitive?: boolean; hint: string };
@@ -32,6 +37,7 @@ const BOOK_CHORD_IDENTIFICATION = [
 const SIGNATURE_KEYS = ["C", "G", "D", "A", "E", "B", "F#", "C#", "F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb"];
 
 export function exerciseQuestion(kind: string, index: number): Question {
+  if (kind.startsWith("carter-")) return carterQuestion(kind, index);
   if (kind === "intervals") {
     const [a, b] = INTERVAL_PAIRS[mod(index, INTERVAL_PAIRS.length)]; const degree = degreeBetween(parseNote(a), parseNote(b)); const short = intervalShort(degree);
     return { prompt: `Name the ascending interval ${noteName(parseNote(a))} → ${noteName(parseNote(b))}.`, answer: `${short} · ${prettyDegree(degree.acc === 0 ? String(degree.num) : `${degree.acc > 0 ? "#".repeat(degree.acc) : "b".repeat(-degree.acc)}${degree.num}`)}`, accepted: [short, intervalLong(degree), prettyDegree(`${degree.acc > 0 ? "#".repeat(degree.acc) : "b".repeat(-degree.acc)}${degree.num}`)], caseSensitive: true, explanation: `Count the letters for the interval number, then the semitones for quality. ${noteName(parseNote(a))} to ${noteName(parseNote(b))} is ${intervalLong(degree)} (${short}). M means major; m means minor.`, hint: "Use M2, m3, P4, A4, d5, etc., or a degree such as ♭3. M/m are case-sensitive." };
