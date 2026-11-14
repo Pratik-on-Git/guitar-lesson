@@ -365,9 +365,10 @@ label[for] {
     animation: shimmer 2s ease-in-out infinite;
   }
 
+  /* A quiet grey thumb: tinted by --ring it became a loud brand-coloured bar wherever content scrolls. */
   .minimal-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--ring) 70%, transparent) transparent;
+    scrollbar-color: color-mix(in srgb, var(--muted-foreground) 35%, transparent) transparent;
   }
   .minimal-scrollbar::-webkit-scrollbar {
     width: 6px;
@@ -378,7 +379,7 @@ label[for] {
     margin-block: 4px;
   }
   .minimal-scrollbar::-webkit-scrollbar-thumb {
-    background-color: color-mix(in srgb, var(--ring) 70%, transparent);
+    background-color: color-mix(in srgb, var(--muted-foreground) 35%, transparent);
     border: 1px solid transparent;
     border-radius: 9999px;
     background-clip: content-box;

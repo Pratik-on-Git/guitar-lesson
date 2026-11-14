@@ -20,6 +20,7 @@ import { Eyebrow, Panel } from "@/components/app/panel";
 import { StatusBadge } from "@/components/app/status-badge";
 import { Button } from "@/components/ui/button";
 import { InputGroup } from "@/components/ui/input";
+import { ScrollFade } from "@/components/ui/scroll-fade";
 import { Segmented } from "@/components/ui/segmented";
 import { TableWrap, tableCls, tdCls, thCls } from "@/components/ui/table";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -70,20 +71,21 @@ export function ChordLibrary() {
               }
             />
           </div>
-          <div className="minimal-scrollbar -mx-1 overflow-x-auto px-1 pb-1">
+          <ScrollFade>
             <Segmented
               label="Category"
               size="sm"
               value={category}
               onChange={setCategory}
-              className="w-max flex-nowrap"
+              // Sized to its pills, not the card, so the track runs under every one of them while the strip scrolls.
+              className="w-max max-w-none flex-nowrap"
               options={(["All", ...CHORD_CATEGORIES] as const).map((c) => ({
                 value: c,
                 label: c,
                 count: c === "All" ? CHORDS.length : CHORDS.filter((x) => x.category === c).length,
               }))}
             />
-          </div>
+          </ScrollFade>
         </div>
       </Panel>
 

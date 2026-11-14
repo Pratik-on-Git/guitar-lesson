@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { Fact, FactGrid } from "@/components/app/facts";
 import { Panel } from "@/components/app/panel";
 import { StatusBadge } from "@/components/app/status-badge";
+import { ScrollFade } from "@/components/ui/scroll-fade";
 import { SEGMENTED_ITEM, SEGMENTED_ITEM_ACTIVE, SEGMENTED_TRACK, Segmented } from "@/components/ui/segmented";
 import { TableWrap, tableCls, tdCls, thCls } from "@/components/ui/table";
 import { RootPicker, useRootParam } from "./controls";
@@ -66,7 +67,7 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
   return (
     <div className="flex flex-col gap-4 md:gap-6">
       {/* The dashboards' segmented tab track; on phones it scrolls rather than wrapping into a wall. */}
-      <div className="minimal-scrollbar -mx-1 overflow-x-auto px-1 pb-1">
+      <ScrollFade>
         <div role="tablist" aria-label="Modes" className={cn("flex w-max min-w-full gap-1", SEGMENTED_TRACK)}>
           {family.modes.map((m) => {
             const selected = m.id === mode.id;
@@ -89,7 +90,7 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
             );
           })}
         </div>
-      </div>
+      </ScrollFade>
 
       <Panel
         title={title}
