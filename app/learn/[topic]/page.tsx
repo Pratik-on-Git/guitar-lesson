@@ -10,6 +10,9 @@ import { PageSkeleton } from "@/components/app/skeleton";
 import { StatusBadge } from "@/components/app/status-badge";
 import { TOPICS, getTopic } from "@/lib/content/topics";
 import { NAV } from "@/lib/nav";
+import { BookSource } from "@/components/content/book-source";
+import { BOOK_TOPIC_PAGES } from "@/lib/content/book";
+import Link from "next/link";
 
 export function generateStaticParams() {
   return TOPICS.map((t) => ({ topic: t.slug }));
@@ -58,6 +61,11 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
             </Panel>
           ))}
           <References entries={TOPIC_REFERENCES[topic.slug] ?? []} />
+          {BOOK_TOPIC_PAGES[topic.slug] && <BookSource pages={BOOK_TOPIC_PAGES[topic.slug]} />}
+          <nav aria-label="Continue studying" className="flex flex-wrap justify-between gap-4 text-sm font-medium text-primary">
+            <Link href="/">← Study map</Link>
+            <Link href="/practice">Put this into practice →</Link>
+          </nav>
         </div>
         {topic.sections.length > 2 && (
           <nav aria-label="On this page" className="hidden xl:block">

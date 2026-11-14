@@ -39,6 +39,13 @@ export const NAV: NavGroup[] = [
     items: [{ title: "Overview", href: "/", icon: LayoutDashboard, description: "Progress and every topic at a glance." }],
   },
   {
+    title: "Fretboard Concepts",
+    items: [
+      { title: "Book guide & atlas", href: "/book", icon: BookOpen, description: "Chapter guide, source corrections and all 63 diagram sheets." },
+      { title: "Fretboard system", href: "/learn/fretboard-system", icon: Guitar, description: "Tuning, notes, root anchors and Double Note construction." },
+    ],
+  },
+  {
     title: "Foundations",
     items: [
       { title: "Sound & pitch", href: "/learn/sound-and-pitch", icon: AudioWaveform, description: "Sound, frequency, pitch, notes and timbre." },
@@ -58,6 +65,7 @@ export const NAV: NavGroup[] = [
         description: "Every scale in any key, on the neck and keyboard.",
         children: SCALES.map((s) => ({ title: s.short, href: `/scales/${s.id}` })),
       },
+      { title: "Symmetric scales", href: "/learn/symmetric-scales", icon: Shapes, description: "Whole tone, augmented and both diminished orientations." },
     ],
   },
   {
@@ -78,7 +86,27 @@ export const NAV: NavGroup[] = [
     items: [
       { title: "Chords & degrees", href: "/learn/chords", icon: Guitar, description: "Chords, scale degrees, symbols and numbers." },
       { title: "Chord library", href: "/chords", icon: Library, description: "74 chord formulas, spelled in any key." },
+      { title: "Inversions & drops", href: "/learn/voicings", icon: Layers, description: "Bass inversions, root-position shapes, drop 2 and drop 3." },
+      { title: "Voicing workbench", href: "/voicings", icon: Guitar, description: "Transpose chord grips, inversions and string sets." },
       { title: "Harmony", href: "/learn/harmony", icon: Waypoints, description: "Secondary, substitute and tritone dominants." },
+    ],
+  },
+  {
+    title: "Arpeggios & application",
+    items: [
+      { title: "Arpeggio lessons", href: "/learn/arpeggios", icon: Music2, description: "Four triad and seven seventh-chord families." },
+      { title: "Arpeggio explorer", href: "/arpeggios", icon: Guitar, description: "Chord tones, two-octave lines and position windows." },
+      { title: "Harmonization lessons", href: "/learn/harmonization", icon: Layers, description: "Horizontal and vertical scale/arpeggio practice." },
+      { title: "Harmonization workbench", href: "/harmonization", icon: Waypoints, description: "Every diatonic chord inside a scale or fret region." },
+    ],
+  },
+  {
+    title: "Improvisation & practice",
+    items: [
+      { title: "Improvisation methods", href: "/learn/improvisation", icon: Music2, description: "Modal colour, scale choices, chromatic approaches and phrasing." },
+      { title: "Pentatonic substitutions", href: "/learn/pentatonic-substitutions", icon: Shapes, description: "Modal and altered colours from familiar five-note shapes." },
+      { title: "Scale-choice workbench", href: "/improvisation", icon: ListMusic, description: "Chord/scale choices and transposable pentatonic substitutions." },
+      { title: "Practice studio", href: "/practice", icon: Drum, description: "Theory quizzes, fretboard training, metronome and saved assignments." },
     ],
   },
   {

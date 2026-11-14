@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { getScale } from "@/lib/music/scales";
+import { doubleNotePosition } from "@/lib/music/performance";
+import { BookSource } from "@/components/content/book-source";
+import { scaleBookPage } from "@/lib/content/book";
 import { SCALE_REFERENCES } from "@/lib/content/references";
 import { References } from "@/components/content/references";
 import {
@@ -60,6 +63,7 @@ export function ScaleExplorer({ scaleId, notes }: { scaleId: string; notes: Reac
       </Panel>
 
       <Panel title="Study notes">{notes}</Panel>
+      {scaleBookPage(scaleId) && <BookSource pages={String(scaleBookPage(scaleId))} diagramPage={scaleBookPage(scaleId)} />}
 
       {def.descendingFormula && (
         <Panel title="Classical descending melodic minor" description="The conventional classical exercise descends as natural minor; jazz minor keeps the ascending collection in both directions.">
@@ -142,12 +146,15 @@ export function NeckPanel({
 }) {
   const [labelMode] = useFretLabel();
   const [position, setPosition] = useState(0);
+  const [construction, setConstruction] = useState<"double" | "continuous">("double");
   const semis = scale.map((s) => s.semis);
   const notes = neckNotes(rootPc, semis, 15);
   const canPosition = positions && (scale.length === 5 || scale.length === 7);
   const count = canPosition ? scale.length : 0;
   const active = position > 0 && position <= count ? position : 0;
-  const highlight = active ? scalePosition(rootPc, semis, active - 1, positions!.perString) : undefined;
+  const useDouble = scale.length === 7 && positions?.perString === 3 && construction === "double";
+  const highlight = active ? useDouble ? doubleNotePosition(rootPc, semis, active - 1) : scalePosition(rootPc, semis, active - 1, positions!.perString) : undefined;
+  const duplicates = useDouble && highlight ? [highlight[11], highlight[12]] : [];
   const label = (i: number) =>
     labelMode === "note" ? scale[i].name : labelMode === "interval" ? scale[i].interval : scale[i].label;
 
@@ -158,9 +165,10 @@ export function NeckPanel({
   return (
     <Panel
       title="On the neck"
-      description={canPosition ? `Whole neck, or one of the ${count} positions (${positions!.label}).` : "Every place the scale falls, frets 0–15."}
+      description={canPosition ? `Generated fingerings by starting degree on low E. Use the source atlas for the book's exact numbered boxes.` : "Every place the scale falls, frets 0–15."}
       action={<FretLabelToggle />}
     >
+      {scale.length === 7 && positions?.perString === 3 && <Segmented className="mb-4" label="Fingering construction" value={construction} onChange={setConstruction} options={[{ value: "double", label: "Double Note" }, { value: "continuous", label: "Continuous 3NPS" }]} />}
       {canPosition && (
         <Segmented
           label="Position"
@@ -172,7 +180,7 @@ export function NeckPanel({
             { value: 0, label: "Whole neck" },
             ...Array.from({ length: count }, (_, i) => ({
               value: i + 1,
-              label: `P${i + 1}`,
+              label: `Start ${scale[i].label}`,
               title: `Position ${i + 1}: starts on the ${scale[i].label === "R" ? "root" : scale[i].label} on the low E string`,
             })),
           ]}
@@ -183,11 +191,13 @@ export function NeckPanel({
         frets={maxFret}
         label={label}
         highlight={highlight}
+        duplicates={duplicates}
         title={`${title} across the guitar neck${active ? `, position ${active}` : ""}`}
       />
       {active > 0 && (
         <p className="text-muted-foreground mt-3 text-xs">
           Position {active} starts on {scale[active - 1].name} ({scale[active - 1].label === "R" ? "the root" : scale[active - 1].label}) on the low E string, {positions!.perString} notes per string.
+          {useDouble && " Triangles mark the same sounding pitch at the end of G and start of B. Play both for shape practice or omit one in a melodic ascent."}
         </p>
       )}
     </Panel>

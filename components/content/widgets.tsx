@@ -5,6 +5,7 @@ import type { WidgetName } from "@/lib/content/types";
 import { CIRCLE, KEY_CHARACTERS, KEY_CHARACTER_SOURCE, keySignature, relativeMinor } from "@/lib/music/keys";
 import { MODE_FAMILIES } from "@/lib/music/modes";
 import { SCALE_SIZES } from "@/lib/music/scales";
+import { doubleNotePosition } from "@/lib/music/performance";
 import {
   buildScale,
   degreeSemitones,
@@ -341,23 +342,18 @@ function IntervalOnGuitar() {
 function DoubleNote() {
   const scale = buildScale(parseNote("A"), MAJOR);
   const semis = scale.map((s) => s.semis);
-  const notes: FretNote[] = [];
-  [40, 45, 50, 55, 59, 64].forEach((open, string) => {
-    for (let fret = 2; fret <= 7; fret++) {
-      const index = semis.indexOf((((open + fret - 9) % 12) + 12) % 12);
-      if (index >= 0) notes.push({ string, fret, index });
-    }
-  });
+  const notes = doubleNotePosition(9, semis, 0);
   return (
     <>
       <Fretboard
         notes={notes}
-        frets={8}
+        frets={Math.max(...notes.map((n) => n.fret)) + 1}
+        duplicates={[notes[11], notes[12]]}
         label={(i) => (i === 0 ? "R" : String(i + 1))}
-        title="A major scale between frets 2 and 7, labelled by degree"
+        title="A major Double Note fingering, triangles mark the repeated pitch on G and B"
       />
       <Caption>
-        A major, frets 2–7. At fret 2 the 3 on the B string sits beside the 6 on the high e. Every pair of neighbouring strings tuned a 4th apart (all except G–B) pairs degrees the same way at the same fret: 3 with 6, 7 with 3, R with 4, 2 with 5.
+        A major from the low-E root. The triangles identify a single pitch played on two strings: the last G-string note and first B-string note. This generated fingering demonstrates the construction; the atlas retains the book&apos;s exact boxes.
       </Caption>
     </>
   );

@@ -143,6 +143,14 @@ export const TOPICS: Topic[] = [
         title: "Dotted notes",
         blocks: [
           { type: "p", text: "A dot after a note changes its duration: the dot adds half of the note's value to itself. A dotted half note gets 3 beats: a half note is 2, half of 2 is 1, so 2 + 1 = 3." },
+          { type: "p", text: "Dots apply to rests too: in quarter-note beats a dotted whole rest lasts 6, a dotted half rest 3, a dotted quarter rest 1½ and a dotted eighth rest ¾. A whole-measure rest can instead denote a complete bar in its meter; read the notation in context." },
+        ],
+      },
+      {
+        id: "triplets-and-ties", title: "Triplets and tied notes", blocks: [
+          { type: "p", text: "A triplet fits three equal notes into the time normally occupied by two of that written value. In 4/4, three eighth-note triplets fit one quarter-note beat; three sixteenth-note triplets fit half a beat. Count evenly as 1-trip-let, 2-trip-let. Compound meter's ordinary three-part beat division is distinct from inserting a triplet into a simple beat." },
+          { type: "p", text: "A tie joins notes at the same pitch. Attack only the first and sustain for their combined written duration, including across bar lines. In 4/4, a quarter tied to an eighth lasts 1½ quarter-note beats. A slur connects a phrase or articulation and can join different pitches; it is not a duration sum." },
+          { type: "links", items: [{ label: "Practise rhythm with the metronome", href: "/practice" }] },
         ],
       },
     ],
@@ -333,8 +341,9 @@ export const TOPICS: Topic[] = [
         id: "double-note",
         title: "The double note system",
         blocks: [
-          { type: "p", text: "Double notes help you see the symmetry of scales and the patterns inside them: the horizontal sequence of a pattern is the same on strings 6–5, 4–3 and 2–1. In the major scale, the 3 doubles up on the same fret as the 6 on the string above." },
+          { type: "p", text: "The Double Note system uses three notes per string and repeats the same sounding pitch at the end of string 3 (G) and the start of string 2 (B). The repeat helps align patterns on string pairs 6–5, 4–3 and 2–1. It is not two different degrees that happen to share a fret." },
           { type: "widget", name: "double-note" },
+          { type: "links", items: [{ label: "Learn the complete fretboard system", href: "/learn/fretboard-system" }] },
         ],
       },
     ],

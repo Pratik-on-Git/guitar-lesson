@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { getFamily } from "@/lib/music/modes";
+import { BookSource } from "@/components/content/book-source";
+import { modeBookPage } from "@/lib/content/book";
+import { modeColour } from "@/lib/music/performance";
+import { prettyDegree, spellDegree } from "@/lib/music/theory";
 import { MODE_REFERENCES } from "@/lib/content/references";
 import { References } from "@/components/content/references";
 import { getScale } from "@/lib/music/scales";
@@ -47,6 +51,8 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
   const parentRoot = modeParentRoot(root, parent, mode.start);
   const title = `${noteName(root)} ${mode.name.replace(/^Mode \d · /, "")}`;
   const chords = harmonize(scale);
+  const colour = modeColour(family.id, mode.start);
+  const sourcePage = modeBookPage(family.id, mode.start);
   const dominantScale = mode.id === "altered"
     ? buildScale(root, ALTERED_DOMINANT_FORMULA.map(parseDegree)).map((n) => ({ ...n, semis: n.semis % 12 }))
     : undefined;
@@ -137,6 +143,14 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
       )}
 
       <Panel title="Study notes">{modeNotes[mode.id]}</Panel>
+      {colour && <Panel title="Characteristic notes & phrasing" description={colour.comparison}>
+        <FactGrid>
+          <Fact label="Modal colour" value={colour.characteristic.length ? colour.characteristic.map((d) => `${prettyDegree(d)} = ${noteName(spellDegree(root, parseDegree(d)))}`).join(" · ") : "Comparison baseline; establish the tonic and chord quality."} />
+          <Fact label="Family alteration" value={colour.altered.length ? colour.altered.map((d) => `${prettyDegree(d)} = ${noteName(spellDegree(root, parseDegree(d)))}`).join(" · ") : "No additional parent-family alteration."} />
+          <Fact wide label="Practice" value="Keep the tonic audible, sing the characteristic tone, then resolve a short phrase to a chord tone. Colour depends on harmony, rhythm and emphasis." />
+        </FactGrid>
+      </Panel>}
+      {sourcePage && <BookSource pages={`${sourcePage}, 96–97`} diagramPage={sourcePage} />}
 
       <NeckPanel
         key={mode.id}

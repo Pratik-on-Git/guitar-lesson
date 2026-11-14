@@ -26,6 +26,7 @@ export function Fretboard({
   label,
   rootIndex = 0,
   highlight,
+  duplicates = [],
   title,
 }: {
   notes: FretNote[];
@@ -36,6 +37,8 @@ export function Fretboard({
   rootIndex?: number;
   /** When set, notes not in this list are drawn faint. */
   highlight?: FretNote[];
+  /** Repeated sounding pitch locations in a Double Note shape. */
+  duplicates?: FretNote[];
   title: string;
 }) {
   const nutX = PAD_X + OPEN_W;
@@ -121,9 +124,10 @@ export function Fretboard({
           const isRoot = n.index === rootIndex;
           const faint = inPosition && !inPosition.has(`${n.string}:${n.fret}`);
           const text = label(n.index);
+          const repeated = duplicates.some((d) => d.string === n.string && d.fret === n.fret);
           return (
             <g key={`${n.string}:${n.fret}`} opacity={faint ? 0.16 : 1}>
-              {isRoot ? (
+              {repeated ? <path d={`M ${x} ${y - DOT - 2} L ${x + DOT + 3} ${y + DOT} L ${x - DOT - 3} ${y + DOT} Z`} fill="var(--primary)" /> : isRoot ? (
                 <rect
                   x={x - DOT}
                   y={y - DOT}
@@ -143,7 +147,7 @@ export function Fretboard({
                 fontSize={text.length > 2 ? 9.5 : 11.5}
                 fontWeight={600}
                 textAnchor="middle"
-                fill={isRoot ? "var(--primary-foreground)" : "var(--background)"}
+                fill={isRoot || repeated ? "var(--primary-foreground)" : "var(--background)"}
               >
                 {text}
               </text>
