@@ -67,7 +67,7 @@ export function ProgressHero() {
                 : `${total - done} ${total - done === 1 ? "page" : "pages"} to go. Pick up where you left off.`}
           </p>
         </div>
-        <span className="bg-primary-foreground/15 ring-primary-foreground/25 rounded-full px-2.5 py-1 text-xs font-medium tabular-nums ring-1">
+        <span className="bg-primary-foreground/15 ring-primary-foreground/25 shrink-0 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap tabular-nums ring-1">
           {done} / {total} pages
         </span>
       </div>
