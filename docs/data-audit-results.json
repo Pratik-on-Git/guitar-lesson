@@ -1,14 +1,14 @@
 {
   "methodology": "Offline arithmetic and correction regressions with literal references. See data-corrections.md for implemented fixes and data-audit.md for the original snapshot. Running this script does not recheck websites.",
   "counts": {
-    "scaleReferences": 14,
+    "scaleReferences": 18,
     "modeReferences": 26,
     "chordReferences": 31,
-    "transposedScales": 168,
+    "transposedScales": 216,
     "transposedModes": 312,
     "transposedChords": 864,
-    "fretboardCases": 480,
-    "positionCases": 2520,
+    "fretboardCases": 528,
+    "positionCases": 2700,
     "keySignatures": 15,
     "harmonyCases": 48,
     "intervalCases": 15,
@@ -16,9 +16,9 @@
   },
   "failures": [],
   "inventory": {
-    "topics": 10,
-    "sections": 45,
-    "scales": 14,
+    "topics": 17,
+    "sections": 82,
+    "scales": 18,
     "modeFamilies": 4,
     "modes": 26,
     "chords": 72,
@@ -26,6 +26,609 @@
     "circlePositions": 12
   },
   "scales": [
+    {
+      "id": "kumoi",
+      "name": "Kumoi scale",
+      "formula": [
+        "1",
+        "2",
+        "b3",
+        "5",
+        "6"
+      ],
+      "semitones": [
+        0,
+        2,
+        3,
+        7,
+        9
+      ],
+      "steps": [
+        2,
+        1,
+        4,
+        2,
+        3
+      ],
+      "roots": [
+        {
+          "root": "C",
+          "notes": [
+            "C",
+            "D",
+            "E♭",
+            "G",
+            "A"
+          ]
+        },
+        {
+          "root": "C♯",
+          "notes": [
+            "C♯",
+            "D♯",
+            "E",
+            "G♯",
+            "A♯"
+          ]
+        },
+        {
+          "root": "D",
+          "notes": [
+            "D",
+            "E",
+            "F",
+            "A",
+            "B"
+          ]
+        },
+        {
+          "root": "E♭",
+          "notes": [
+            "E♭",
+            "F",
+            "G♭",
+            "B♭",
+            "C"
+          ]
+        },
+        {
+          "root": "E",
+          "notes": [
+            "E",
+            "F♯",
+            "G",
+            "B",
+            "C♯"
+          ]
+        },
+        {
+          "root": "F",
+          "notes": [
+            "F",
+            "G",
+            "A♭",
+            "C",
+            "D"
+          ]
+        },
+        {
+          "root": "F♯",
+          "notes": [
+            "F♯",
+            "G♯",
+            "A",
+            "C♯",
+            "D♯"
+          ]
+        },
+        {
+          "root": "G",
+          "notes": [
+            "G",
+            "A",
+            "B♭",
+            "D",
+            "E"
+          ]
+        },
+        {
+          "root": "G♯",
+          "notes": [
+            "G♯",
+            "A♯",
+            "B",
+            "D♯",
+            "E♯"
+          ]
+        },
+        {
+          "root": "A",
+          "notes": [
+            "A",
+            "B",
+            "C",
+            "E",
+            "F♯"
+          ]
+        },
+        {
+          "root": "B♭",
+          "notes": [
+            "B♭",
+            "C",
+            "D♭",
+            "F",
+            "G"
+          ]
+        },
+        {
+          "root": "B",
+          "notes": [
+            "B",
+            "C♯",
+            "D",
+            "F♯",
+            "G♯"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pelog",
+      "name": "Pelog scale",
+      "formula": [
+        "1",
+        "b2",
+        "b3",
+        "5",
+        "b6"
+      ],
+      "semitones": [
+        0,
+        1,
+        3,
+        7,
+        8
+      ],
+      "steps": [
+        1,
+        2,
+        4,
+        1,
+        4
+      ],
+      "roots": [
+        {
+          "root": "C",
+          "notes": [
+            "C",
+            "D♭",
+            "E♭",
+            "G",
+            "A♭"
+          ]
+        },
+        {
+          "root": "C♯",
+          "notes": [
+            "C♯",
+            "D",
+            "E",
+            "G♯",
+            "A"
+          ]
+        },
+        {
+          "root": "D",
+          "notes": [
+            "D",
+            "E♭",
+            "F",
+            "A",
+            "B♭"
+          ]
+        },
+        {
+          "root": "D♯",
+          "notes": [
+            "D♯",
+            "E",
+            "F♯",
+            "A♯",
+            "B"
+          ]
+        },
+        {
+          "root": "E",
+          "notes": [
+            "E",
+            "F",
+            "G",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "root": "F",
+          "notes": [
+            "F",
+            "G♭",
+            "A♭",
+            "C",
+            "D♭"
+          ]
+        },
+        {
+          "root": "F♯",
+          "notes": [
+            "F♯",
+            "G",
+            "A",
+            "C♯",
+            "D"
+          ]
+        },
+        {
+          "root": "G",
+          "notes": [
+            "G",
+            "A♭",
+            "B♭",
+            "D",
+            "E♭"
+          ]
+        },
+        {
+          "root": "G♯",
+          "notes": [
+            "G♯",
+            "A",
+            "B",
+            "D♯",
+            "E"
+          ]
+        },
+        {
+          "root": "A",
+          "notes": [
+            "A",
+            "B♭",
+            "C",
+            "E",
+            "F"
+          ]
+        },
+        {
+          "root": "A♯",
+          "notes": [
+            "A♯",
+            "B",
+            "C♯",
+            "E♯",
+            "F♯"
+          ]
+        },
+        {
+          "root": "B",
+          "notes": [
+            "B",
+            "C",
+            "D",
+            "F♯",
+            "G"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hirajoshi",
+      "name": "Hirajoshi scale",
+      "formula": [
+        "1",
+        "2",
+        "b3",
+        "5",
+        "b6"
+      ],
+      "semitones": [
+        0,
+        2,
+        3,
+        7,
+        8
+      ],
+      "steps": [
+        2,
+        1,
+        4,
+        1,
+        4
+      ],
+      "roots": [
+        {
+          "root": "C",
+          "notes": [
+            "C",
+            "D",
+            "E♭",
+            "G",
+            "A♭"
+          ]
+        },
+        {
+          "root": "C♯",
+          "notes": [
+            "C♯",
+            "D♯",
+            "E",
+            "G♯",
+            "A"
+          ]
+        },
+        {
+          "root": "D",
+          "notes": [
+            "D",
+            "E",
+            "F",
+            "A",
+            "B♭"
+          ]
+        },
+        {
+          "root": "D♯",
+          "notes": [
+            "D♯",
+            "E♯",
+            "F♯",
+            "A♯",
+            "B"
+          ]
+        },
+        {
+          "root": "E",
+          "notes": [
+            "E",
+            "F♯",
+            "G",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "root": "F",
+          "notes": [
+            "F",
+            "G",
+            "A♭",
+            "C",
+            "D♭"
+          ]
+        },
+        {
+          "root": "F♯",
+          "notes": [
+            "F♯",
+            "G♯",
+            "A",
+            "C♯",
+            "D"
+          ]
+        },
+        {
+          "root": "G",
+          "notes": [
+            "G",
+            "A",
+            "B♭",
+            "D",
+            "E♭"
+          ]
+        },
+        {
+          "root": "G♯",
+          "notes": [
+            "G♯",
+            "A♯",
+            "B",
+            "D♯",
+            "E"
+          ]
+        },
+        {
+          "root": "A",
+          "notes": [
+            "A",
+            "B",
+            "C",
+            "E",
+            "F"
+          ]
+        },
+        {
+          "root": "B♭",
+          "notes": [
+            "B♭",
+            "C",
+            "D♭",
+            "F",
+            "G♭"
+          ]
+        },
+        {
+          "root": "B",
+          "notes": [
+            "B",
+            "C♯",
+            "D",
+            "F♯",
+            "G"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "augmented",
+      "name": "Augmented scale",
+      "formula": [
+        "1",
+        "#2",
+        "3",
+        "5",
+        "b6",
+        "7"
+      ],
+      "semitones": [
+        0,
+        3,
+        4,
+        7,
+        8,
+        11
+      ],
+      "steps": [
+        3,
+        1,
+        3,
+        1,
+        3,
+        1
+      ],
+      "roots": [
+        {
+          "root": "C",
+          "notes": [
+            "C",
+            "D♯",
+            "E",
+            "G",
+            "A♭",
+            "B"
+          ]
+        },
+        {
+          "root": "D♭",
+          "notes": [
+            "D♭",
+            "E",
+            "F",
+            "A♭",
+            "B𝄫",
+            "C"
+          ]
+        },
+        {
+          "root": "D",
+          "notes": [
+            "D",
+            "E♯",
+            "F♯",
+            "A",
+            "B♭",
+            "C♯"
+          ]
+        },
+        {
+          "root": "E♭",
+          "notes": [
+            "E♭",
+            "F♯",
+            "G",
+            "B♭",
+            "C♭",
+            "D"
+          ]
+        },
+        {
+          "root": "E",
+          "notes": [
+            "E",
+            "F𝄪",
+            "G♯",
+            "B",
+            "C",
+            "D♯"
+          ]
+        },
+        {
+          "root": "F",
+          "notes": [
+            "F",
+            "G♯",
+            "A",
+            "C",
+            "D♭",
+            "E"
+          ]
+        },
+        {
+          "root": "G♭",
+          "notes": [
+            "G♭",
+            "A",
+            "B♭",
+            "D♭",
+            "E𝄫",
+            "F"
+          ]
+        },
+        {
+          "root": "G",
+          "notes": [
+            "G",
+            "A♯",
+            "B",
+            "D",
+            "E♭",
+            "F♯"
+          ]
+        },
+        {
+          "root": "A♭",
+          "notes": [
+            "A♭",
+            "B",
+            "C",
+            "E♭",
+            "F♭",
+            "G"
+          ]
+        },
+        {
+          "root": "A",
+          "notes": [
+            "A",
+            "B♯",
+            "C♯",
+            "E",
+            "F",
+            "G♯"
+          ]
+        },
+        {
+          "root": "B♭",
+          "notes": [
+            "B♭",
+            "C♯",
+            "D",
+            "F",
+            "G♭",
+            "A"
+          ]
+        },
+        {
+          "root": "B",
+          "notes": [
+            "B",
+            "C𝄪",
+            "D♯",
+            "F♯",
+            "G",
+            "A♯"
+          ]
+        }
+      ]
+    },
     {
       "id": "major",
       "name": "Major scale",

@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: { default: "Guitar Notes", template: "%s · Guitar Notes" },
-  description: "Personal guitar theory study notes: scales, modes, intervals, chords and keys.",
+  description: "A personal Fretboard Concepts study companion: theory, scales, modes, voicings, arpeggios, improvisation and guided practice.",
   // A private study tool, not a public site.
   robots: { index: false, follow: false },
 };

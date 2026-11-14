@@ -36,9 +36,18 @@ export default function Overview() {
     <div className="flex flex-col gap-6 md:gap-8">
       <PageHeader
         title="Guitar Theory Notes"
-        description="Guitar theory notes, checked and expanded for study: foundations, scales, modes, chords and keys."
+        description="From theory to the whole fretboard: study Fretboard Concepts, explore scales and voicings, and build a daily practice routine."
         actions={<ContinueButton />}
       />
+
+      <Panel title="Study Fretboard Concepts" description="The complete 2019 book mapped into lessons, original diagrams and practical tools.">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{[
+          { title: "Book guide & atlas", text: "All 63 diagram sheets with chapter and page references.", href: "/book" },
+          { title: "Chords into sound", text: "Inversions, drop voicings and arpeggios in any key.", href: "/voicings" },
+          { title: "Connect the material", text: "Harmonization, modal colour and scale choices.", href: "/harmonization" },
+          { title: "Daily practice", text: "Theory exercises, metronome and a saved practice log.", href: "/practice" },
+        ].map((item) => <Link key={item.href} href={item.href} className="rounded-xl border bg-muted/20 p-4 transition-colors hover:border-primary hover:bg-primary/5"><h2 className="text-sm font-semibold text-primary">{item.title} →</h2><p className="mt-2 text-sm text-muted-foreground">{item.text}</p></Link>)}</div>
+      </Panel>
 
       <div className="grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <ProgressHero />
@@ -79,7 +88,7 @@ export default function Overview() {
 
         <Panel
           title="Changes to Your Notes"
-          description={`${fixes.length} corrections and ${todos.length} gaps found while organising the doc. Each is marked where it appears.`}
+          description={`${fixes.length} corrections and ${todos.length} open content gaps. Source qualifications are marked in lessons and the book guide.`}
           action={
             <div className="flex gap-1.5">
               <StatusBadge tone="info">{fixes.length} fixed</StatusBadge>

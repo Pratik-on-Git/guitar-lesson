@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BOOK_DIAGRAMS, diagramSrc } from "@/lib/content/book";
+import { DIAGRAM_SIZES } from "@/lib/content/book-diagram-sizes";
 import { useQueryState } from "@/lib/use-query-state";
 import { Panel } from "@/components/app/panel";
 import { buttonVariants } from "@/components/ui/button";
@@ -33,7 +34,7 @@ export function BookAtlas() {
       </div>
       <figure>
         <a href={diagramSrc(selected.page)} target="_blank" rel="noreferrer" className="block rounded-xl border bg-white p-2 sm:p-5" aria-label={`Open page ${selected.page} full size`}>
-          <Image key={selected.page} unoptimized src={diagramSrc(selected.page)} alt={`Original ${selected.title} ${selected.chapter.toLowerCase()} diagram sheet, page ${selected.page}; A-root shapes labeled by scale degree. Open full size to inspect every fingering.`} width={1269} height={1769} className="mx-auto h-auto w-full max-w-4xl" />
+          <Image key={selected.page} unoptimized src={diagramSrc(selected.page)} alt={`Original ${selected.title} ${selected.chapter.toLowerCase()} diagram sheet, page ${selected.page}; A-root shapes labeled by scale degree. Open full size to inspect every fingering.`} {...DIAGRAM_SIZES[selected.page]} className="mx-auto h-auto w-full max-w-4xl" />
         </a>
         <figcaption className="mt-3 text-sm text-muted-foreground">{selected.chapter} · {selected.title} · p. {selected.page} · © 2019 Yiannis Papadopoulos. Source illustration from the supplied PDF. Open the sheet to zoom; use the linked tool for transposed notes and accessible degree tables.</figcaption>
       </figure>

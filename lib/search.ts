@@ -3,6 +3,8 @@ import { CHORDS } from "./music/chords.ts";
 import { MODE_FAMILIES } from "./music/modes.ts";
 import { SCALES } from "./music/scales.ts";
 import { NAV } from "./nav.ts";
+import { BOOK_DIAGRAMS } from "./content/book.ts";
+import { BOOK_ASSIGNMENTS } from "./content/book-assignments.ts";
 
 /* Flat index for the Ctrl+K search: pages, sections, scales, modes and chords. */
 
@@ -21,6 +23,8 @@ const plain = (text: string) =>
 
 function build(): SearchEntry[] {
   const entries: SearchEntry[] = [];
+  for (const sheet of BOOK_DIAGRAMS) entries.push({ title: `${sheet.title} · source p. ${sheet.page}`, context: `Book atlas · ${sheet.chapter}`, href: `/book?page=${sheet.page}`, kind: "Section", keywords: `Yiannis Papadopoulos Fretboard Concepts source diagram boxes positions ${sheet.chapter}` });
+  for (const chapter of new Set(BOOK_ASSIGNMENTS.map((a) => a.chapter))) entries.push({ title: `${chapter} assignments`, context: "Practice studio · source exercise bank", href: "/practice#source-assignments", kind: "Section", keywords: BOOK_ASSIGNMENTS.filter((a) => a.chapter === chapter).map((a) => a.prompt).join(" ") });
 
   for (const group of NAV) {
     for (const item of group.items) {
@@ -31,7 +35,7 @@ function build(): SearchEntry[] {
   for (const topic of TOPICS) {
     for (const section of topic.sections) {
       const words = section.blocks
-        .map((b) => ("term" in b ? b.term : "") + " " + ("text" in b ? b.text : ""))
+        .map((b) => ("term" in b ? b.term : "") + " " + ("text" in b ? b.text : "") + " " + (b.type === "table" ? b.rows.flat().join(" ") : b.type === "list" ? b.items.join(" ") : ""))
         .join(" ")
         .slice(0, 400);
       entries.push({

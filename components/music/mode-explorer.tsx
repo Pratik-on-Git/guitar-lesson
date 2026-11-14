@@ -77,6 +77,10 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
       { label: "Quadriads", value: chords.map((c) => c.seventh).join(" · "), wide: true },
     );
   }
+  const extensions = dominantScale
+    ? dominantScale.filter((n) => [9, 11, 13].includes(n.degree.num)).map((n) => n.label)
+    : degrees.filter((d) => [2, 4, 6].includes(d.num)).map((d) => prettyDegree(`${d.acc < 0 ? "b".repeat(-d.acc) : "#".repeat(d.acc)}${d.num + 7}`));
+  facts.push({ label: dominantScale ? "Dominant tensions" : "Root-chord extensions from this collection", value: extensions.join(" · ") });
 
   return (
     <div className="flex flex-col gap-4 md:gap-6">

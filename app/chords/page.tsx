@@ -5,6 +5,8 @@ import { ExplorerSkeleton } from "@/components/app/skeleton";
 import { StatusBadge } from "@/components/app/status-badge";
 import { ChordLibrary } from "@/components/music/chord-library";
 import { CHORDS, CHORD_CATEGORIES } from "@/lib/music/chords";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = { title: "Chord Library" };
 
@@ -15,6 +17,7 @@ export default function ChordsPage() {
         title="Chord Library"
         description="Reference chord formulas spelled in any key, with distinct chord qualities and voicing notes. Equivalent pitch collections are grouped together."
         studyHref="/chords"
+        actions={<Link href="/voicings" className={buttonVariants({ variant: "outline" })}>Explore inversions & drops →</Link>}
         meta={
           <>
             <StatusBadge tone="brand">{CHORDS.length} formulas</StatusBadge>

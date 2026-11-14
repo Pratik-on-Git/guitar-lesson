@@ -85,7 +85,7 @@ export const NAV: NavGroup[] = [
     title: "Chords & harmony",
     items: [
       { title: "Chords & degrees", href: "/learn/chords", icon: Guitar, description: "Chords, scale degrees, symbols and numbers." },
-      { title: "Chord library", href: "/chords", icon: Library, description: "74 chord formulas, spelled in any key." },
+      { title: "Chord library", href: "/chords", icon: Library, description: "72 chord formulas, spelled in any key." },
       { title: "Inversions & drops", href: "/learn/voicings", icon: Layers, description: "Bass inversions, root-position shapes, drop 2 and drop 3." },
       { title: "Voicing workbench", href: "/voicings", icon: Guitar, description: "Transpose chord grips, inversions and string sets." },
       { title: "Harmony", href: "/learn/harmony", icon: Waypoints, description: "Secondary, substitute and tritone dominants." },

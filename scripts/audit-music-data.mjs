@@ -34,6 +34,10 @@ const scaleReferences = {
   "melodic-minor": [0, 2, 3, 5, 7, 9, 11],
   chromatic: Array.from({ length: 12 }, (_, i) => i),
   "whole-tone": [0, 2, 4, 6, 8, 10],
+  kumoi: [0, 2, 3, 7, 9],
+  pelog: [0, 1, 3, 7, 8],
+  hirajoshi: [0, 2, 3, 7, 8],
+  augmented: [0, 3, 4, 7, 8, 11],
 };
 const modeReferences = {
   major: ["1 2 3 4 5 6 7", "1 2 b3 4 5 6 b7", "1 b2 b3 4 5 b6 b7", "1 2 3 #4 5 6 7", "1 2 3 4 5 6 b7", "1 2 b3 4 5 b6 b7", "1 b2 b3 4 b5 b6 b7"],
