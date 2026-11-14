@@ -24,6 +24,8 @@ import {
   type FretNote,
 } from "@/lib/music/theory";
 import { cn } from "@/lib/utils";
+import { Fact, FactGrid } from "@/components/app/facts";
+import { StatusBadge } from "@/components/app/status-badge";
 import { Segmented } from "@/components/ui/segmented";
 import { SimpleTable, TableWrap, tableCls, tdCls, thCls } from "@/components/ui/table";
 import { Fretboard } from "@/components/music/fretboard";
@@ -36,7 +38,8 @@ import { RootPicker } from "@/components/music/controls";
 export function Widget({ name }: { name: WidgetName }) {
   const Component = WIDGETS[name];
   return (
-    <div className="max-w-[920px] rounded-2xl bg-background/60 p-4 ring-1 ring-border sm:p-5 dark:bg-background/40">
+    // An inset well inside the panel: the diagram reads as one object, apart from the prose around it.
+    <div className="bg-muted/30 ring-border/70 max-w-[920px] min-w-0 rounded-xl p-4 ring-1 sm:p-5">
       <Component />
     </div>
   );
@@ -46,7 +49,7 @@ const MAJOR = ["1", "2", "3", "4", "5", "6", "7"].map(parseDegree);
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII"];
 
 function Caption({ children }: { children: React.ReactNode }) {
-  return <p className="mt-3 text-caption text-muted-foreground">{children}</p>;
+  return <p className="text-muted-foreground mt-3 text-xs leading-5">{children}</p>;
 }
 
 /* ---------------------------------------------------------------- notes */
@@ -150,16 +153,16 @@ function NoteDurations() {
                 {d.note}
               </td>
               <td className={cn(tdCls, "text-[26px] leading-none")} style={MUSIC_FONT}>
-                {d.rest || <span className="text-caption text-muted-foreground">—</span>}
+                {d.rest || <span className="text-sm text-muted-foreground">—</span>}
               </td>
               <td className={cn(tdCls, "font-medium")}>{d.name}</td>
               <td className={cn(tdCls, "tabular-nums")}>{d.label}</td>
               <td className={tdCls}>
                 <div className="flex h-3 gap-0.5" aria-hidden>
                   {[0, 1, 2, 3].map((beat) => (
-                    <div key={beat} className="relative flex-1 overflow-hidden rounded-sm bg-fog/50 dark:bg-iron">
+                    <div key={beat} className="bg-primary/12 relative flex-1 overflow-hidden rounded-sm">
                       <div
-                        className="absolute inset-y-0 left-0 bg-foreground"
+                        className="bg-primary absolute inset-y-0 left-0"
                         style={{ width: `${Math.max(0, Math.min(1, d.beats - beat)) * 100}%` }}
                       />
                     </div>
@@ -275,10 +278,9 @@ function IntervalTable() {
                   <td className={cn(tdCls, "text-muted-foreground")}>{inverted}</td>
                   <td className={tdCls}>
                     {DIATONIC.has(semis) ? (
-                      <span className="inline-flex items-center gap-1.5">
-                        <span aria-hidden className="size-1.5 rounded-full bg-ember" />
+                      <StatusBadge tone="success" dot>
                         Yes
-                      </span>
+                      </StatusBadge>
                     ) : (
                       <span className="text-muted-foreground">—</span>
                     )}
@@ -414,9 +416,17 @@ function NumbersToNotes() {
       <RootPicker value={rootPc} onChange={setRootPc} label="Key" className="mb-4" />
       <ul className="grid grid-cols-4 gap-2 sm:grid-cols-7">
         {NUMBER_TOKENS.map((token) => (
-          <li key={token} className="flex flex-col items-center rounded-xl border border-border bg-card py-2">
-            <span className="text-[12px] text-muted-foreground">{token === "#5" ? "+5 / ♯5" : degreeText(parseDegree(token))}</span>
-            <span className="text-body font-medium text-foreground">{noteName(spellDegree(root, parseDegree(token)))}</span>
+          <li
+            key={token}
+            className={cn(
+              "flex flex-col items-center rounded-lg border py-2 shadow-xs",
+              token === "1" ? "border-primary/30 bg-primary/10" : "border-border bg-card",
+            )}
+          >
+            <span className="text-xs text-muted-foreground">{token === "#5" ? "+5 / ♯5" : degreeText(parseDegree(token))}</span>
+            <span className={cn("text-sm font-semibold", token === "1" ? "text-primary" : "text-foreground")}>
+              {noteName(spellDegree(root, parseDegree(token)))}
+            </span>
           </li>
         ))}
       </ul>
@@ -499,17 +509,17 @@ function TritoneSubstitution() {
   const b = tones(sub);
   const row = (label: string, notes: typeof a, other: typeof a) => (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="w-16 text-body font-medium text-foreground">{label}</span>
+      <span className="w-16 text-sm font-semibold text-foreground">{label}</span>
       {notes.map((n, i) => (
         <span
           key={i}
           className={cn(
-            "flex min-w-14 flex-col items-center rounded-xl border px-2.5 py-1.5",
-            other.some((o) => pc(o) === pc(n)) ? "border-foreground bg-card" : "border-border",
+            "flex min-w-14 flex-col items-center rounded-lg border px-2.5 py-1.5 shadow-xs",
+            other.some((o) => pc(o) === pc(n)) ? "border-primary bg-primary/10 text-primary" : "border-border bg-card",
           )}
         >
-          <span className="text-body font-medium">{noteName(n)}</span>
-          <span className="text-[12px] text-muted-foreground">{["R", "3", "5", "♭7"][i]}</span>
+          <span className="text-sm font-medium">{noteName(n)}</span>
+          <span className="text-xs text-muted-foreground">{["R", "3", "5", "♭7"][i]}</span>
         </span>
       ))}
     </div>
@@ -521,7 +531,7 @@ function TritoneSubstitution() {
         {row(`${noteName(root)}7`, a, b)}
         {row(`${noteName(sub)}7`, b, a)}
       </div>
-      <Caption>Outlined: the shared 3rd and 7th, which swap roles between the two chords.</Caption>
+      <Caption>Highlighted: the shared 3rd and 7th, which swap roles between the two chords.</Caption>
     </>
   );
 }
@@ -605,28 +615,12 @@ function ModeParentFinder() {
         />
       </div>
       <RootPicker value={rootPc} onChange={setRootPc} label="Mode root" className="mb-4" />
-      <dl className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-3">
-        <div className="bg-card px-4 py-3">
-          <dt className="text-[13px] text-muted-foreground">Mode</dt>
-          <dd className="text-body font-medium">
-            {noteName(modeRoot)} {mode.name}
-          </dd>
-        </div>
-        <div className="bg-card px-4 py-3">
-          <dt className="text-[13px] text-muted-foreground">Parent major scale</dt>
-          <dd className="text-body font-medium">
-            {noteName(parentRoot)} major ({degreeSemitones(parent[start])} half steps below)
-          </dd>
-        </div>
-        <div className="bg-card px-4 py-3">
-          <dt className="text-[13px] text-muted-foreground">Key signature</dt>
-          <dd className="text-body font-medium">{sig.accidentals.length ? sig.accidentals.join(" ") : "No sharps or flats"}</dd>
-        </div>
-      </dl>
-      <p className="mt-4 text-body">
-        <span className="text-muted-foreground">Notes: </span>
-        <span className="font-medium">{modeNotes.map((n) => n.name).join(" ")}</span>
-      </p>
+      <FactGrid columns={3}>
+        <Fact label="Mode" value={`${noteName(modeRoot)} ${mode.name}`} />
+        <Fact label="Parent major scale" value={`${noteName(parentRoot)} major (${degreeSemitones(parent[start])} half steps below)`} />
+        <Fact label="Key signature" value={sig.accidentals.length ? sig.accidentals.join(" ") : "No sharps or flats"} />
+        <Fact wide label="Notes" value={modeNotes.map((n) => n.name).join(" ")} />
+      </FactGrid>
     </>
   );
 }

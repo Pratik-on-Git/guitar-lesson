@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
 /*
@@ -13,34 +12,30 @@ export const SEGMENTED_TRACK =
   "rounded-xl border border-border/70 bg-muted/60 p-1";
 
 export const SEGMENTED_ITEM =
-  "text-muted-foreground hover:text-foreground hover:bg-card/50 inline-flex items-center justify-center gap-1.5 rounded-lg border border-transparent font-medium shadow-none transition-all duration-150 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] [&_svg:not([class*='size-'])]:size-3.5";
+  "text-muted-foreground hover:text-foreground hover:bg-card/50 inline-flex items-center justify-center gap-1.5 rounded-lg whitespace-nowrap border border-transparent font-medium shadow-none transition-all duration-150 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] [&_svg:not([class*='size-'])]:size-3.5";
 
 export const SEGMENTED_ITEM_ACTIVE =
   "bg-card text-primary hover:bg-card hover:text-primary border-border/80 font-semibold shadow-xs";
 
-/** Arrow-key movement across a radiogroup's items, as native radios have. */
-export function useRovingRadios() {
-  const ref = useRef<HTMLDivElement>(null);
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const keys = ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"];
-    if (!keys.includes(event.key) || !ref.current) return;
-    const items = [...ref.current.querySelectorAll<HTMLElement>('[role="radio"]')];
-    const current = items.indexOf(document.activeElement as HTMLElement);
-    if (current < 0) return;
-    event.preventDefault();
-    const last = items.length - 1;
-    const next =
-      event.key === "Home"
-        ? 0
-        : event.key === "End"
-          ? last
-          : event.key === "ArrowRight" || event.key === "ArrowDown"
-            ? (current + 1) % items.length
-            : (current - 1 + items.length) % items.length;
-    items[next].focus();
-    items[next].click();
-  };
-  return { ref, onKeyDown };
+/** Arrow-key movement across a radiogroup's items, as native radios have. Put it on the group. */
+export function onRadioGroupKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+  const keys = ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"];
+  if (!keys.includes(event.key)) return;
+  const items = [...event.currentTarget.querySelectorAll<HTMLElement>('[role="radio"]')];
+  const current = items.indexOf(document.activeElement as HTMLElement);
+  if (current < 0) return;
+  event.preventDefault();
+  const last = items.length - 1;
+  const next =
+    event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? last
+        : event.key === "ArrowRight" || event.key === "ArrowDown"
+          ? (current + 1) % items.length
+          : (current - 1 + items.length) % items.length;
+  items[next].focus();
+  items[next].click();
 }
 
 export function Segmented<T extends string | number>({
@@ -58,13 +53,11 @@ export function Segmented<T extends string | number>({
   size?: "default" | "sm";
   className?: string;
 }) {
-  const roving = useRovingRadios();
   return (
     <div
-      ref={roving.ref}
       role="radiogroup"
       aria-label={label}
-      onKeyDown={roving.onKeyDown}
+      onKeyDown={onRadioGroupKeyDown}
       className={cn("inline-flex max-w-full flex-wrap items-center gap-1", SEGMENTED_TRACK, className)}
     >
       {options.map((option) => {

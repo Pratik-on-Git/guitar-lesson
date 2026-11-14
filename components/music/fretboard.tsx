@@ -4,8 +4,9 @@ import { STRING_NAMES, type FretNote } from "@/lib/music/theory";
 
 /*
  * Guitar neck diagram in the doc's style: high e on top, low E at the
- * bottom, frets numbered underneath, root boxed. Notes outside the selected
- * position stay visible but faint so the shape reads in context.
+ * bottom, frets numbered underneath. Scale notes are ink dots; the root is a
+ * brand-filled square, so it reads by shape as well as colour. Notes outside
+ * the selected position stay visible but faint so the shape reads in context.
  */
 
 export type FretLabelFn = (index: number) => string;
@@ -53,9 +54,10 @@ export function Fretboard({
         aria-label={title}
         viewBox={`0 0 ${width} ${height}`}
         className="h-auto w-full min-w-[720px] select-none"
-        style={{ fontFamily: "var(--font-sans)" }}
       >
         <title>{title}</title>
+        {/* the neck itself, a muted well behind the frets */}
+        <rect x={nutX} y={PAD_TOP - 4} width={frets * FRET_W} height={neckH + 8} rx={6} fill="var(--muted)" />
         {/* inlays */}
         {INLAYS.filter((f) => f <= frets).map((f) => (
           <circle key={f} cx={nutX + (f - 0.5) * FRET_W} cy={PAD_TOP + neckH / 2} r={5} fill="var(--border)" />
@@ -127,10 +129,10 @@ export function Fretboard({
                   y={y - DOT}
                   width={DOT * 2}
                   height={DOT * 2}
-                  rx={4}
-                  fill="var(--foreground)"
-                  stroke="var(--color-ember)"
-                  strokeWidth={faint ? 0 : 2.5}
+                  rx={5}
+                  fill="var(--primary)"
+                  stroke="var(--card)"
+                  strokeWidth={faint ? 0 : 2}
                 />
               ) : (
                 <circle cx={x} cy={y} r={DOT} fill="var(--foreground)" />
@@ -141,7 +143,7 @@ export function Fretboard({
                 fontSize={text.length > 2 ? 9.5 : 11.5}
                 fontWeight={600}
                 textAnchor="middle"
-                fill="var(--background)"
+                fill={isRoot ? "var(--primary-foreground)" : "var(--background)"}
               >
                 {text}
               </text>

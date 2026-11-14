@@ -33,7 +33,8 @@ export function SimpleTable({
 }) {
   return (
     <TableWrap className={className}>
-      <table className={tableCls}>
+      {/* Wide tables keep a floor and scroll inside the wrapper; squeezed, their last column became a strip of letters. */}
+      <table className={cn(tableCls, columns.length >= 4 && "min-w-[40rem]")}>
         {caption && <caption className="text-muted-foreground mb-2 caption-top text-left text-body">{caption}</caption>}
         <thead>
           <tr>

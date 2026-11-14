@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Blocks } from "@/components/content/blocks";
-import { PageHeader, Tag } from "@/components/app/page-header";
+import { PageHeader } from "@/components/app/page-header";
+import { StatusBadge } from "@/components/app/status-badge";
 import { ScaleExplorer } from "@/components/music/scale-explorer";
 import { ExplorerSkeleton, PageSkeleton } from "@/components/app/skeleton";
 import { SCALES, getScale } from "@/lib/music/scales";
@@ -31,16 +32,20 @@ async function ScalePageBody({ params }: { params: PageProps<"/scales/[scale]">[
   if (!scale) notFound();
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6 md:gap-8">
       <PageHeader
         title={scale.name}
         description={`Formula ${scale.formula.map(prettyDegree).join(" ")}`}
         studyHref={`/scales/${scale.id}`}
         meta={
           <>
-            <Tag>{scale.family}</Tag>
-            <Tag>{scale.formula.length} notes</Tag>
-            {scale.aka?.map((a) => <Tag key={a}>{a}</Tag>)}
+            <StatusBadge tone="brand">{scale.family}</StatusBadge>
+            <StatusBadge tone="neutral">{scale.formula.length} notes</StatusBadge>
+            {scale.aka?.map((a) => (
+              <StatusBadge key={a} tone="neutral">
+                {a}
+              </StatusBadge>
+            ))}
           </>
         }
       />

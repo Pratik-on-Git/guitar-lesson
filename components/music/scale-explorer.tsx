@@ -19,7 +19,9 @@ import {
   type ScaleNote,
 } from "@/lib/music/theory";
 import { useFretLabel } from "@/lib/store";
+import { Fact, FactGrid } from "@/components/app/facts";
 import { Panel } from "@/components/app/panel";
+import { buttonVariants } from "@/components/ui/button";
 import { Segmented } from "@/components/ui/segmented";
 import { SimpleTable } from "@/components/ui/table";
 import { FretLabelToggle, RootPicker, useRootParam } from "./controls";
@@ -37,17 +39,15 @@ export function ScaleExplorer({ scaleId, notes }: { scaleId: string; notes: Reac
   const title = `${noteName(root)} ${def.short.toLowerCase()}`;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4 md:gap-6">
       <Panel
         title={title}
         description={def.mood ?? def.family}
         action={
           def.modesHref ? (
-            <Link
-              href={def.modesHref}
-              className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-caption font-medium text-foreground hover:bg-muted"
-            >
-              See its modes <ArrowRight className="size-3.5" strokeWidth={1.75} aria-hidden />
+            <Link href={def.modesHref} className={buttonVariants({ variant: "outline", size: "sm" })}>
+              See Its Modes
+              <ArrowRight aria-hidden />
             </Link>
           ) : undefined
         }
@@ -66,7 +66,7 @@ export function ScaleExplorer({ scaleId, notes }: { scaleId: string; notes: Reac
         positions={def.positions}
       />
 
-      <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
+      <div className="grid gap-4 md:gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <Panel title="On the keyboard" description="One octave from the root, with the degree on each key.">
           <Keyboard
             length={24}
@@ -82,7 +82,7 @@ export function ScaleExplorer({ scaleId, notes }: { scaleId: string; notes: Reac
       {scale.length === 7 && <HarmonyPanel scale={scale} title={title} />}
       {def.harmonicFormula && (
         <Panel title="Harmonic formula" description="Chords that fit over each note of the scale, from your notes.">
-          <p className="text-body font-medium">{def.harmonicFormula}</p>
+          <p className="bg-muted/50 rounded-lg px-3 py-2.5 font-mono text-sm font-medium">{def.harmonicFormula}</p>
         </Panel>
       )}
 
@@ -109,14 +109,11 @@ export function ScaleFacts({ scale }: { scale: ScaleNote[] }) {
     { label: "Notes", value: scale.map((s) => s.name).join(" ") },
   ];
   return (
-    <dl className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2">
+    <FactGrid className="mt-6">
       {items.map((item) => (
-        <div key={item.label} className="bg-card px-4 py-3">
-          <dt className="text-[13px] text-muted-foreground">{item.label}</dt>
-          <dd className="mt-0.5 text-body font-medium tracking-[0.01em]">{item.value}</dd>
-        </div>
+        <Fact key={item.label} label={item.label} value={item.value} />
       ))}
-    </dl>
+    </FactGrid>
   );
 }
 
@@ -177,7 +174,7 @@ export function NeckPanel({
         title={`${title} across the guitar neck${active ? `, position ${active}` : ""}`}
       />
       {active > 0 && (
-        <p className="mt-3 text-caption text-muted-foreground">
+        <p className="text-muted-foreground mt-3 text-xs">
           Position {active} starts on {scale[active - 1].name} ({scale[active - 1].label === "R" ? "the root" : scale[active - 1].label}) on the low E string, {positions!.perString} notes per string.
         </p>
       )}

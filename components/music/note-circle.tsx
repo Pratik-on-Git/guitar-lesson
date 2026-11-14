@@ -4,7 +4,8 @@ const round = (n: number) => Math.round(n * 100) / 100;
 
 /*
  * The 12-note circle. With `pcs`, the scale's notes are joined into a
- * polygon, which is how the doc pictures a 7-note scale.
+ * polygon, which is how the doc pictures a 7-note scale. Brand-tinted fill,
+ * brand outline; the root is a brand square, so it reads by shape too.
  */
 export function NoteCircle({
   pcs,
@@ -31,7 +32,15 @@ export function NoteCircle({
     <svg role="img" aria-label={title} viewBox="0 0 300 300" width={size} height={size} className="mx-auto h-auto max-w-full">
       <title>{title}</title>
       <circle cx={c} cy={c} r={r} fill="none" stroke="var(--border)" strokeWidth={1.5} />
-      {polygon && <polygon points={polygon} fill="var(--muted)" stroke="var(--foreground)" strokeWidth={1.5} strokeLinejoin="round" />}
+      {polygon && (
+        <polygon
+          points={polygon}
+          fill="color-mix(in oklab, var(--primary) 12%, transparent)"
+          stroke="var(--primary)"
+          strokeWidth={1.75}
+          strokeLinejoin="round"
+        />
+      )}
       {ROOTS.map((root) => {
         const [x, y] = point(root.pc);
         const [lx, ly] = point(root.pc, r + 30);
@@ -40,18 +49,22 @@ export function NoteCircle({
         return (
           <g key={root.pc}>
             {isRoot ? (
-              <rect x={x - 8} y={y - 8} width={16} height={16} rx={3.5} fill="var(--foreground)" stroke="var(--color-ember)" strokeWidth={2.25} />
+              <rect x={x - 8} y={y - 8} width={16} height={16} rx={4} fill="var(--primary)" stroke="var(--card)" strokeWidth={2} />
             ) : (
-              <circle cx={x} cy={y} r={active ? 6 : 3.5} fill={active ? "var(--foreground)" : "var(--border)"} />
+              <circle
+                cx={x}
+                cy={y}
+                r={active ? 6 : 3.5}
+                fill={active ? (pcs ? "var(--primary)" : "var(--foreground)") : "var(--border)"}
+              />
             )}
             <text
               x={lx}
               y={ly + 4}
               textAnchor="middle"
               fontSize={root.label.includes("/") ? 11.5 : 14}
-              fontWeight={500}
-              fill={active ? "var(--foreground)" : "var(--muted-foreground)"}
-              style={{ fontFamily: "var(--font-sans)" }}
+              fontWeight={isRoot ? 700 : 500}
+              fill={isRoot ? "var(--primary)" : active ? "var(--foreground)" : "var(--muted-foreground)"}
             >
               {root.label}
             </text>

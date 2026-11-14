@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Blocks } from "@/components/content/blocks";
-import { PageHeader, Tag } from "@/components/app/page-header";
+import { PageHeader } from "@/components/app/page-header";
 import { Panel } from "@/components/app/panel";
+import { StatusBadge } from "@/components/app/status-badge";
 import { ExplorerSkeleton, PageSkeleton } from "@/components/app/skeleton";
 import { ModeExplorer } from "@/components/music/mode-explorer";
 import { SimpleTable } from "@/components/ui/table";
@@ -33,14 +34,19 @@ async function ModeFamilyPageBody({ params }: { params: PageProps<"/modes/[famil
   const modeNotes = Object.fromEntries(family.modes.map((m) => [m.id, <Blocks key={m.id} blocks={m.notes} />]));
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6 md:gap-8">
       <PageHeader
         title={family.name}
         description={`The ${family.modes.length} modes you get by starting the ${family.short.toLowerCase()} scale on each of its notes.`}
         studyHref={`/modes/${family.id}`}
-        meta={<Tag>Parent: {family.parentName}</Tag>}
+        meta={
+          <>
+            <StatusBadge tone="brand">Parent: {family.parentName}</StatusBadge>
+            <StatusBadge tone="neutral">{family.modes.length} modes</StatusBadge>
+          </>
+        }
       />
-      <Panel title="How this family works">
+      <Panel title="How This Family Works">
         <Blocks blocks={family.intro} />
         {family.id === "major" && (
           <div className="mt-6">

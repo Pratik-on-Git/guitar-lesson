@@ -17,7 +17,8 @@ export function FactGrid({
     <dl
       className={cn(
         "bg-border ring-border grid gap-px overflow-hidden rounded-lg ring-1",
-        columns === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2",
+        // The 1px gaps show the border colour through, so a lone last tile spans the row instead of leaving a grey hole.
+        columns === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2 sm:[&>*:last-child:nth-child(odd)]:col-span-full",
         className,
       )}
     >

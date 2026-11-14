@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { CircleAlert, ExternalLink, Lightbulb, PenLine } from "lucide-react";
+import { CircleAlert, ExternalLink, Headphones, Lightbulb, PenLine, type LucideIcon } from "lucide-react";
 import type { Block } from "@/lib/content/types";
 import { cn } from "@/lib/utils";
+import { Fact, FactGrid } from "@/components/app/facts";
 import { SimpleTable } from "@/components/ui/table";
 import { Widget } from "./widgets";
 
@@ -19,13 +20,13 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
 function BlockView({ block }: { block: Block }) {
   switch (block.type) {
     case "p":
-      return <p className="max-w-[72ch] text-body text-foreground/90">{block.text}</p>;
+      return <p className="text-foreground/90 max-w-[72ch] text-sm leading-6">{block.text}</p>;
 
     case "term":
       return (
-        <div className="max-w-[72ch] border-l-2 border-foreground pl-4">
-          <p className="font-display text-subheading font-medium text-foreground">{block.term}</p>
-          <p className="mt-1 text-body text-foreground/85">{block.text}</p>
+        <div className="border-primary max-w-[72ch] border-l-2 pl-4">
+          <p className="text-foreground text-sm font-semibold">{block.term}</p>
+          <p className="text-foreground/85 mt-1 text-sm leading-6">{block.text}</p>
         </div>
       );
 
@@ -34,8 +35,8 @@ function BlockView({ block }: { block: Block }) {
       return (
         <Tag
           className={cn(
-            "flex max-w-[72ch] flex-col gap-2 pl-5 text-body text-foreground/90",
-            block.ordered ? "list-decimal marker:text-muted-foreground" : "list-disc marker:text-fog",
+            "text-foreground/90 flex max-w-[72ch] flex-col gap-2 pl-5 text-sm leading-6",
+            block.ordered ? "marker:text-muted-foreground list-decimal marker:font-medium" : "marker:text-primary/60 list-disc",
           )}
         >
           {block.items.map((item, i) => (
@@ -49,14 +50,11 @@ function BlockView({ block }: { block: Block }) {
 
     case "facts":
       return (
-        <dl className="grid max-w-[880px] gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2">
+        <FactGrid className="max-w-[880px]">
           {block.items.map((item) => (
-            <div key={item.label} className="bg-card px-4 py-3">
-              <dt className="text-[13px] text-muted-foreground">{item.label}</dt>
-              <dd className="mt-0.5 text-body font-medium text-foreground">{item.value}</dd>
-            </div>
+            <Fact key={item.label} label={item.label} value={item.value} />
           ))}
-        </dl>
+        </FactGrid>
       );
 
     case "table":
@@ -68,10 +66,11 @@ function BlockView({ block }: { block: Block }) {
     case "figure":
       return (
         <figure className="max-w-[880px]">
-          <div className="overflow-hidden rounded-2xl border border-border bg-white p-3">
+          {/* The scans are black on white, so they keep a white mat in dark mode too. */}
+          <div className="ring-foreground/10 overflow-hidden rounded-xl bg-white p-3 shadow-xs ring-1">
             <Image src={block.src} alt={block.alt} width={block.width} height={block.height} className="h-auto w-full" />
           </div>
-          {block.caption && <figcaption className="mt-2 text-caption text-muted-foreground">{block.caption}</figcaption>}
+          {block.caption && <figcaption className="text-muted-foreground mt-2 text-xs">{block.caption}</figcaption>}
         </figure>
       );
 
@@ -81,11 +80,11 @@ function BlockView({ block }: { block: Block }) {
           href={block.href}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-caption font-medium text-foreground transition-colors hover:border-muted-foreground"
+          className="group/audio border-primary/40 text-primary hover:border-primary hover:bg-primary/10 focus-visible:ring-ring/50 inline-flex w-fit items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition-colors outline-none focus-visible:ring-3"
         >
-          <span aria-hidden className="size-2 rounded-full bg-ember" />
+          <Headphones className="size-4" aria-hidden />
           {block.label}
-          <ExternalLink className="size-3.5 text-muted-foreground" strokeWidth={1.75} aria-hidden />
+          <ExternalLink className="size-3.5 opacity-60" aria-label="Opens in a new tab" />
         </a>
       );
 
@@ -94,29 +93,30 @@ function BlockView({ block }: { block: Block }) {
   }
 }
 
-const CALLOUT = {
-  tip: { icon: Lightbulb, label: "Tip" },
-  fix: { icon: PenLine, label: "Corrected from your notes" },
-  todo: { icon: CircleAlert, label: "To do" },
+/*
+ * Notes, corrections and gaps as the design system's alert: a rounded
+ * bordered box with a leading icon, tinted by tone (info for a tip, brand
+ * for a correction, warning for something still missing).
+ */
+const CALLOUT: Record<"tip" | "fix" | "todo", { icon: LucideIcon; label: string; className: string }> = {
+  tip: { icon: Lightbulb, label: "Tip", className: "border-info/25 bg-info/5 [&>svg]:text-info" },
+  fix: { icon: PenLine, label: "Corrected from your notes", className: "border-primary/25 bg-primary/5 [&>svg]:text-primary" },
+  todo: { icon: CircleAlert, label: "To do", className: "border-warning/30 bg-warning/5 [&>svg]:text-warning" },
 };
 
 export function Callout({ tone, title, text }: { tone: keyof typeof CALLOUT; title?: string; text: string }) {
-  const { icon: Icon, label } = CALLOUT[tone];
+  const { icon: Icon, label, className } = CALLOUT[tone];
   return (
     <aside
+      role="note"
       className={cn(
-        "flex max-w-[880px] gap-3 rounded-2xl px-4 py-3.5",
-        tone === "tip" ? "bg-muted" : "border border-dashed border-muted-foreground/50",
+        "grid max-w-[880px] grid-cols-[calc(var(--spacing)*4)_1fr] items-start gap-x-3 gap-y-0.5 rounded-xl border px-4 py-3 text-sm [&>svg]:size-4 [&>svg]:translate-y-0.5",
+        className,
       )}
     >
-      <Icon className="mt-0.5 size-4.5 shrink-0 text-foreground" strokeWidth={1.75} aria-hidden />
-      <div className="min-w-0">
-        <p className="flex items-center gap-2 text-caption font-medium text-foreground">
-          {tone !== "tip" && <span aria-hidden className="size-1.5 rounded-full bg-ember" />}
-          {title ?? label}
-        </p>
-        <p className="mt-1 text-caption leading-[1.5] text-foreground/80">{text}</p>
-      </div>
+      <Icon aria-hidden />
+      <p className="text-foreground font-medium">{title ?? label}</p>
+      <p className="text-foreground/80 col-start-2 leading-6">{text}</p>
     </aside>
   );
 }

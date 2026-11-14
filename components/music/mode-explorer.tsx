@@ -18,9 +18,10 @@ import {
 } from "@/lib/music/theory";
 import { useQueryState } from "@/lib/use-query-state";
 import { cn } from "@/lib/utils";
+import { Fact, FactGrid } from "@/components/app/facts";
 import { Panel } from "@/components/app/panel";
-import { Tag } from "@/components/app/page-header";
-import { Segmented } from "@/components/ui/segmented";
+import { StatusBadge } from "@/components/app/status-badge";
+import { SEGMENTED_ITEM, SEGMENTED_ITEM_ACTIVE, SEGMENTED_TRACK, Segmented } from "@/components/ui/segmented";
 import { TableWrap, tableCls, tdCls, thCls } from "@/components/ui/table";
 import { RootPicker, useRootParam } from "./controls";
 import { Keyboard } from "./keyboard";
@@ -43,7 +44,7 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
   const title = `${noteName(root)} ${mode.name.replace(/^Mode \d · /, "")}`;
   const chords = harmonize(scale);
 
-  const facts: { label: string; value: string }[] = [
+  const facts: { label: string; value: string; wide?: boolean }[] = [
     { label: "Melodic formula", value: stepSizes(scale.map((s) => s.semis)).map(stepLabel).join(" ") },
     { label: "Intervallic formula", value: scale.map((s, i) => (i === 0 ? "1" : s.label)).join(" ") },
     { label: "Intervals", value: scale.map((s) => s.interval).join(" ") },
@@ -56,34 +57,38 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
     facts.push(
       { label: "Tonic triad · seventh", value: `${chords[0].triad} · ${chords[0].seventh}` },
       { label: "Dominant triad · seventh", value: `${chords[4].triad} · ${chords[4].seventh}` },
-      { label: "Harmonic formula", value: chords.map((c) => c.seventhNumeral).join(" ") },
-      { label: "Triads", value: chords.map((c) => c.triad).join(" · ") },
-      { label: "Quadriads", value: chords.map((c) => c.seventh).join(" · ") },
+      { label: "Harmonic formula", value: chords.map((c) => c.seventhNumeral).join(" "), wide: true },
+      { label: "Triads", value: chords.map((c) => c.triad).join(" · "), wide: true },
+      { label: "Quadriads", value: chords.map((c) => c.seventh).join(" · "), wide: true },
     );
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div role="tablist" aria-label="Modes" className="flex flex-wrap gap-2">
-        {family.modes.map((m) => {
-          const selected = m.id === mode.id;
-          return (
-            <button
-              key={m.id}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              onClick={() => setModeId(m.id)}
-              className={cn(
-                "flex min-w-[132px] flex-1 flex-col items-start rounded-2xl border px-3.5 py-2.5 text-left outline-none transition-[background-color,box-shadow,border-color] focus-visible:ring-3 focus-visible:ring-ring/50 sm:flex-none",
-                selected ? "border-transparent bg-card shadow-soft" : "border-border hover:border-muted-foreground",
-              )}
-            >
-              <span className="text-[12px] text-muted-foreground">Mode {m.start + 1}</span>
-              <span className="text-caption font-medium text-foreground">{m.name.replace(/^Mode \d · /, "")}</span>
-            </button>
-          );
-        })}
+    <div className="flex flex-col gap-4 md:gap-6">
+      {/* The dashboards' segmented tab track; on phones it scrolls rather than wrapping into a wall. */}
+      <div className="minimal-scrollbar -mx-1 overflow-x-auto px-1 pb-1">
+        <div role="tablist" aria-label="Modes" className={cn("flex w-max min-w-full gap-1", SEGMENTED_TRACK)}>
+          {family.modes.map((m) => {
+            const selected = m.id === mode.id;
+            return (
+              <button
+                key={m.id}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                onClick={() => setModeId(m.id)}
+                className={cn(
+                  SEGMENTED_ITEM,
+                  "min-w-32 flex-1 flex-col items-start gap-0 px-3 py-2 text-left",
+                  selected && SEGMENTED_ITEM_ACTIVE,
+                )}
+              >
+                <span className={cn("text-xs font-normal", selected ? "text-primary/80" : "text-muted-foreground")}>Mode {m.start + 1}</span>
+                <span className="text-sm">{m.name.replace(/^Mode \d · /, "")}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <Panel
@@ -93,7 +98,9 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
           mode.aka?.length ? (
             <div className="flex flex-wrap gap-1.5">
               {mode.aka.map((a) => (
-                <Tag key={a}>{a}</Tag>
+                <StatusBadge key={a} tone="brand">
+                  {a}
+                </StatusBadge>
               ))}
             </div>
           ) : undefined
@@ -101,14 +108,11 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
       >
         <RootPicker value={rootPc} onChange={setRootPc} className="mb-6" />
         <StepPattern scale={scale} />
-        <dl className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2">
+        <FactGrid className="mt-6">
           {facts.map((f) => (
-            <div key={f.label} className={cn("bg-card px-4 py-3", (f.label === "Triads" || f.label === "Quadriads" || f.label === "Harmonic formula") && "sm:col-span-2")}>
-              <dt className="text-[13px] text-muted-foreground">{f.label}</dt>
-              <dd className="mt-0.5 text-body font-medium">{f.value}</dd>
-            </div>
+            <Fact key={f.label} label={f.label} value={f.value} wide={f.wide} />
           ))}
-        </dl>
+        </FactGrid>
       </Panel>
 
       <Panel title="From your notes">{modeNotes[mode.id]}</Panel>
@@ -166,7 +170,7 @@ function FamilyMatrix({ familyId, parentRoot, activeStart }: { familyId: string;
             <tr>
               <th className={thCls}>Mode</th>
               {columns.map((c) => (
-                <th key={c} className={cn(thCls, "pr-0 text-center")}>
+                <th key={c} className={cn(thCls, "px-0! text-center!")}>
                   {c}
                 </th>
               ))}
@@ -179,20 +183,25 @@ function FamilyMatrix({ familyId, parentRoot, activeStart }: { familyId: string;
               const bySemi = new Map(scale.map((s) => [s.semis, s]));
               const active = m.start === activeStart;
               return (
-                <tr key={m.id} className={cn(active && "bg-muted/70")}>
-                  <th scope="row" className={cn(tdCls, "pl-2 font-medium whitespace-nowrap")}>
-                    <span className="text-muted-foreground">{m.start + 1}.</span> {m.name.replace(/^Mode \d · /, "")}
+                <tr key={m.id} aria-current={active || undefined} className={cn(active && "bg-primary/5 hover:bg-primary/10!")}>
+                  <th scope="row" className={cn(tdCls, "font-medium whitespace-nowrap!", active && "text-primary!")}>
+                    <span className="text-muted-foreground tabular-nums">{m.start + 1}.</span> {m.name.replace(/^Mode \d · /, "")}
                   </th>
                   {columns.map((_, semi) => {
                     const s = semi === 12 ? scale[0] : bySemi.get(semi);
                     return (
-                      <td key={semi} className={cn(tdCls, "pr-0 text-center")}>
+                      <td key={semi} className={cn(tdCls, "px-0! text-center")}>
                         {s ? (
-                          <span className={cn("font-medium", semi === 0 && "underline decoration-ember decoration-2 underline-offset-4")}>
+                          <span
+                            className={cn(
+                              "font-medium",
+                              semi === 0 && "bg-primary text-primary-foreground inline-grid min-w-7 place-items-center rounded-md px-1 py-0.5",
+                            )}
+                          >
                             {view === "notes" ? s.name : semi === 0 || semi === 12 ? "1" : s.label}
                           </span>
                         ) : (
-                          <span aria-hidden className="text-fog">
+                          <span aria-hidden className="text-muted-foreground/40">
                             ·
                           </span>
                         )}

@@ -4,9 +4,9 @@ import { ROOTS, ROOT_SLUGS, rootFromSlug } from "@/lib/music/theory";
 import { useFretLabel, type FretLabel } from "@/lib/store";
 import { useQueryState } from "@/lib/use-query-state";
 import { cn } from "@/lib/utils";
-import { Segmented } from "@/components/ui/segmented";
+import { SEGMENTED_ITEM, SEGMENTED_ITEM_ACTIVE, SEGMENTED_TRACK, Segmented, onRadioGroupKeyDown } from "@/components/ui/segmented";
 
-/* Pick one of the 12 roots. Black keys show both spellings. */
+/* Pick one of the 12 roots, on the segmented track. Black keys show both spellings. */
 export function RootPicker({
   value,
   onChange,
@@ -19,28 +19,37 @@ export function RootPicker({
   className?: string;
 }) {
   return (
-    <div role="radiogroup" aria-label={label} className={cn("grid grid-cols-6 gap-1 rounded-xl bg-muted p-1 sm:grid-cols-12", className)}>
-      {ROOTS.map((root) => {
-        const selected = root.pc === value;
-        const [first, second] = root.label.split("/");
-        return (
-          <button
-            key={root.pc}
-            type="button"
-            role="radio"
-            aria-checked={selected}
-            aria-label={root.label}
-            onClick={() => onChange(root.pc)}
-            className={cn(
-              "flex min-h-10 flex-col items-center justify-center rounded-[10px] px-1 leading-[1.1] font-medium outline-none transition-[background-color,box-shadow] focus-visible:ring-3 focus-visible:ring-ring/50",
-              selected ? "bg-card text-foreground shadow-soft" : "text-muted-foreground hover:bg-card/50 hover:text-foreground",
-            )}
-          >
-            <span className="text-caption">{first}</span>
-            {second && <span className="text-[11px]">{second}</span>}
-          </button>
-        );
-      })}
+    <div className={cn("space-y-2", className)}>
+      <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase" aria-hidden>
+        {label}
+      </p>
+      <div
+        role="radiogroup"
+        aria-label={label}
+        onKeyDown={onRadioGroupKeyDown}
+        className={cn("grid grid-cols-6 gap-1 sm:grid-cols-12", SEGMENTED_TRACK)}
+      >
+        {ROOTS.map((root) => {
+          const selected = root.pc === value;
+          const [first, second] = root.label.split("/");
+          return (
+            <button
+              key={root.pc}
+              type="button"
+              role="radio"
+              data-slot="segmented-item"
+              aria-checked={selected}
+              aria-label={root.label}
+              tabIndex={selected ? 0 : -1}
+              onClick={() => onChange(root.pc)}
+              className={cn(SEGMENTED_ITEM, "min-h-10 flex-col gap-0 px-1 leading-[1.15]", selected && SEGMENTED_ITEM_ACTIVE)}
+            >
+              <span className="text-sm">{first}</span>
+              {second && <span className="text-xs font-normal opacity-80">{second}</span>}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

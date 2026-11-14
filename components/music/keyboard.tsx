@@ -2,8 +2,8 @@
 
 /*
  * Piano keyboard diagram. Keys are addressed in semitones from the first C
- * drawn. Marked keys get a dot (root boxed, like the fretboard) and an
- * optional caption under the keyboard.
+ * drawn. Marked keys get a brand tint and a dot (the root a brand square,
+ * like the fretboard) and an optional caption under the keyboard.
  */
 
 export type KeyMark = { label: string; caption?: string; root?: boolean };
@@ -54,7 +54,7 @@ export function Keyboard({
         aria-label={title}
         viewBox={`0 0 ${width} ${height}`}
         className="h-auto w-full select-none"
-        style={{ fontFamily: "var(--font-sans)", minWidth: minWidth ?? Math.min(width, 520) }}
+        style={{ minWidth: minWidth ?? Math.min(width, 520) }}
       >
         <title>{title}</title>
         {whites.map((k) => (
@@ -65,9 +65,9 @@ export function Keyboard({
               width={s.w}
               height={s.h}
               rx={size === "md" ? 4 : 1.5}
-              fill={marks[k] ? "var(--muted)" : "var(--card)"}
+              fill={marks[k] ? "color-mix(in oklab, var(--primary) 12%, var(--card))" : "var(--card)"}
               stroke="var(--muted-foreground)"
-              strokeOpacity={0.6}
+              strokeOpacity={0.5}
               strokeWidth={1}
             />
             {keyNames?.(k) && (
@@ -95,7 +95,7 @@ export function Keyboard({
                 height={s.bh}
                 rx={size === "md" ? 3 : 1}
                 // Solid mix (not opacity) so the white keys' borders don't show through.
-                fill={marks[k] ? "color-mix(in oklab, var(--foreground) 72%, var(--card))" : "var(--foreground)"}
+                fill={marks[k] ? "color-mix(in oklab, var(--primary) 45%, var(--foreground))" : "var(--foreground)"}
               />
               {keyNames?.(k) && size === "md" && (
                 <text
@@ -131,10 +131,10 @@ export function Keyboard({
                     y={cy - s.dot}
                     width={s.dot * 2}
                     height={s.dot * 2}
-                    rx={3.5}
-                    fill={white ? "var(--foreground)" : "var(--background)"}
-                    stroke="var(--color-ember)"
-                    strokeWidth={2.25}
+                    rx={4}
+                    fill="var(--primary)"
+                    stroke={white ? "var(--card)" : "var(--foreground)"}
+                    strokeWidth={1.5}
                   />
                 ) : (
                   <circle cx={cx} cy={cy} r={s.dot} fill={white ? "var(--foreground)" : "var(--background)"} />
@@ -145,12 +145,19 @@ export function Keyboard({
                   fontSize={mark.label.length > 2 ? 8.5 : s.font}
                   fontWeight={600}
                   textAnchor="middle"
-                  fill={white ? "var(--background)" : "var(--foreground)"}
+                  fill={mark.root ? "var(--primary-foreground)" : white ? "var(--background)" : "var(--foreground)"}
                 >
                   {mark.label}
                 </text>
                 {mark.caption && (
-                  <text x={cx} y={s.h + (white ? 18 : 36)} fontSize={12} fontWeight={500} textAnchor="middle" fill="var(--foreground)">
+                  <text
+                    x={cx}
+                    y={s.h + (white ? 18 : 36)}
+                    fontSize={12}
+                    fontWeight={mark.root ? 700 : 500}
+                    textAnchor="middle"
+                    fill={mark.root ? "var(--primary)" : "var(--foreground)"}
+                  >
                     {mark.caption}
                   </text>
                 )}
