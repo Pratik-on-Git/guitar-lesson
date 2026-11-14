@@ -19,7 +19,6 @@ import {
   type ScaleNote,
 } from "@/lib/music/theory";
 import { useFretLabel } from "@/lib/store";
-import { cn } from "@/lib/utils";
 import { Panel } from "@/components/app/panel";
 import { Segmented } from "@/components/ui/segmented";
 import { SimpleTable } from "@/components/ui/table";

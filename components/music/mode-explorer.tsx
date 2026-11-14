@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getFamily } from "@/lib/music/modes";
+import { getScale } from "@/lib/music/scales";
 import {
   buildScale,
   degreeSemitones,
@@ -48,7 +49,7 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
     { label: "Intervals", value: scale.map((s) => s.interval).join(" ") },
     {
       label: "Parent scale",
-      value: `${noteName(parentRoot)} ${family.parentName.toLowerCase()} · mode ${mode.start + 1}`,
+      value: `${noteName(parentRoot)} ${getScale(family.parentScaleId)?.short.toLowerCase() ?? ""} · mode ${mode.start + 1}`,
     },
   ];
   if (chords.length) {

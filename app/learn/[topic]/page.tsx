@@ -5,8 +5,6 @@ import { PageHeader } from "@/components/app/page-header";
 import { Panel } from "@/components/app/panel";
 import { TOPICS, getTopic } from "@/lib/content/topics";
 
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return TOPICS.map((t) => ({ topic: t.slug }));
 }

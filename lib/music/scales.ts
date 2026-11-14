@@ -74,8 +74,8 @@ export const SCALES: ScaleDef[] = [
         src: "/notes/c-major-scale-tab.jpeg",
         alt: "C major scale in standard notation and tab: C D E F G A B C, starting on the A string, 3rd fret",
         caption: "C major scale, one octave, notation and tab.",
-        width: 1043,
-        height: 147,
+        width: 1024,
+        height: 170,
       },
       {
         type: "figure",

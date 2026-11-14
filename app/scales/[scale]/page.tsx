@@ -8,8 +8,6 @@ import { ExplorerSkeleton } from "@/components/app/skeleton";
 import { SCALES, getScale } from "@/lib/music/scales";
 import { prettyDegree } from "@/lib/music/theory";
 
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return SCALES.map((s) => ({ scale: s.id }));
 }

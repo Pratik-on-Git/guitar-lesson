@@ -94,8 +94,8 @@ export function Keyboard({
                 width={s.bw}
                 height={s.bh}
                 rx={size === "md" ? 3 : 1}
-                fill="var(--foreground)"
-                fillOpacity={marks[k] ? 0.72 : 1}
+                // Solid mix (not opacity) so the white keys' borders don't show through.
+                fill={marks[k] ? "color-mix(in oklab, var(--foreground) 72%, var(--card))" : "var(--foreground)"}
               />
               {keyNames?.(k) && size === "md" && (
                 <text

@@ -7,7 +7,6 @@ import { MODE_FAMILIES } from "@/lib/music/modes";
 import { SCALE_SIZES } from "@/lib/music/scales";
 import {
   buildScale,
-  chordNotes,
   degreeSemitones,
   degreeText,
   harmonize,

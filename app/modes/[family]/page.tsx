@@ -9,8 +9,6 @@ import { ModeExplorer } from "@/components/music/mode-explorer";
 import { SimpleTable } from "@/components/ui/table";
 import { MAJOR_MODE_TABLE, MODE_FAMILIES, getFamily } from "@/lib/music/modes";
 
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return MODE_FAMILIES.map((f) => ({ family: f.id }));
 }
@@ -29,7 +27,7 @@ export default async function ModeFamilyPage({ params }: PageProps<"/modes/[fami
     <div className="flex flex-col gap-8">
       <PageHeader
         title={family.name}
-        description={`The ${family.modes.length} modes of the ${family.parentName.toLowerCase()}.`}
+        description={`The ${family.modes.length} modes you get by starting the ${family.short.toLowerCase()} scale on each of its notes.`}
         studyHref={`/modes/${family.id}`}
         meta={<Tag>Parent: {family.parentName}</Tag>}
       />
