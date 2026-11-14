@@ -14,6 +14,8 @@ import { Fretboard } from "./fretboard";
 import { StudySelect, PlayNotes } from "./study-controls";
 import { References } from "@/components/content/references";
 import { CHORD_REFERENCES } from "@/lib/content/references";
+import { ChordBox } from "@/components/visuals/chord-box";
+import { gripFrom } from "@/lib/music/chord-shapes";
 
 export function VoicingExplorer() {
   const [id, setId] = useQueryState("chord", "major-7");
@@ -33,6 +35,11 @@ export function VoicingExplorer() {
   const shape = shapes[Number(register)] ?? shapes[0];
   const soundingVoices = shape ? shape.map((n) => ({ midi: TUNING[n.string] + n.fret, index: n.index })) : voices;
   const title = `${noteName(root)}${chord.symbol}`;
+  const inversionShapes = chord.formula.map((_, i) => {
+    const found = guitarVoicings(chordVoices(rootPc, chord.formula, i, kind), strings);
+    return found.find((g) => Math.max(...g.map((n) => n.fret)) <= 15) ?? found[0];
+  });
+  const boxOf = (g: typeof shape) => gripFrom(g.map((n) => ({ string: n.string, fret: n.fret, degree: chord.formula[n.index] })));
   const sourcePage = kind === "close" ? chord.shapePage : (kind === "drop-2" ? 67 : 75) + Math.max(0, BOOK_CHORD_TYPES.indexOf(chord) - 4);
   return <div className="flex flex-col gap-5">
     <Panel title="Build a voicing" description="Choose the resulting bass inversion. Note order and octave spacing are computed from the close-position/drop recipe.">
@@ -51,6 +58,21 @@ export function VoicingExplorer() {
     <Panel title="On the guitar" description="A computed grip with the selected ordered pitches, in standard tuning. These grips are separate from the book's numbered root-position shapes.">
       {shape ? <>
         {shapes.length > 1 && <StudySelect label="Fretboard register" value={String(shapes.indexOf(shape))} onChange={setRegister} options={shapes.map((s, i) => ({ value: String(i), label: `Bass at fret ${s[0].fret}` }))} />}
+        <div className="mb-5 flex flex-wrap items-start gap-6">
+          <ChordBox grip={boxOf(shape)} name={`${title} · ${["root", "1st inv.", "2nd inv.", "3rd inv."][inversion]}`} />
+          <div className="min-w-0 flex-1">
+            <p className="text-muted-foreground mb-2 text-xs font-medium tracking-wide uppercase">Every inversion on strings {strings.map((s) => 6 - s).join("–")}</p>
+            <ol className="flex flex-wrap gap-3">
+              {inversionShapes.map((g, i) => g && (
+                <li key={i}>
+                  <button type="button" onClick={() => { setInv(String(i)); setRegister("0"); }} aria-pressed={i === inversion} className={`rounded-xl border p-2 transition-colors ${i === inversion ? "border-primary bg-primary/5" : "hover:bg-muted"}`}>
+                    <ChordBox grip={boxOf(g)} size="sm" name={["Root", "1st", "2nd", "3rd"][i]} />
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
         <Fretboard notes={shape} startFret={Math.max(0, Math.min(...shape.map((n) => n.fret)) - 1)} frets={Math.max(...shape.map((n) => n.fret)) + 1} label={(i) => tones[i].label} title={`${title} ${kind}, string set ${strings.map((s) => 6 - s).join(" ")}`} />
         <SimpleTable columns={["String (6 → 1)", "Fret", "Tone"]} rows={Array.from({ length: 6 }, (_, string) => { const note = shape.find((n) => n.string === string); return [String(6 - string), note ? String(note.fret) : "× · mute", note ? tones[note.index].name : "—"]; })} />
       </> : <p className="text-sm leading-6">This exact spacing has no grip within frets 0–24 and a seven-fret span on the selected strings. Choose another string set or voicing type; use the source sheets to study practical alternatives and omitted-tone shapes.</p>}

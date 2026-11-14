@@ -8,11 +8,11 @@ import { stepName } from "./piano-diagram";
 /** A scale along the low E string: fret dots labelled by interval, step sizes underneath. */
 export function OneStringNeck({ frets, labels, title }: { frets: number[]; labels: string[]; title: string }) {
   const fw = 52;
-  const left = 30;
+  const left = 50;
   const max = Math.max(...frets);
   const width = left + (max + 1) * fw + 10;
   const sy = 40;
-  const x = (f: number) => (f === 0 ? left - 6 : left + (f - 0.5) * fw);
+  const x = (f: number) => (f === 0 ? left - 16 : left + (f - 0.5) * fw);
   return (
     <svg role="img" aria-label={title} viewBox={`0 0 ${width} 110`} className="h-auto w-full min-w-[560px]">
       <title>{title}</title>
@@ -21,7 +21,7 @@ export function OneStringNeck({ frets, labels, title }: { frets: number[]; label
       {[3, 5, 7, 9].filter((f) => f <= max).map((f) => <circle key={f} cx={x(f)} cy={sy} r={4} fill="var(--border)" />)}
       {max >= 12 && <><circle cx={x(12)} cy={sy - 8} r={3.5} fill="var(--border)" /><circle cx={x(12)} cy={sy + 8} r={3.5} fill="var(--border)" /></>}
       <line x1={left - 14} x2={left + max * fw} y1={sy} y2={sy} stroke="var(--foreground)" strokeOpacity={0.6} strokeWidth={2.2} />
-      <text x={8} y={sy + 4} fontSize={11} fill="var(--muted-foreground)">E</text>
+      <text x={6} y={sy + 4} fontSize={11} fill="var(--muted-foreground)">E</text>
       {frets.map((f, i) => (
         <g key={i}>
           {labels[i] === "R" ? <rect x={x(f) - 13} y={sy - 13} width={26} height={26} rx={5} fill="var(--primary)" /> : <circle cx={x(f)} cy={sy} r={13} fill="var(--foreground)" />}

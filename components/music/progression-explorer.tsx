@@ -12,6 +12,8 @@ import { References } from "@/components/content/references";
 import { RootPicker, useRootParam } from "./controls";
 import { StudySelect } from "./study-controls";
 import { ScorePlayer } from "./score-player";
+import { ChordStrip } from "@/components/visuals/chord-grips";
+import { PROGRESSION_QUALITIES } from "@/lib/music/progressions";
 
 export function ProgressionExplorer() {
   const [rootPc, setRootPc] = useRootParam(0); const [id, setId] = useQueryState("progression", "common-1"); const preset = PROGRESSIONS.find((p) => p.id === id) ?? PROGRESSIONS[0];
@@ -32,6 +34,8 @@ export function ProgressionExplorer() {
     </Panel>
     <Panel title={chords.map((c) => c.name).join(" – ")} description={preset.source}>
       {tab === "reharmonize" && <p className="mb-4 text-sm text-muted-foreground">Original: {original.map((c) => c.name).join(" – ")}. The original and new version both span {total} quarter-note beats. If the chosen progression has no applicable target chord, that operation leaves it unchanged.</p>}
+      <ChordStrip label="Chord shapes for this progression" chords={chords.map((c) => ({ name: c.name, caption: c.roman, rootPc: pc(c.root), formula: PROGRESSION_QUALITIES[c.quality].formula }))} />
+      <div className="mt-4" />
       <SimpleTable columns={["Step", "Roman", "Chord", "Beats", "Chord tones"]} rows={chords.map((c, i) => [String(i + 1), c.roman, c.name, Number(c.beats.toFixed(3)).toString(), c.tones.map((n) => n.name).join(" ")])} />
       <div className="mt-5"><ScorePlayer key={`${rootPc}-${id}-${kind}-${tab}-${bpm}`} events={score(tab === "voices" ? voices.selected : voices.baseline)} beats={total} bpm={bpm} label={tab === "voices" ? "Hear smooth voice leading" : "Hear progression"} /></div>
     </Panel>

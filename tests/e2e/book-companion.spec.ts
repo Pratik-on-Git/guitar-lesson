@@ -1,17 +1,16 @@
 import { expect, test } from "@playwright/test";
-import { BOOK_DIAGRAMS, diagramSrc } from "../../lib/content/book";
+import { FRET_SHEETS } from "../../lib/content/fretboard-sheets";
 
 test.beforeEach(async ({ page }) => { page.on("pageerror", (error) => { throw error; }); });
 
-test("all source diagrams are available and atlas filters preserve deep links", async ({ page, request }) => {
-  for (const sheet of BOOK_DIAGRAMS) {
-    const response = await request.get(diagramSrc(sheet.page));
-    expect(response.ok(), `Sheet ${sheet.page}`).toBe(true);
-    expect(response.headers()["content-type"]).toContain("image/webp");
-  }
+test("every diagram sheet is drawn as code and atlas filters preserve deep links", async ({ page }) => {
+  expect(FRET_SHEETS).toHaveLength(63);
   await page.goto("/book?page=55");
   await expect(page.getByLabel("Diagram sheet")).toHaveValue("55");
-  await expect(page.getByRole("img", { name: /Original Augmented scales/ })).toBeVisible();
+  await expect(page.getByRole("group", { name: /Augmented diagram sheet, page 55/ })).toBeVisible();
+  await expect(page.getByRole("img", { name: /^Position 1: A-root shape/ })).toBeVisible();
+  await page.getByRole("radio", { name: "C", exact: true }).click();
+  await expect(page.getByRole("img", { name: /^Position 1: C-root shape/ })).toBeVisible();
   await page.getByRole("radio", { name: "Drop 3", exact: true }).click();
   await page.getByLabel("Diagram sheet").selectOption("80");
   await expect(page).toHaveURL(/page=80/);

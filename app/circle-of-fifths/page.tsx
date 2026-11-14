@@ -7,6 +7,7 @@ import { CircleOfFifths } from "@/components/music/circle-of-fifths";
 import { SimpleTable } from "@/components/ui/table";
 import { CIRCLE_TEXT } from "@/lib/content/topics";
 import { FLAT_ORDER, SHARP_ORDER } from "@/lib/music/keys";
+import { TheoryVisual } from "@/components/visuals/theory-figures";
 
 export const metadata: Metadata = { title: "Circle of Fifths" };
 
@@ -39,6 +40,9 @@ export default function CircleOfFifthsPage() {
             { type: "p", text: CIRCLE_TEXT.fourths },
           ]}
         />
+      </Panel>
+      <Panel title="Signatures at a glance" description="Each step clockwise adds a sharp; each step anticlockwise adds a flat. The three overlapping pairs (B/C♭, F♯/G♭, C♯/D♭) are the same keys spelled two ways.">
+        <TheoryVisual id="chart-key-signatures" />
       </Panel>
       <div className="grid gap-4 md:gap-6 xl:grid-cols-2">
         <Panel title="Order of Sharps" description="Clockwise. Each new key adds the next sharp: F C G D A E B.">

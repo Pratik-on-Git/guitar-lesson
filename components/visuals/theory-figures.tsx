@@ -12,6 +12,9 @@ import { BraceGroups, ChordStack, OneStringNeck, PitchCircle, SignatureCircle, T
 import { Notation } from "./notation";
 import { PianoDiagram, PianoRange, type PianoMark } from "./piano-diagram";
 import { RhythmCount } from "./rhythm-count";
+import { CHART_VISUALS } from "./chart-figures";
+import { FRET_SHEETS } from "@/lib/content/fretboard-sheets";
+import { FretSheetView, SheetHarmony } from "./fret-sheet";
 
 /*
  * Every illustration from the supplied books, rebuilt as coded visuals. Notes,
@@ -99,7 +102,7 @@ function ChordFormulaTable({ rows, caption }: { rows: { name: string; formula: s
                 <th scope="row" className="px-3 py-1 text-left font-medium">{r.name}</th>
                 {Array.from({ length: width }, (_, i) => <td key={i} className="border-l px-2 font-mono">{f[i] ? pretty(f[i]) : ""}</td>)}
                 <td className="border-l px-2 font-semibold whitespace-nowrap">{notes.join(" ")}</td>
-                <td className="border-l px-1 py-1">{grip ? <ChordBox grip={grip} size="sm" className="mx-auto [&_svg]:w-16" /> : "—"}</td>
+                <td className="border-l px-1 py-1">{grip ? <ChordBox grip={grip} size="sm" className="mx-auto" /> : "—"}</td>
               </tr>
             );
           })}
@@ -359,7 +362,14 @@ export const NOTE_VISUALS: Record<string, () => React.ReactNode> = {
 };
 
 export function TheoryVisual({ id, className }: { id: string; className?: string }) {
-  const render = THEORY_VISUALS[id] ?? NOTE_VISUALS[id];
+  const sheet = id.startsWith("sheet-") ? FRET_SHEETS.find((s) => s.page === Number(id.slice(6))) : undefined;
+  if (id.startsWith("harmony-")) {
+    const page = Number(id.slice(8));
+    const s = FRET_SHEETS.find((x) => x.page === page);
+    return s ? <div className={cn("min-w-0", className)}><SheetHarmony page={page} formula={s.groups[0].formula} rootPc={9} /></div> : null;
+  }
+  if (sheet) return <div className={cn("min-w-0", className)}><FretSheetView sheet={sheet} /></div>;
+  const render = THEORY_VISUALS[id] ?? NOTE_VISUALS[id] ?? CHART_VISUALS[id];
   if (!render) return null;
   return <div className={cn("min-w-0", className)}>{render()}</div>;
 }

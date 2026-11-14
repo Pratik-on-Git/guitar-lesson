@@ -5,6 +5,7 @@ import { parseMarks, type FretSheet, type SheetDiagram } from "@/lib/content/fre
 import { cn } from "@/lib/utils";
 import { NeckDiagram, type NeckMark } from "./neck-diagram";
 import { IntervalRuler } from "./interval-ruler";
+import { ContainedChords, ParentHarmony } from "./scale-harmony";
 
 export type SheetLabels = "degree" | "note";
 
@@ -80,6 +81,7 @@ export function FretSheetView({ sheet, rootPc = 9, labels = "degree" }: { sheet:
       </div>
 
       {sheet.table && <SheetTable sheet={sheet} />}
+      <SheetHarmony page={sheet.page} formula={firstFormula} rootPc={rootPc} />
 
       {sheet.neck && (
         <div className="bg-muted/30 rounded-xl border p-3 sm:p-4">
@@ -121,7 +123,7 @@ function SheetTable({ sheet }: { sheet: FretSheet }) {
       <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
         <div className="rounded-xl border p-4">
           <dt className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Harmonic formula</dt>
-          <dd className="mt-2 flex flex-wrap gap-1.5">{t.harmonic.startsWith("See") ? <span className="text-sm">{t.harmonic} (parent-scale harmony)</span> : t.harmonic.split(" ").map((c) => <span key={c} className="bg-muted rounded-md px-2 py-0.5 font-mono text-xs">{c}</span>)}</dd>
+          <dd className="mt-2 flex flex-wrap gap-1.5">{t.harmonic.startsWith("See") ? <span className="text-sm">Shown below ({t.harmonic.replace("See ", "book ")})</span> : t.harmonic.split(" ").map((c) => <span key={c} className="bg-muted rounded-md px-2 py-0.5 font-mono text-xs">{c}</span>)}</dd>
         </div>
         <div className="rounded-xl border p-4">
           <dt className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Root-chord extensions</dt>
@@ -130,4 +132,29 @@ function SheetTable({ sheet }: { sheet: FretSheet }) {
       </dl>
     </div>
   );
+}
+
+/** The harmony the book refers to elsewhere ("check pages 18–19 / 51–53"), shown in place. */
+export function SheetHarmony({ page, formula, rootPc }: { page: number; formula: string[]; rootPc: number }) {
+  if (page === 20 || page === 22) return (
+    <div className="space-y-2">
+      <p className="text-sm font-semibold">Harmony from the parent modes (pp. 18–19)</p>
+      <ParentHarmony scale="major-pentatonic" rootPc={rootPc} />
+      {page === 22 && <p className="text-muted-foreground text-xs">The blue note ♭3 adds ♭IIImaj7 or ♭III+maj7 (book, p. 19).</p>}
+    </div>
+  );
+  if (page === 21 || page === 23) return (
+    <div className="space-y-2">
+      <p className="text-sm font-semibold">Harmony from the parent modes (p. 19)</p>
+      <ParentHarmony scale="minor-pentatonic" rootPc={rootPc} />
+      {page === 23 && <p className="text-muted-foreground text-xs">The blue note ♭5 adds ♭Vmaj7 or ♭V+maj7 (book, p. 19).</p>}
+    </div>
+  );
+  if (page >= 54 && page <= 57) return (
+    <div className="space-y-2">
+      <p className="text-sm font-semibold">Chord types contained in the scale (pp. 51–53)</p>
+      <ContainedChords formula={formula} rootPc={rootPc} />
+    </div>
+  );
+  return null;
 }

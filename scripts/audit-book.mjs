@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { BOOK_DIAGRAMS, BOOK_CHORD_TYPES } from "../lib/content/book.ts";
 import { FRET_SHEETS } from "../lib/content/fretboard-sheets.ts";
+import { LESSON_VISUALS } from "../lib/content/lesson-visuals.ts";
+import { THEORY_FIGURES } from "../lib/content/theory-book-assets.ts";
 import { parseMarks } from "../lib/content/fretboard-sheet-types.ts";
 import { BOOK_ASSIGNMENTS } from "../lib/content/book-assignments.ts";
 import { assignmentMaterial } from "../lib/content/assignment-links.ts";
@@ -34,6 +36,16 @@ for (const topic of TOPICS) {
   verify(() => assert.equal(new Set(topic.sections.map((s) => s.id)).size, topic.sections.length));
 }
 verify(() => assert.equal(new Set(STUDY_PAGES.map((p) => p.href)).size, STUDY_PAGES.length));
+const placed = new Set(Object.values(LESSON_VISUALS).flatMap((sections) => Object.values(sections).flat()));
+for (const figure of THEORY_FIGURES) verify(() => assert.ok(placed.has(figure.id), `Carter figure ${figure.id} is not shown in any lesson`));
+for (const [slug, sections] of Object.entries(LESSON_VISUALS)) {
+  const topic = TOPICS.find((t) => t.slug === slug);
+  verify(() => assert.ok(topic, `Lesson visuals for unknown topic ${slug}`));
+  for (const [section, ids] of Object.entries(sections)) {
+    verify(() => assert.ok(topic?.sections.some((s) => s.id === section), `Unknown section ${slug}#${section}`));
+    for (const id of ids) verify(() => assert.ok(id.startsWith("chart-") || id.startsWith("harmony-") || THEORY_FIGURES.some((f) => f.id === id) || FRET_SHEETS.some((s) => `sheet-${s.page}` === id), `Unknown visual ${id}`));
+  }
+}
 for (const sheet of BOOK_DIAGRAMS) {
   const data = FRET_SHEETS.find((s) => s.page === sheet.page);
   verify(() => assert.ok(data, `Missing transcribed sheet ${sheet.page}`));

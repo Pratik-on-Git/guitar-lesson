@@ -7,6 +7,8 @@ import { ChordLibrary } from "@/components/music/chord-library";
 import { CHORDS, CHORD_CATEGORIES } from "@/lib/music/chords";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { Panel } from "@/components/app/panel";
+import { TheoryVisual } from "@/components/visuals/theory-figures";
 
 export const metadata: Metadata = { title: "Chord Library" };
 
@@ -28,6 +30,9 @@ export default function ChordsPage() {
       <Suspense fallback={<ExplorerSkeleton />}>
         <ChordLibrary />
       </Suspense>
+      <Panel title="The library by family" description="How the formulas divide across chord families.">
+        <TheoryVisual id="chart-chord-categories" />
+      </Panel>
     </div>
   );
 }

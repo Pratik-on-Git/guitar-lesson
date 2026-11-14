@@ -15,6 +15,10 @@ import { BOOK_TOPIC_PAGES } from "@/lib/content/book";
 import { THEORY_TOPIC_PAGES } from "@/lib/content/theory-book";
 import { TheoryBookSource } from "@/components/content/theory-book-source";
 import Link from "next/link";
+import { LESSON_VISUALS, CHART_TITLES } from "@/lib/content/lesson-visuals";
+import { THEORY_FIGURES } from "@/lib/content/theory-book-assets";
+import { BOOK_DIAGRAMS } from "@/lib/content/book";
+import type { Block } from "@/lib/content/types";
 
 export function generateStaticParams() {
   return TOPICS.map((t) => ({ topic: t.slug }));
@@ -59,7 +63,7 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
         <div className="flex min-w-0 flex-col gap-4 md:gap-6">
           {topic.sections.map((section) => (
             <Panel key={section.id} id={section.id} title={section.title}>
-              <Blocks blocks={section.blocks} />
+              <Blocks blocks={[...section.blocks, ...visualBlocks(topic.slug, section.id)]} />
             </Panel>
           ))}
           <References entries={TOPIC_REFERENCES[topic.slug] ?? []} />
@@ -92,4 +96,19 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
       </div>
     </div>
   );
+}
+
+function visualBlocks(slug: string, section: string): Block[] {
+  return (LESSON_VISUALS[slug]?.[section] ?? []).map((id) => {
+    const figure = THEORY_FIGURES.find((f) => f.id === id);
+    const sheet = id.startsWith("sheet-") ? BOOK_DIAGRAMS.find((d) => d.page === Number(id.slice(6))) : undefined;
+    const caption = figure
+      ? `${figure.title} · Carter, PDF p. ${figure.page} (redrawn)`
+      : sheet
+        ? `${sheet.chapter} · ${sheet.title} · Fretboard Concepts p. ${sheet.page}. Move it to any key in the atlas.`
+        : id.startsWith("harmony-")
+          ? `Harmony of the Fretboard Concepts p. ${id.slice(8)} scale, in A`
+          : CHART_TITLES[id];
+    return { type: "visual", id, caption };
+  });
 }

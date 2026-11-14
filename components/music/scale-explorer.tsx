@@ -1,5 +1,7 @@
 "use client";
 
+import { ChordStrip, formulaFromSemis } from "@/components/visuals/chord-grips";
+
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
@@ -209,6 +211,11 @@ export function HarmonyPanel({ scale, title, theoretical = false }: { scale: Sca
   const chords = harmonize(scale);
   return (
     <Panel title={theoretical ? "Theoretical harmony from stacked thirds" : "Harmony"} description={theoretical ? "These chords follow the strict mode spelling. For the altered scale's jazz use, refer to the dominant-application panel above." : `Triads and seventh chords built on each degree of ${title}, by stacking 3rds.`}>
+      <ChordStrip
+        label={`Seventh-chord shapes in ${title}`}
+        chords={chords.map((c, i) => ({ name: c.seventh, caption: c.seventhNumeral, rootPc: pc(scale[i].note), formula: formulaFromSemis([0, 2, 4, 6].map((step) => scale[(i + step) % 7].semis - scale[i].semis)) }))}
+      />
+      <div className="mt-4" />
       <SimpleTable
         columns={["Degree", "Triad", "Quality", "Seventh", "Harmonic formula", "Chord tones"]}
         rows={chords.map((c) => [

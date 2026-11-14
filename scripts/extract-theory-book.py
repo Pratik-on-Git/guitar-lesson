@@ -10,8 +10,6 @@ import pymupdf
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = next(ROOT.glob("Music Theory From Beginner to Expert*.pdf"))
-OUT = ROOT / "public/theory-book"
-OUT.mkdir(parents=True, exist_ok=True)
 titles = {
     15: ["Notes on the keyboard"], 16: ["Chromatic note circle"],
     18: ["Piano octave registers"], 20: ["Pitch adjustment example"],
@@ -83,14 +81,8 @@ with pymupdf.open(SOURCE) as document:
         images = page.get_image_info()
         assert len(images) == len(titles[number]), f"Check illustrations on page {number}"
         for i, info in enumerate(images):
-            rect = pymupdf.Rect(info["bbox"])
-            crop = pymupdf.Rect(rect.x0 - 2, rect.y0 - 2, rect.x1 + 2, rect.y1 + 2) & page.rect
-            pix = page.get_pixmap(matrix=pymupdf.Matrix(2.5, 2.5), clip=crop, alpha=False)
-            name = f"{number:03}-{i+1}.webp"
-            pix.pil_save(str(OUT / name), format="WEBP", quality=90)
-            figures.append({"id": f"p{number}-{i+1}", "page": number, "title": titles[number][i],
-                            "src": f"/theory-book/{name}", "width": pix.width, "height": pix.height,
-                            "href": lesson(number)})
+            # Figures are redrawn in components/visuals/theory-figures.tsx; only their identity is kept.
+            figures.append({"id": f"p{number}-{i+1}", "page": number, "title": titles[number][i], "href": lesson(number)})
 review = ROOT / ".local/theory-book"
 review.mkdir(parents=True, exist_ok=True)
 (review / "book.txt").write_text("\n".join(pages), encoding="utf-8")

@@ -42,7 +42,7 @@ export default function Overview() {
 
       <Panel title="Study, listen and make music" description="Follow either book's chapter order, or use the integrated study map below.">
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{[
-          { title: "Source library", text: "Both book guides, 124 source illustrations and chapter references.", href: "/books" },
+          { title: "Source library", text: "Both book guides, 124 redrawn diagrams and figures, and chapter references.", href: "/books" },
           { title: "Hear the theory", text: "Intervals, modes over a drone, tuning and expression.", href: "/listening" },
           { title: "Build the rhythm", text: "17 units, four-bar patterns, meters and cross-rhythms.", href: "/rhythm-lab" },
           { title: "Write a phrase", text: "Compose, hear, save and export a four-bar sketch.", href: "/composition" },
