@@ -76,9 +76,6 @@ function useStore<T>(store: Store<T>): [T, (value: T) => void] {
 export type Theme = "light" | "dark";
 const themeStore = createStore<Theme | null>("gl-theme", null);
 
-/** Inline script for <head>: applies the saved theme before first paint. */
-export const THEME_SCRIPT = `try{var t=JSON.parse(localStorage.getItem("gl-theme"));if(t==="dark"||(t===null&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
-
 export function useTheme(): [Theme, (theme: Theme) => void] {
   const [saved, setSaved] = useStore(themeStore);
   const system = useSyncExternalStore(
