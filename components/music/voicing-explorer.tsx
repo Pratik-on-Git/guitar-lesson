@@ -4,7 +4,7 @@ import Link from "next/link";
 import { BOOK_CHORD_TYPES } from "@/lib/content/book";
 import { BookSource } from "@/components/content/book-source";
 import { useQueryState } from "@/lib/use-query-state";
-import { buildScale, noteName, parseDegree, TUNING, spellRoot } from "@/lib/music/theory";
+import { buildScale, noteName, noteWithOctave, parseDegree, TUNING, spellRoot } from "@/lib/music/theory";
 import { chordVoices, guitarVoicings, STRING_SETS, type VoicingKind } from "@/lib/music/performance";
 import { Panel } from "@/components/app/panel";
 import { Fact, FactGrid } from "@/components/app/facts";
@@ -31,6 +31,7 @@ export function VoicingExplorer() {
   const shapes = guitarVoicings(voices, strings);
   const [register, setRegister] = useQueryState("register", "0");
   const shape = shapes[Number(register)] ?? shapes[0];
+  const soundingVoices = shape ? shape.map((n) => ({ midi: TUNING[n.string] + n.fret, index: n.index })) : voices;
   const title = `${noteName(root)}${chord.symbol}`;
   const sourcePage = kind === "close" ? chord.shapePage : (kind === "drop-2" ? 67 : 75) + Math.max(0, BOOK_CHORD_TYPES.indexOf(chord) - 4);
   return <div className="flex flex-col gap-5">
@@ -44,13 +45,13 @@ export function VoicingExplorer() {
       </div>
     </Panel>
     <Panel title={title} description={`${chord.name} · ${kind.replace("-", " ")} · ${["root position", "first inversion", "second inversion", "third inversion"][inversion]}`}>
-      <FactGrid><Fact label="Formula" value={tones.map((t) => t.label).join(" ")} /><Fact label="Bass note" value={tones[inversion].name} /><Fact wide label="Voices from low to high" value={voices.map((v) => `${tones[v.index].name}${Math.floor(v.midi / 12) - 1}`).join(" → ")} /><Fact wide label="Degree order" value={voices.map((v) => tones[v.index].label).join(" → ")} /></FactGrid>
+      <FactGrid><Fact label="Formula" value={tones.map((t) => t.label).join(" ")} /><Fact label="Bass note" value={tones[inversion].name} /><Fact wide label="Voices from low to high" value={soundingVoices.map((v) => noteWithOctave(tones[v.index].note, v.midi)).join(" → ")} /><Fact wide label="Degree order" value={voices.map((v) => tones[v.index].label).join(" → ")} /></FactGrid>
       <div className="mt-4"><PlayNotes key={`${id}-${kind}-${rootPc}-${inversion}`} midis={shape ? shape.map((n) => TUNING[n.string] + n.fret) : voices.map((v) => v.midi)} label="Hear the voicing" simultaneous /></div>
     </Panel>
     <Panel title="On the guitar" description="A computed grip with the selected ordered pitches, in standard tuning. These grips are separate from the book's numbered root-position shapes.">
       {shape ? <>
         {shapes.length > 1 && <StudySelect label="Fretboard register" value={String(shapes.indexOf(shape))} onChange={setRegister} options={shapes.map((s, i) => ({ value: String(i), label: `Bass at fret ${s[0].fret}` }))} />}
-        <Fretboard notes={shape} frets={Math.max(15, ...shape.map((n) => n.fret))} label={(i) => tones[i].label} title={`${title} ${kind}, string set ${strings.map((s) => 6 - s).join(" ")}`} />
+        <Fretboard notes={shape} startFret={Math.max(0, Math.min(...shape.map((n) => n.fret)) - 1)} frets={Math.max(...shape.map((n) => n.fret)) + 1} label={(i) => tones[i].label} title={`${title} ${kind}, string set ${strings.map((s) => 6 - s).join(" ")}`} />
         <SimpleTable columns={["String (6 → 1)", "Fret", "Tone"]} rows={Array.from({ length: 6 }, (_, string) => { const note = shape.find((n) => n.string === string); return [String(6 - string), note ? String(note.fret) : "× · mute", note ? tones[note.index].name : "—"]; })} />
       </> : <p className="text-sm leading-6">This exact spacing has no grip within frets 0–24 and a seven-fret span on the selected strings. Choose another string set or voicing type; use the source sheets to study practical alternatives and omitted-tone shapes.</p>}
     </Panel>

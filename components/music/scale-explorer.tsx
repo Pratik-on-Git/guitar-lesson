@@ -188,7 +188,8 @@ export function NeckPanel({
       )}
       <Fretboard
         notes={shown}
-        frets={maxFret}
+        startFret={highlight ? Math.max(0, Math.min(...highlight.map((n) => n.fret)) - 1) : 0}
+        frets={highlight ? Math.max(...highlight.map((n) => n.fret)) + 1 : maxFret}
         label={label}
         highlight={highlight}
         duplicates={duplicates}

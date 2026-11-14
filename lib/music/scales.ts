@@ -48,7 +48,7 @@ export type ScaleDef = {
   notes: Block[];
 };
 
-export const SCALES: ScaleDef[] = [
+const SCALE_DEFINITIONS: ScaleDef[] = [
   {
     id: "kumoi", name: "Kumoi scale", short: "Kumoi", family: "Pentatonic · book variant",
     formula: ["1", "2", "b3", "5", "6"], exampleRoot: 9,
@@ -411,6 +411,9 @@ export const SCALES: ScaleDef[] = [
     ],
   },
 ];
+
+const SCALE_ORDER: ScaleId[] = ["major", "natural-minor", "major-pentatonic", "minor-pentatonic", "major-blues", "minor-blues", "kumoi", "pelog", "hirajoshi", "harmonic-minor", "melodic-minor", "whole-tone", "augmented", "diminished-half-whole", "diminished-whole-half", "chromatic", "bebop-major", "bebop-dominant"];
+export const SCALES: ScaleDef[] = SCALE_ORDER.map((id) => SCALE_DEFINITIONS.find((scale) => scale.id === id)!);
 
 export function getScale(id: string): ScaleDef | undefined {
   return SCALES.find((s) => s.id === id);

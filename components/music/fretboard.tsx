@@ -23,6 +23,7 @@ const INLAYS = [3, 5, 7, 9, 15, 17, 19, 21];
 export function Fretboard({
   notes,
   frets = 15,
+  startFret = 0,
   label,
   rootIndex = 0,
   highlight,
@@ -31,6 +32,8 @@ export function Fretboard({
 }: {
   notes: FretNote[];
   frets?: number;
+  /** Crop a practice region while retaining absolute fret labels. */
+  startFret?: number;
   /** Text inside each dot, from the note's scale index. */
   label: FretLabelFn;
   /** Which scale index is the root (boxed). */
@@ -42,12 +45,14 @@ export function Fretboard({
   title: string;
 }) {
   const nutX = PAD_X + OPEN_W;
-  const width = nutX + frets * FRET_W + PAD_X;
+  const first = Math.max(1, startFret);
+  const visibleFrets = frets - first + 1;
+  const width = nutX + visibleFrets * FRET_W + PAD_X;
   const neckH = STRING_GAP * 5;
   const height = PAD_TOP + neckH + PAD_BOTTOM;
   // SVG y for string index (0 = low E) - drawn bottom-up.
   const yOf = (string: number) => PAD_TOP + (5 - string) * STRING_GAP;
-  const xOf = (fret: number) => (fret === 0 ? PAD_X + OPEN_W / 2 - 4 : nutX + (fret - 0.5) * FRET_W);
+  const xOf = (fret: number) => (fret === 0 ? PAD_X + OPEN_W / 2 - 4 : nutX + (fret - first + 0.5) * FRET_W);
   const inPosition = highlight ? new Set(highlight.map((n) => `${n.string}:${n.fret}`)) : null;
 
   return (
@@ -56,27 +61,28 @@ export function Fretboard({
         role="img"
         aria-label={title}
         viewBox={`0 0 ${width} ${height}`}
-        className="h-auto w-full min-w-[720px] select-none"
+        className="h-auto w-full select-none"
+        style={{ minWidth: visibleFrets <= 8 ? 300 : 720 }}
       >
         <title>{title}</title>
         {/* the neck itself, a muted well behind the frets */}
-        <rect x={nutX} y={PAD_TOP - 4} width={frets * FRET_W} height={neckH + 8} rx={6} fill="var(--muted)" />
+        <rect x={nutX} y={PAD_TOP - 4} width={visibleFrets * FRET_W} height={neckH + 8} rx={6} fill="var(--muted)" />
         {/* inlays */}
-        {INLAYS.filter((f) => f <= frets).map((f) => (
-          <circle key={f} cx={nutX + (f - 0.5) * FRET_W} cy={PAD_TOP + neckH / 2} r={5} fill="var(--border)" />
+        {INLAYS.filter((f) => f >= first && f <= frets).map((f) => (
+          <circle key={f} cx={xOf(f)} cy={PAD_TOP + neckH / 2} r={5} fill="var(--border)" />
         ))}
-        {frets >= 12 && (
+        {first <= 12 && frets >= 12 && (
           <>
-            <circle cx={nutX + 11.5 * FRET_W} cy={PAD_TOP + STRING_GAP * 1.5} r={5} fill="var(--border)" />
-            <circle cx={nutX + 11.5 * FRET_W} cy={PAD_TOP + STRING_GAP * 3.5} r={5} fill="var(--border)" />
+            <circle cx={xOf(12)} cy={PAD_TOP + STRING_GAP * 1.5} r={5} fill="var(--border)" />
+            <circle cx={xOf(12)} cy={PAD_TOP + STRING_GAP * 3.5} r={5} fill="var(--border)" />
           </>
         )}
         {/* frets */}
-        {Array.from({ length: frets }, (_, i) => i + 1).map((f) => (
+        {Array.from({ length: visibleFrets }, (_, i) => i + first).map((f) => (
           <line
             key={f}
-            x1={nutX + f * FRET_W}
-            x2={nutX + f * FRET_W}
+            x1={nutX + (f - first + 1) * FRET_W}
+            x2={nutX + (f - first + 1) * FRET_W}
             y1={PAD_TOP}
             y2={PAD_TOP + neckH}
             stroke="var(--muted-foreground)"
@@ -85,7 +91,7 @@ export function Fretboard({
           />
         ))}
         {/* nut */}
-        <rect x={nutX - 3} y={PAD_TOP - 1} width={5} height={neckH + 2} rx={1.5} fill="var(--foreground)" />
+        <rect x={nutX - (first === 1 ? 3 : 1)} y={PAD_TOP - 1} width={first === 1 ? 5 : 1.5} height={neckH + 2} rx={1.5} fill="var(--foreground)" />
         {/* strings: thicker toward low E */}
         {[0, 1, 2, 3, 4, 5].map((s) => (
           <g key={s}>
@@ -104,10 +110,10 @@ export function Fretboard({
           </g>
         ))}
         {/* fret numbers */}
-        {[0, 3, 5, 7, 9, 12, 15, 17, 19, 21].filter((f) => f <= frets).map((f) => (
+        {[...new Set(visibleFrets <= 8 ? [ ...(startFret === 0 ? [0] : []), ...Array.from({ length: visibleFrets }, (_, i) => first + i)] : [ ...(startFret === 0 ? [0] : []), first, 3, 5, 7, 9, 12, 15, 17, 19, 21, frets])].filter((f) => (f === 0 && startFret === 0) || (f >= first && f <= frets)).map((f) => (
           <text
             key={f}
-            x={f === 0 ? xOf(0) : nutX + (f - 0.5) * FRET_W}
+            x={xOf(f)}
             y={height - 10}
             fontSize={13}
             fontWeight={500}
@@ -118,7 +124,7 @@ export function Fretboard({
           </text>
         ))}
         {/* notes */}
-        {notes.map((n) => {
+        {notes.filter((n) => n.fret === 0 ? startFret === 0 : n.fret >= first && n.fret <= frets).map((n) => {
           const x = xOf(n.fret);
           const y = yOf(n.string);
           const isRoot = n.index === rootIndex;

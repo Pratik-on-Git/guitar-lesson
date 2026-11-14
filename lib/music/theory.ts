@@ -38,6 +38,12 @@ export function noteName(note: Note, ascii = false): string {
   return letter + (ACC_TEXT[note.acc] ?? (note.acc > 0 ? "♯".repeat(note.acc) : "♭".repeat(-note.acc)));
 }
 
+/** Scientific pitch notation preserves spelling across C boundaries (B♯3 = C4). */
+export function noteWithOctave(note: Note, midi: number): string {
+  const octave = Math.floor((midi - LETTER_PC[note.letter] - note.acc) / 12) - 1;
+  return `${noteName(note)}${octave}`;
+}
+
 export function parseNote(text: string): Note {
   const normalized = text.trim().replaceAll("𝄪", "##").replaceAll("𝄫", "bb").replaceAll("♯", "#").replaceAll("♭", "b");
   const match = /^([A-Ga-g])(#{1,2}|b{1,2})?$/.exec(normalized);

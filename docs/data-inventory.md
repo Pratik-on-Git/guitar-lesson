@@ -8,15 +8,22 @@ These are the application's current formulas, not proposed replacements. Formula
 
 | Topic | Sections |
 | --- | --- |
+| Fretboard & Double Note system | Standard tuning and fretboard notes; Read the source diagrams; The Double Note construction; Five-box and seven-box root anchors; Parent-box offsets and the H marker; Connect one position at a time |
+| Inversions & drop voicings | Inversion is determined by the bass; Five root-position shapes; Drop 2: lower the second-highest voice; Drop 3: lower the third-highest voice; Practise voice leading |
+| Arpeggios & chord-tone phrasing | A chord played one note at a time; Four triad families; Seven seventh-chord families; Connect scale and arpeggio shapes; Two arpeggios can outline a scale |
+| Symmetric scales & contained harmony | A repeating interval cycle; Whole tone: two augmented triads; Augmented: two interlocking augmented triads; The two diminished orientations; Containment and application are different questions |
+| Horizontal & vertical harmonization | Build the harmonic formula; Horizontal: keep a shape, move its root; Vertical: keep a neck region, change shapes; A complete harmonization routine |
+| Improvisation & scale choices | Horizontal, vertical and hybrid approaches; Target the characteristic notes; Choose scales by chord quality and extensions; Minor pentatonic over dominant harmony; Chromatic approaches and enclosures; Make the material musical |
+| Modal sounds with pentatonics | Three minor pentatonics inside major; Five modal recipes; Pentatonics over an altered dominant; Practise one substitution at a time |
 | Sound & pitch | Sound and frequency; Notes; Timbre |
 | Notes, accidentals & octaves | Natural notes; Sharps, flats and naturals; Enharmonic equivalents; Octaves |
-| Rhythm & note values | Pulse, tempo and measures; Meter and time signatures; Note values and rests; Dotted notes |
+| Rhythm & note values | Pulse, tempo and measures; Meter and time signatures; Note values and rests; Dotted notes; Triplets and tied notes |
 | Steps & intervals | Half steps and whole steps; What an interval is; Every interval from the root; Intervals above the octave; Direction: ascending, descending and harmonic; Chromatic and diatonic intervals; Augmented and diminished; Doubly and triply augmented or diminished; Intervals on the guitar |
 | What a scale is | Scales; Harmony, melody and the root; Scales by number of notes; Types of scale; The double note system |
 | What a mode is | What is a mode?; What "diatonic" means; The parent major scale; Find the notes of any mode |
 | Chords & scale degrees | What is a chord?; The scale degrees; Degree names above the octave; Chord symbols; Music by the numbers |
 | Harmony & substitutions | Harmony; Secondary dominants; Substitute dominants; Tritone substitution; Altered dominants; The perfect cadence |
-| Relative keys & modulation | Relative major and minor; Modulation; Modal interchange: borrowing from a parallel mode; Changing key with a perfect cadence |
+| Relative keys & modulation | Read a key signature; Relative major and minor; Modulation; Modal interchange: borrowing from a parallel mode; Changing key with a perfect cadence |
 | Key characters | Characteristics of keys |
 
 ## Scales
@@ -28,15 +35,19 @@ These are the application's current formulas, not proposed replacements. Formula
 | Major pentatonic scale | 1 2 3 5 6 | 0 2 4 7 9 | Matches reference |
 | Minor pentatonic scale | 1 b3 4 5 b7 | 0 3 5 7 10 | Matches reference |
 | Major blues scale | 1 2 b3 3 5 6 | 0 2 3 4 7 9 | Matches reference |
+| Minor blues scale | 1 b3 4 b5 5 b7 | 0 3 5 6 7 10 | Matches reference |
+| Kumoi scale | 1 2 b3 5 6 | 0 2 3 7 9 | Matches reference |
+| Pelog scale | 1 b2 b3 5 b6 | 0 1 3 7 8 | Matches reference |
+| Hirajoshi scale | 1 2 b3 5 b6 | 0 2 3 7 8 | Matches reference |
 | Harmonic minor scale | 1 2 b3 4 5 b6 7 | 0 2 3 5 7 8 11 | Matches reference |
 | Melodic minor scale | 1 2 b3 4 5 6 7 | 0 2 3 5 7 9 11 | Matches reference |
-| Chromatic scale | 1 #1 2 #2 3 4 #4 5 #5 6 #6 7 | 0 1 2 3 4 5 6 7 8 9 10 11 | Matches reference |
-| Minor blues scale | 1 b3 4 b5 5 b7 | 0 3 5 6 7 10 | Matches reference |
-| Whole-half diminished scale | 1 2 b3 4 b5 b6 6 7 | 0 2 3 5 6 8 9 11 | Matches reference |
+| Whole-tone scale | 1 2 3 #4 #5 b7 | 0 2 4 6 8 10 | Matches reference |
+| Augmented scale | 1 #2 3 5 b6 7 | 0 3 4 7 8 11 | Matches reference |
 | Half-whole diminished scale | 1 b2 b3 3 #4 5 6 b7 | 0 1 3 4 6 7 9 10 | Matches reference |
+| Whole-half diminished scale | 1 2 b3 4 b5 b6 6 7 | 0 2 3 5 6 8 9 11 | Matches reference |
+| Chromatic scale | 1 #1 2 #2 3 4 #4 5 #5 6 #6 7 | 0 1 2 3 4 5 6 7 8 9 10 11 | Matches reference |
 | Major bebop scale | 1 2 3 4 5 #5 6 7 | 0 2 4 5 7 8 9 11 | Matches reference |
 | Dominant bebop scale | 1 2 3 4 5 6 b7 7 | 0 2 4 5 7 9 10 11 | Matches reference |
-| Whole-tone scale | 1 2 3 #4 #5 b7 | 0 2 4 6 8 10 | Matches reference |
 
 ## Modes
 
@@ -198,14 +209,14 @@ Notes are spelled from C. Extensions show pitch-class names without octave numbe
 
 {
   "counts": {
-    "scaleReferences": 14,
+    "scaleReferences": 18,
     "modeReferences": 26,
     "chordReferences": 31,
-    "transposedScales": 168,
+    "transposedScales": 216,
     "transposedModes": 312,
     "transposedChords": 864,
-    "fretboardCases": 480,
-    "positionCases": 2520,
+    "fretboardCases": 528,
+    "positionCases": 2700,
     "keySignatures": 15,
     "harmonyCases": 48,
     "intervalCases": 15,

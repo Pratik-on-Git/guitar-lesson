@@ -55,6 +55,14 @@ export const NAV: NavGroup[] = [
     ],
   },
   {
+    title: "Keys",
+    items: [
+      { title: "Circle of fifths", href: "/circle-of-fifths", icon: Circle, description: "Every key, its signature and relative minor." },
+      { title: "Relative keys", href: "/learn/keys", icon: KeyRound, description: "Read signatures, relate major/minor and understand modulation." },
+      { title: "Key characters", href: "/learn/key-characters", icon: Palette, description: "Historical associations attributed to keys." },
+    ],
+  },
+  {
     title: "Scales",
     items: [
       { title: "What a scale is", href: "/learn/scales", icon: BookOpen, description: "Scales, harmony, melody, root and scale types." },
@@ -107,14 +115,6 @@ export const NAV: NavGroup[] = [
       { title: "Pentatonic substitutions", href: "/learn/pentatonic-substitutions", icon: Shapes, description: "Modal and altered colours from familiar five-note shapes." },
       { title: "Scale-choice workbench", href: "/improvisation", icon: ListMusic, description: "Chord/scale choices and transposable pentatonic substitutions." },
       { title: "Practice studio", href: "/practice", icon: Drum, description: "Theory quizzes, fretboard training, metronome and saved assignments." },
-    ],
-  },
-  {
-    title: "Keys",
-    items: [
-      { title: "Circle of fifths", href: "/circle-of-fifths", icon: Circle, description: "Every key, its signature and relative minor." },
-      { title: "Relative keys", href: "/learn/keys", icon: KeyRound, description: "Relative major/minor and modulation." },
-      { title: "Key characters", href: "/learn/key-characters", icon: Palette, description: "The mood of each key." },
     ],
   },
 ];

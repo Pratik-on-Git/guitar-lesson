@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 
 export function StudySelect({ label, value, onChange, options }: { label: string; value: string; onChange: (value: string) => void; options: { value: string; label: string }[] }) {
-  return <label className="flex min-w-0 flex-1 flex-col gap-2 text-sm font-medium">{label}<select className="w-full min-w-0 rounded-lg border bg-background p-3 text-foreground" value={value} onChange={(event) => onChange(event.target.value)}>{options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select></label>;
+  const id = useId();
+  return <div className="flex min-w-0 flex-1 flex-col gap-2 text-sm font-medium"><label htmlFor={id}>{label}</label><select id={id} className="w-full min-w-0 rounded-lg border bg-background p-3 text-foreground" value={value} onChange={(event) => onChange(event.target.value)}>{options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select></div>;
 }
 
 /** User-triggered, finite Web Audio playback. Oscillators and contexts are cleaned up. */

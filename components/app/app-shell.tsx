@@ -313,7 +313,7 @@ function Footer() {
   return (
     <footer className="border-t">
       <div className="text-muted-foreground mx-auto flex w-full max-w-360 items-center justify-between gap-3 px-4 py-3 max-sm:flex-col sm:gap-6 sm:px-6">
-        <p className="text-sm text-balance max-sm:text-center">Guitar Notes · Theory study notes from Guitar.docx</p>
+        <p className="text-sm text-balance max-sm:text-center">Guitar Notes · Fretboard Concepts & personal study notes</p>
         <div className="flex items-center gap-5 max-sm:hidden">
           <Link href="/scales" className="hover:text-foreground text-sm transition duration-300">
             Scales
