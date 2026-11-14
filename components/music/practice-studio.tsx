@@ -64,7 +64,7 @@ export function PracticeStudio() {
   }
   const href = `${focus.href}${focus.href.includes("?") ? "&" : "?"}key=${ROOT_SLUGS[rootPc]}`;
   return <div className="flex flex-col gap-5">
-    <Panel title="Theory & fretboard exercises" description="The interval drills follow the book's 18 identification and 18 completion examples; chord drills rotate all 11 book qualities through varied roots. Answers preserve spelling, including double accidentals.">
+    <Panel title="Theory & fretboard exercises" description="All 80 appendix questions: 18 interval identifications, 18 interval completions, 22 chord spellings and 22 chord identifications. Chord drills continue with generated transpositions after the source examples. Answers preserve spelling, including double accidentals.">
       <div className="mb-5"><StudySelect label="Exercise type" value={kind} onChange={setExercise} options={EXERCISE_TYPES} /></div><TheoryQuiz key={kind} kind={kind} />
     </Panel>
     <Metronome />

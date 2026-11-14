@@ -27,7 +27,7 @@ The entire PDF was extracted locally for review. Formula tables, diagram convent
 | 100–101 | Parent-major ii/iii/vi pentatonics; modal pentatonic substitutions | Absent | `/learn/pentatonic-substitutions`, transposable application tool |
 | 102–103 | Chord extensions, dominant resolution, altered pentatonics, chromatic approach patterns, progressive practice | Absent | Improvisation lesson/tool, practice workflow |
 | 104–107 | Standard tuning, fretboard notes, accidental orders, rhythm, dotted rests, triplets, ties | Tuning/fretboard training, signature rules, triplets/ties missing | `/learn/fretboard-system`, existing notes/keys/rhythm lessons, `/practice` |
-| 108–111 | Interval identification/completion; triad/seventh spelling/identification; answers | Absent | `/practice`: generated spelling-aware exercises with explanation and answer checking |
+| 108–111 | Interval identification/completion; triad/seventh spelling/identification; answers | Absent | `/practice`: all 80 original appendix questions, followed by generated chord transpositions, with spelling-aware answer checking |
 | 112 | Epilogue and author context | Absent | Source credit in `/book`; musical practice guidance in lessons |
 
 ## Formula findings
@@ -53,3 +53,20 @@ The entire PDF was extracted locally for review. Formula tables, diagram convent
 ## Asset provenance
 
 `public/book/*.webp` contains 63 cropped diagram sheets from the supplied PDF (32 scale/mode sheets, 6 root-position chord sheets, 14 drop-voicing sheets, 11 arpeggio sheets). They retain the book's scale-degree labels and A-root fingerings. These are source illustrations for this personal study app, credited to Yiannis Papadopoulos (2019); they are not generated transpositions. `scripts/extract-book-diagrams.py` reproduces the sheets from the local PDF using PyMuPDF. Raw extracted prose stays in ignored local review files.
+
+`lib/content/book-assignments.ts` preserves all 214 numbered practical assignments on pages 19, 27, 35, 43, 53, 58, 66, 74, 82 and 95. The exercise bank separates columns and assignment parts, supports search and saved completion, and links to the corresponding scale, mode, voicing, arpeggio or harmonization tool. The source's page 74 part 2 skips numbers 5 and 6; these have not been invented or renumbered. Regenerate with `scripts/extract-book-assignments.py`.
+
+## Resulting application
+
+- 17 topics and 82 lesson sections, retaining the earlier study material and historical sources.
+- 18 scale formulas, including all four missing book scales, and all 21 book modes within the existing 26-mode library.
+- Six added destinations: book guide, voicing workbench, arpeggio explorer, harmonization workbench, scale-choice workbench and practice studio.
+- Source references, chapter navigation, search entries and study progress integrated with the original app shell.
+- Exact source boxes remain in the atlas. Transposable computed tools use clearly labeled generated fingerings or fret windows. Narrow displays frame the selected grip/region, rather than opening on empty frets.
+- Browser-synthesized audio, a four-beat metronome, all 80 original appendix questions, 214 practical assignments and a local practice log.
+
+## Verification commands
+
+`npm run test:data` runs the original arithmetic audit and the additional book audit. The latter checks 8,940 cases spanning source/assignment links, all-root drop recipes and guitar grips, Double Note repeats, symmetry, corrected substitutions, spelling-sensitive exercises and scientific octave boundaries (B♯3/C4 and C♭4/B3).
+
+`npm run build`, `npm run lint` and `npm run test:e2e` verify production rendering, source quality and browser behavior. The browser suite covers every study route, original diagrams, control changes/reloads, practice persistence, assignment search, mobile width and audio controls.
