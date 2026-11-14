@@ -50,7 +50,7 @@ export function findGrips(rootPc: number, formula: string[], { bass = formula[0]
   if (hit) return hit;
   const bySemi = new Map(formula.map((d) => [mod(rootPc + degreeSemitones(parseDegree(d)), 12), d]));
   const need = essential(formula);
-  const minStrings = Math.min(formula.length >= 4 ? 4 : 4, 6);
+  const minStrings = 4;
   const found: { grip: ChordGrip; score: number }[] = [];
   for (let start = 1; start <= 12; start++) {
     const options = TUNING.map((open) => {
@@ -76,8 +76,8 @@ export function findGrips(rootPc: number, formula: string[], { bass = formula[0]
       const span = held.length ? Math.max(...held) - Math.min(...held) : 0;
       if (span > 3) return;
       const doubledThird = degrees.filter((d) => d && /^[b#]?3$/.test(d)).length > 1;
-      const score = sounding.length * 3 - interior * 4 - span - count * 0.6 - (held.length ? Math.min(...held) : 0) * 0.25
-        + frets.filter((f) => f === 0).length * 0.8 - (doubledThird ? 1.5 : 0) - sounding[0] * 1.2 + (barre ? 0.5 : 0);
+      const score = sounding.length * 2 - interior * 4 - span * 1.5 - count * 0.6 - (held.length ? Math.min(...held) : 0) * 0.25
+        + frets.filter((f) => f === 0).length * 0.8 - (doubledThird ? 0.5 : 0) - sounding[0] * 0.5 + (barre ? 0.5 : 0);
       const lowFret = held.length ? Math.min(...held) : 1;
       found.push({ grip: { frets: [...frets], degrees, baseFret: lowFret <= 2 && Math.max(0, ...held) <= 5 ? 1 : lowFret, barre }, score });
     };

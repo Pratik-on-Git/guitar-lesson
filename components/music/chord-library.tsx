@@ -29,6 +29,9 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { RootPicker, useRootParam } from "./controls";
 import { Fretboard } from "./fretboard";
 import { Keyboard, type KeyMark } from "./keyboard";
+import { ChordGrips } from "@/components/visuals/chord-grips";
+import { ChordBox } from "@/components/visuals/chord-box";
+import { findGrips } from "@/lib/music/chord-shapes";
 
 const plain = (t: string) => t.toLowerCase().replace(/♯/g, "#").replace(/♭/g, "b");
 
@@ -37,6 +40,7 @@ export function ChordLibrary() {
   const [selectedId, setSelectedId] = useQueryState("chord", "");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<ChordCategory | "All">("All");
+  const [view, setView] = useQueryState("view", "diagrams");
 
   const results = useMemo(() => {
     const q = plain(query.trim());
@@ -96,7 +100,12 @@ export function ChordLibrary() {
       <Panel
         title={`${results.length} Chord${results.length === 1 ? "" : "s"}`}
         description="Reference formulas show chord members, not a single required voicing. Players may omit or rearrange tones; 11ths and 13ths especially depend on context. Select a chord to inspect it."
-        action={category !== "All" ? <StatusBadge tone="brand">{category}</StatusBadge> : undefined}
+        action={
+          <div className="flex flex-wrap items-center gap-2">
+            {category !== "All" && <StatusBadge tone="brand">{category}</StatusBadge>}
+            <Segmented label="Chord list view" size="sm" value={view === "table" ? "table" : "diagrams"} onChange={setView} options={[{ value: "diagrams", label: "Diagrams" }, { value: "table", label: "Table" }]} />
+          </div>
+        }
       >
         {results.length === 0 ? (
           <EmptyState
@@ -118,6 +127,30 @@ export function ChordLibrary() {
               </Button>
             }
           />
+        ) : view !== "table" ? (
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" aria-label="Chords with a playable shape">
+            {results.map((c) => {
+              const degrees = c.formula.map(parseDegree);
+              const root = spellRoot(rootPc, degrees);
+              const grip = findGrips(rootPc, c.formula, { limit: 1 })[0];
+              const active = c.id === selected?.id;
+              return (
+                <li key={c.id}>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedId(c.id)}
+                    aria-pressed={active}
+                    className={cn("hover:border-primary/60 hover:bg-primary/5 flex h-full w-full flex-col items-center gap-1 rounded-xl border p-3 text-center transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50", active && "border-primary bg-primary/5")}
+                  >
+                    <span className="text-base font-semibold">{noteName(root)}{c.symbol}</span>
+                    <span className="text-muted-foreground line-clamp-1 text-xs">{c.name}</span>
+                    {grip ? <ChordBox grip={grip} size="sm" className="my-1" /> : <span className="text-muted-foreground my-6 text-xs">No compact grip</span>}
+                    <span className="font-mono text-xs">{degrees.map((d) => noteName(spellDegree(root, d))).join(" ")}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         ) : (
           <TableWrap>
             <table className={cn(tableCls, "min-w-[680px]")}>
@@ -237,6 +270,9 @@ function ChordDetail({ chordId, rootPc, onClose }: { chordId: string; rootPc: nu
         </div>
       )}
       {chord.note && <p role="note" className="text-muted-foreground mb-5 max-w-[72ch] text-sm leading-6">{chord.note}</p>}
+      <Eyebrow>Playable shapes</Eyebrow>
+      <ChordGrips rootPc={rootPc} formula={chord.formula} name={`${noteName(root)}${chord.symbol}`} className="mb-2" />
+      <p className="text-muted-foreground mt-1 mb-6 text-xs">Found by searching every four-fret window for grips with all essential tones and the root in the bass (a perfect 5th may be left out of larger chords). Square = root.</p>
       <Eyebrow>On the keyboard</Eyebrow>
       <Keyboard length={length} marks={marks} title={`${noteName(root)}${chord.symbol} stacked from the root on a keyboard`} />
       <p className="text-muted-foreground mt-2 mb-6 text-xs">Stacked from the root, so 9ths, 11ths and 13ths sit in the second octave.</p>
