@@ -37,7 +37,7 @@ export function NeckDiagram({
   const nutX = PAD_L + (open ? CELL * 0.7 : 0);
   const width = nutX + cells * CELL + 6;
   const neckH = GAP * 5;
-  const height = PAD_T + neckH + 26;
+  const height = PAD_T + neckH + 32;
   const y = (string: number) => PAD_T + (5 - string) * GAP;
   const x = (fret: number) => (fret === 0 ? nutX - CELL * 0.35 : nutX + (fret - first + 0.5) * CELL);
   const numbered = Array.from({ length: cells }, (_, i) => first + i).filter((f) => INLAYS.has(f) || f === 12 || f === first && first === 1);
@@ -65,7 +65,7 @@ export function NeckDiagram({
         </g>
       ))}
       {numbered.map((f) => (
-        <text key={f} x={x(f)} y={height - 7} fontSize={11.5} fontWeight={600} textAnchor="middle" fill="var(--muted-foreground)">{f}</text>
+        <text key={f} x={x(f)} y={PAD_T + neckH + 27} fontSize={11.5} fontWeight={600} textAnchor="middle" fill="var(--muted-foreground)">{f}</text>
       ))}
       {marks.map((m) => {
         const cx = x(m.fret);

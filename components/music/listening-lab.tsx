@@ -29,7 +29,7 @@ export function ListeningLab() {
   const [centsValue, setCents] = useQueryState("cents", "100"); const cents = Math.max(-1200, Math.min(1200, Number(centsValue) || 0)); const comparison = centsFrequency(reference, cents);
   const [octaveValue, setOctave] = useQueryState("octave", "4"); const octave = Math.max(2, Math.min(6, Number(octaveValue) || 4)); const tunedA = midiFrequency(12 * (octave + 1) + 9, reference);
   const tuningEvents: SoundEvent[] = [{ at: 0, duration: 1.8, frequency: reference, wave: "sine" }, { at: 2, duration: 1.8, frequency: comparison, wave: "sine" }, { at: 4, duration: 2, frequency: reference, wave: "sine", velocity: 0.035 }, { at: 4, duration: 2, frequency: comparison, wave: "sine", velocity: 0.035 }];
-  const [waveValue, setWave] = useQueryState("wave", "triangle"); const wave = waveValue === "sine" || waveValue === "sawtooth" ? waveValue : "triangle";
+  const [waveValue, setWave] = useQueryState("wave", "triangle"); const wave: "sine" | "triangle" | "sawtooth" = waveValue === "sine" || waveValue === "sawtooth" ? waveValue : "triangle";
   const [articulation, setArticulation] = useQueryState("articulation", "detached"); const [contour, setContour] = useQueryState("dynamics", "crescendo");
   const motif = [0, 2, 4, 7, 9, 7, 4, 0]; const expressionEvents = motif.map((offset, i) => ({ at: i * 0.5, duration: articulation === "connected" ? 0.51 : 0.2, midi: 60 + rootPc + offset, wave, velocity: contour === "steady" ? 0.045 : 0.018 + (contour === "diminuendo" ? 7 - i : i) * 0.007 }));
   return <div className="flex flex-col gap-5">
