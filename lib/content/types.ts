@@ -30,7 +30,7 @@ export type Block =
   | { type: "facts"; items: { label: string; value: string }[] }
   | { type: "table"; columns: string[]; rows: string[][]; caption?: string; firstColumnHeader?: boolean }
   | { type: "callout"; tone: "tip" | "fix" | "todo"; title?: string; text: string }
-  | { type: "figure"; src: string; alt: string; caption?: string; width: number; height: number }
+  | { type: "visual"; id: string; caption?: string }
   | { type: "audio"; href: string; label: string }
   | { type: "links"; items: { label: string; href: string }[] }
   | { type: "widget"; name: WidgetName };

@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useQueryState } from "@/lib/use-query-state";
 import { THEORY_CHAPTERS, THEORY_CORRECTIONS } from "@/lib/content/theory-book";
@@ -7,17 +6,27 @@ import { THEORY_FIGURES, THEORY_ORIGINAL_AUDIO } from "@/lib/content/theory-book
 import { Panel } from "@/components/app/panel";
 import { StudySelect } from "./study-controls";
 import { buttonVariants } from "@/components/ui/button";
+import { TheoryVisual } from "@/components/visuals/theory-figures";
 
 export function TheoryBookGuide() {
-  const [figureId, setFigure] = useQueryState("figure", THEORY_FIGURES[0].id); const figure = THEORY_FIGURES.find((f) => f.id === figureId) ?? THEORY_FIGURES[0];
+  const [figureId, setFigure] = useQueryState("figure", THEORY_FIGURES[0].id); const figure = THEORY_FIGURES.find((f) => f.id === figureId) ?? THEORY_FIGURES[0]; const index = THEORY_FIGURES.indexOf(figure);
   return <div className="flex flex-col gap-5">
     <Panel title="Seven parts, one learning path" description="All 220 PDF pages were reviewed. Page references below use PDF page numbers, including front matter. Teaching text is newly written; figures retain the supplied source's notation and occasional errors.">
       <ol className="grid gap-4 lg:grid-cols-2">{THEORY_CHAPTERS.map((chapter) => <li key={chapter.id} id={chapter.id} className="scroll-mt-24 rounded-xl border p-4"><h2 className="font-semibold">{chapter.title}</h2><p className="mt-1 text-xs text-muted-foreground">PDF pp. {chapter.pages}</p><p className="my-3 text-sm text-muted-foreground">{chapter.summary}</p><ul className="space-y-2">{chapter.lessons.map((lesson) => <li key={lesson.href} className="flex flex-wrap justify-between gap-x-3 text-sm"><Link className="text-primary hover:underline" href={lesson.href}>{lesson.title} →</Link><span className="text-xs text-muted-foreground">pp. {lesson.pages}</span></li>)}</ul></li>)}</ol>
     </Panel>
-    <Panel id="source-figures" title="Original illustration atlas" description={`${THEORY_FIGURES.length} instructional figures, including comparison charts and the final cheat sheet. Select a source page to inspect the complete illustration, then use the linked app section for corrected, transposable study.`}>
-      <StudySelect label="Source illustration" value={figure.id} onChange={setFigure} options={THEORY_FIGURES.map((f) => ({ value: f.id, label: `PDF p. ${f.page} · ${f.title}` }))} />
-      <figure className="mt-5"><div className="overflow-hidden rounded-xl border bg-white p-3"><Image key={figure.id} src={figure.src} alt={`${figure.title}, original illustration from Nicolas Carter, PDF page ${figure.page}`} width={figure.width} height={figure.height} unoptimized className="mx-auto h-auto max-h-[900px] w-auto max-w-full" /></div><figcaption className="mt-3 text-sm text-muted-foreground">PDF p. {figure.page} · {figure.title}. Preserved source figure; see corrections below before using its labels as an answer key.</figcaption></figure>
-      <div className="mt-4 flex flex-wrap gap-2"><a href={figure.src} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "outline" })}>Open full-size illustration</a><Link href={figure.href} className={buttonVariants()}>Study this concept →</Link></div>
+    <Panel id="source-figures" title="Illustration atlas" description={`All ${THEORY_FIGURES.length} instructional figures, redrawn as live visuals: keyboards, interval grids, chord shapes, notation and counting diagrams. Notes and spellings are computed, so the book's labelling slips are already corrected.`}>
+      <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
+        <StudySelect label="Figure" value={figure.id} onChange={setFigure} options={THEORY_FIGURES.map((f) => ({ value: f.id, label: `PDF p. ${f.page} · ${f.title}` }))} />
+        <div className="flex gap-2">
+          <button type="button" className={buttonVariants({ variant: "outline", size: "sm" })} disabled={index === 0} onClick={() => setFigure(THEORY_FIGURES[index - 1].id)}>Previous</button>
+          <button type="button" className={buttonVariants({ variant: "outline", size: "sm" })} disabled={index === THEORY_FIGURES.length - 1} onClick={() => setFigure(THEORY_FIGURES[index + 1].id)}>Next</button>
+        </div>
+      </div>
+      <figure className="mt-5">
+        <div className="rounded-xl border p-3 sm:p-5"><TheoryVisual key={figure.id} id={figure.id} /></div>
+        <figcaption className="text-muted-foreground mt-3 text-sm">PDF p. {figure.page} · {figure.title} · {index + 1} of {THEORY_FIGURES.length}</figcaption>
+      </figure>
+      <div className="mt-4"><Link href={figure.href} className={buttonVariants()}>Study this concept →</Link></div>
     </Panel>
     <Panel id="corrections" title="Corrections and qualifications" description="The app uses calculated intervals, spellings and durations. These notes explain where that differs from the supplied book; an unchanged source figure can still contain the original mistake."><div className="space-y-4">{THEORY_CORRECTIONS.map((entry) => <article key={entry.title} className="rounded-lg border-l-4 border-amber-500 bg-muted/30 p-4"><h3 className="font-semibold">{entry.title}</h3><p className="mt-1 text-xs text-muted-foreground">PDF pp. {entry.pages}</p><p className="mt-2 text-sm leading-6">{entry.text}</p></article>)}</div></Panel>
     <Panel id="exercises" title="Exercises and listening" description="Practice the book's relationships, not just its terminology. The new labs use synthesized examples and visible note/duration tables."><div className="grid gap-3 sm:grid-cols-2">{[

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { CircleAlert, ExternalLink, Headphones, Lightbulb, PenLine, type LucideIcon } from "lucide-react";
 import type { Block } from "@/lib/content/types";
@@ -6,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Fact, FactGrid } from "@/components/app/facts";
 import { SimpleTable } from "@/components/ui/table";
 import { Widget } from "./widgets";
+import { TheoryVisual } from "@/components/visuals/theory-figures";
 
 /* Renders the structured notes. Prose width is capped for reading. */
 export function Blocks({ blocks }: { blocks: Block[] }) {
@@ -66,12 +66,11 @@ function BlockView({ block }: { block: Block }) {
     case "callout":
       return <Callout tone={block.tone} title={block.title} text={block.text} />;
 
-    case "figure":
+    case "visual":
       return (
         <figure className="max-w-[880px]">
-          {/* The scans are black on white, so they keep a white mat in dark mode too. */}
-          <div className="ring-foreground/10 overflow-hidden rounded-xl bg-white p-3 shadow-xs ring-1">
-            <Image src={block.src} alt={block.alt} width={block.width} height={block.height} className="h-auto w-full" />
+          <div className="bg-card rounded-xl border p-3 sm:p-4">
+            <TheoryVisual id={block.id} />
           </div>
           {block.caption && <figcaption className="text-muted-foreground mt-2 text-xs">{block.caption}</figcaption>}
         </figure>

@@ -128,3 +128,28 @@ export function QualityStrip({ items, caption }: { items: { numeral: string; qua
     </figure>
   );
 }
+
+/** Rows of a formula: interval names above degree numbers, one row per scale or mode. */
+export function FormulaRows({ rows, caption }: { rows: { name: string; intervals: string[]; degrees: string[] }[]; caption: string }) {
+  return (
+    <div className="overflow-x-auto rounded-xl border">
+      <table className="w-full min-w-[560px] border-collapse text-center text-sm">
+        <caption className="sr-only">{caption}</caption>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.name} className="border-t first:border-t-0">
+              <th scope="row" className="bg-muted/70 w-40 px-3 py-2 text-left text-sm font-semibold">{row.name}</th>
+              {row.degrees.map((d, i) => (
+                <td key={i} className="border-l px-1 py-1.5">
+                  <span className="text-muted-foreground block text-xs">{row.intervals[i]}</span>
+                  <span className={cn("block font-semibold", /[♭♯b#]/.test(d) && "text-series-2")}>{d}</span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="text-muted-foreground border-t px-3 py-1.5 text-xs">Top: interval from the root · bottom: degree, altered degrees in orange.</p>
+    </div>
+  );
+}
