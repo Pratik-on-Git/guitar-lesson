@@ -190,7 +190,11 @@ A recessed track surrounds raised active items. Selected items have a border and
 
 ### Navigation
 
-The neutral sidebar holds grouped course navigation. Active pages use text tint and a position bar; hover is a quieter fill. The collapsed rail preserves accessible names. The progress card uses a lime surface and a dark next-action button. A mobile sheet provides the same navigation.
+The ten major course sections are top-level disclosure buttons: Source Library, Foundations, Rhythm & Meter, Keys, Scales, Modes, Chords & Harmony, Arpeggios & Application, Composition & Expression, and Improvisation & Practice. Each uses the same flat navigation-row treatment as Overview: an icon and label, a quiet hover background, and a tinted active state. A chevron and explicit expanded state distinguish expandable sections. Overview stays a direct link above them.
+
+Sections begin closed on the overview; the section containing the current route opens automatically. Users can expand or collapse sections with pointer, Enter, or Space. Nested lessons sit beneath their parent with an indented guide line. Scale Explorer and Mode Families retain their own nested lists. Hidden lessons are excluded from keyboard navigation. Long parent labels wrap.
+
+The collapsed rail shows one icon per major section. Selecting one expands the sidebar and opens that section. The mobile sheet uses the same hierarchy and closes after selecting a lesson. Active pages retain their text tint and position indicator. The lime progress card and dark next-action button remain at the bottom.
 
 ### Metrics, meters, charts
 

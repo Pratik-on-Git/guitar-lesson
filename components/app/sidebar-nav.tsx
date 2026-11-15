@@ -4,10 +4,10 @@ import { titleCaseLabel } from "@/lib/title-case";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Suspense, useState } from "react";
-import { ChevronRight, CircleCheck } from "lucide-react";
-import { NAV, isActive, type NavItem } from "@/lib/nav";
-import { useStudied } from "@/lib/store";
+import { Suspense, useId, useState } from "react";
+import { AudioWaveform, BookOpen, ChevronRight, CircleCheck, Drum, Guitar, KeyRound, Layers, ListMusic, Music2, Palette, Shapes } from "lucide-react";
+import { NAV, isActive, type NavGroup, type NavItem } from "@/lib/nav";
+import { useSidebarCollapsed, useStudied } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { Tooltip } from "@/components/ui/tooltip";
 
@@ -73,51 +73,54 @@ function NavWithPath(props: { collapsed: boolean; onNavigate?: () => void }) {
   return <NavList pathname={pathname} {...props} />;
 }
 
+const SECTION_ICONS = [BookOpen, AudioWaveform, Drum, KeyRound, ListMusic, Layers, Guitar, Shapes, Palette, Music2];
+
 function NavList({ pathname, collapsed, onNavigate }: { pathname: string; collapsed: boolean; onNavigate?: () => void }) {
   const { isStudied } = useStudied();
   return (
-    <nav aria-label="Study topics" className="flex flex-col">
-      {NAV.map((group, index) => (
-        <div
-          key={group.title}
-          className="relative flex flex-col p-2.5 pt-1.5 transition-[padding] duration-200 group-data-[collapsed=true]/sidebar:pt-3"
-        >
-          {index > 0 ? (
-            // The rail has no room for a group label; a short rule keeps the groups apart.
-            <span
-              aria-hidden
-              className="bg-sidebar-border absolute top-1 left-1/2 h-px w-6 -translate-x-1/2 opacity-0 transition-opacity duration-200 group-data-[collapsed=true]/sidebar:opacity-100"
-            />
-          ) : null}
-          {group.title !== "Study" ? (
-            // Slides up under the items and fades, so the rail keeps no gap where the label was.
-            <p
-              className={cn(
-                "text-sidebar-foreground/70 flex h-8 shrink-0 items-center overflow-hidden rounded-md px-2 text-xs font-medium whitespace-nowrap",
-                "transition-[margin,opacity] duration-200 ease-linear",
-                "group-data-[collapsed=true]/sidebar:pointer-events-none group-data-[collapsed=true]/sidebar:-mt-8 group-data-[collapsed=true]/sidebar:opacity-0",
-              )}
-              aria-hidden={collapsed || undefined}
-            >
-              {titleCaseLabel(group.title)}
-            </p>
-          ) : null}
-          <ul className="flex flex-col gap-1">
-            {group.items.map((item) => (
-              <NavEntry
-                key={item.href + item.title}
-                item={item}
-                pathname={pathname}
-                collapsed={collapsed}
-                onNavigate={onNavigate}
-                isStudied={isStudied}
-              />
-            ))}
-          </ul>
-        </div>
-      ))}
+    <nav aria-label="Study topics" className="flex flex-col gap-1 p-2.5">
+      {NAV.map((group, index) => group.title === "Study" ? (
+        <ul key={group.title} className="mb-2 flex flex-col gap-1">
+          {group.items.map(item => <NavEntry key={item.href} item={item} pathname={pathname} collapsed={collapsed} onNavigate={onNavigate} isStudied={isStudied} />)}
+        </ul>
+      ) : <NavSection key={group.title} group={group} index={index - 1} pathname={pathname} collapsed={collapsed} onNavigate={onNavigate} isStudied={isStudied} />)}
     </nav>
   );
+}
+
+function NavSection({ group, index, pathname, collapsed, onNavigate, isStudied }: {
+  group: NavGroup;
+  index: number;
+  pathname: string;
+  collapsed: boolean;
+  onNavigate?: () => void;
+  isStudied: (href: string) => boolean;
+}) {
+  const listId = useId();
+  const [, setCollapsed] = useSidebarCollapsed();
+  const [choice, setChoice] = useState<{ pathname: string; open: boolean } | null>(null);
+  const active = group.items.some(item => isActive(pathname, item.href) || item.children?.some(child => isActive(pathname, child.href)));
+  const expanded = !collapsed && (choice?.pathname === pathname ? choice.open : active);
+  const Icon = SECTION_ICONS[index] ?? BookOpen;
+  const toggle = () => {
+    if (collapsed) setCollapsed(false);
+    setChoice({ pathname, open: !expanded });
+  };
+  return <div className="min-w-0">
+    <Tooltip content={titleCaseLabel(group.title)} side="right" disabled={!collapsed}>
+      <button type="button" aria-label={collapsed ? String(titleCaseLabel(group.title)) : undefined} aria-expanded={expanded} aria-controls={listId} data-active={active} onClick={toggle}
+        className={cn(ITEM, ACTIVE_BAR, "h-auto min-h-9 py-2 text-left")}>
+        <Icon aria-hidden />
+        <span className={cn("min-w-0 flex-1 whitespace-normal leading-5", LABEL_FADE)}>{titleCaseLabel(group.title)}</span>
+        <ChevronRight aria-hidden className={cn("size-3.5! shrink-0 transition-transform duration-200 motion-reduce:transition-none", LABEL_FADE, expanded && "rotate-90")} />
+      </button>
+    </Tooltip>
+    <div id={listId} hidden={!expanded}>
+      <ul className="my-2 ml-4 flex min-w-0 flex-col gap-1 border-l border-sidebar-border pl-2">
+        {group.items.map(item => <NavEntry key={item.href} item={item} pathname={pathname} collapsed={false} onNavigate={onNavigate} isStudied={isStudied} />)}
+      </ul>
+    </div>
+  </div>;
 }
 
 function NavEntry({
@@ -136,6 +139,7 @@ function NavEntry({
   const childActive = item.children?.some((c) => isActive(pathname, c.href)) ?? false;
   const selfActive = !item.children && isActive(pathname, item.href);
   const [open, setOpen] = useState<boolean | null>(null);
+  const listId = useId();
   const Icon = item.icon;
 
   // Leaves, and every item in the rail, are links. In the rail a branch goes to its parent page.
@@ -169,7 +173,7 @@ function NavEntry({
   const done = item.children.filter((c) => isStudied(c.href)).length;
   const total = item.children.length;
   const complete = done === total;
-  const listId = `nav-${item.href.replace(/\W+/g, "-")}`;
+
 
   return (
     <li>
