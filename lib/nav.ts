@@ -94,7 +94,7 @@ export const NAV: NavGroup[] = [
     title: "Indian Classical Music",
     items: [
       { title: "Indian classical & raga", href: "/learn/indian-classical", icon: Music2, description: "Hindustani and Carnatic svaras, raga grammar, thaats, 72 melakartas, gamakas and tala." },
-      ...RAGA_LESSONS.map((lesson) => ({ title: lesson.label, href: `/learn/${lesson.slug}`, icon: lesson.partIndex === 1 ? ChartNoAxesColumnIncreasing : lesson.partIndex === 2 ? Music2 : lesson.partIndex === 4 ? Guitar : Layers, description: lesson.description, part: lesson.part })),
+      ...RAGA_LESSONS.map((lesson) => ({ title: lesson.label, href: `/learn/${lesson.slug}`, icon: lesson.partId === "pitch" ? ChartNoAxesColumnIncreasing : lesson.partId === "guitar" ? Guitar : lesson.partId === "rhythm" ? Drum : lesson.partId === "context" ? BookOpen : lesson.partId === "listening" ? AudioWaveform : Music2, description: lesson.description, part: lesson.part })),
     ],
   },
   {

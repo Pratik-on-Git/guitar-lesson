@@ -3,6 +3,7 @@ import { CARNATIC_SVARAS, HINDUSTANI_POSITIONS, THAATS, CHAKRAS, MELAKARTAS } fr
 import { RAGA_LESSONS, RAGA_PARTS } from "./raga-curriculum.ts";
 import { KAFI_STUDIES } from "../music/raga-studies.ts";
 import { GUITAR_LESSON_TASKS } from "./raga-guitar-practice.ts";
+import { angaCounts, JATIS, SOURCE_ASSOCIATIONS, TALA_PATTERNS } from "../music/raga-performance.ts";
 
 const p = (text: string): Block => ({ type: "p", text });
 const term = (t: string, text: string): Block => ({ type: "term", term: t, text });
@@ -251,6 +252,7 @@ const INDIAN_CLASSICAL: Topic = {
         title: "Gamaka and melodic ornamentation",
         part: "Further study · Listening, rhythm & practice",
         blocks: [
+          { type: "visual", id: "raga-ornaments" },
           p("Gamaka includes movements on and between notes that help establish a raga’s identity. Learn its shapes through phrases and renditions. Historical classifications vary; no single count is a universal checklist for present-day performance."),
           p("The fifteen-gamaka classification associated with Sangita Ratnakara is commonly transliterated as:"),
           list("Tiripa", "Sphurita", "Kampita", "Lina", "Andolita", "Vali", "Tribhinna", "Kurula", "Ahata", "Ullasita", "Plavita", "Humpita", "Mudrita", "Namita", "Mishrita"),
@@ -262,19 +264,13 @@ const INDIAN_CLASSICAL: Topic = {
         id: "symbolism",
         title: "Symbolic associations in the supplied notes",
         blocks: [
+          { type: "visual", id: "raga-source-symbolism" },
           p("PDF pp. 8–9 give these cultural and devotional associations without identifying their underlying texts. They are preserved as this source’s beliefs, not as verified universal correspondences, acoustic explanations, anatomy or evidence of therapeutic effects."),
           table(
             ["Svara", "Animal / bird", "Planet", "Colour", "Body chakra (source’s scheme)"],
-            [
-              ["Sa", "Peacock", "Mercury", "Green", "Muladhara"],
-              ["Re", "Bull", "Mars", "Red", "Svadhisthana"],
-              ["Ga", "Goat", "Sun", "Golden", "Manipura"],
-              ["Ma", "Heron", "Moon", "White", "Anahata"],
-              ["Pa", "Cuckoo", "Saturn", "Blue or black", "Vishuddha"],
-              ["Dha", "Horse", "Jupiter", "Yellow", "Ajna"],
-              ["Ni", "Elephant", "Venus", "Multicoloured", "Sahasrara"],
-            ],
+            SOURCE_ASSOCIATIONS.map((item) => [item.svara, item.animal, item.planet, item.colour, item.chakra]),
             "Reported only from the supplied PDF. These seven body-chakra associations differ from the twelve melakarta classification chakras.",
+            "Read all seven source associations in a table",
           ),
         ],
       },
@@ -284,15 +280,7 @@ const INDIAN_CLASSICAL: Topic = {
         blocks: [
           { type: "visual", id: "raga-tala-chart" },
           p("In the suladi sapta-tala scheme, seven patterns combine three kinds of anga. A laghu (L) changes length with jati; a drutam (D) has two counts; an anudrutam (A) has one. The five laghu lengths are tisra 3, chaturasra 4, khanda 5, misra 7 and sankirna 9."),
-          table(["Tala", "Angas", "Tisra (3)", "Chaturasra (4)", "Khanda (5)", "Misra (7)", "Sankirna (9)"], [
-            ["Dhruva", "L D L L", "11", "14", "17", "23", "29"],
-            ["Matya", "L D L", "8", "10", "12", "16", "20"],
-            ["Rupaka", "D L", "5", "6", "7", "9", "11"],
-            ["Jhampa", "L A D", "6", "7", "8", "10", "12"],
-            ["Triputa", "L D D", "7", "8", "9", "11", "13"],
-            ["Ata", "L L D D", "10", "12", "14", "18", "22"],
-            ["Eka", "L", "3", "4", "5", "7", "9"],
-          ], "Counts calculated from the anga patterns: substitute the column’s value for each L, 2 for D, and 1 for A. This is the 35-tala scheme, not a list of every tala in use."),
+          table(["Tala", "Angas", "Tisra (3)", "Chaturasra (4)", "Khanda (5)", "Misra (7)", "Sankirna (9)"], TALA_PATTERNS.map((pattern) => [pattern.name, pattern.angas.join(" "), ...JATIS.map((jati) => String(pattern.angas.reduce((total, anga) => total + angaCounts(anga, jati.count), 0)))]), "Counts calculated from the anga patterns: substitute the column’s value for each L, 2 for D, and 1 for A. This is the 35-tala scheme, not a list of every tala in use.", "Open the complete 35-tala count reference"),
           tip("Work through the structure", "Chaturasra-jati Triputa gives 4 + 2 + 2 = 8 counts, the familiar Adi tala structure. Keep the groups audible: eight undifferentiated clicks conceal the organisation."),
           links(["Kerala SCERT: Music, Class XI, chapter 4 (tala)", "https://samagra.kite.kerala.gov.in/files/samagra-resource/uploads/tbookscmq/Class_XI/Music/Music.pdf"]),
         ],
@@ -301,7 +289,7 @@ const INDIAN_CLASSICAL: Topic = {
         id: "yaman-listening",
         title: "Listening study: Yaman and the raised fourth",
         blocks: [
-          { type: "visual", id: "raga-comparison" },
+          { type: "visual", id: "raga-listening-yaman" },
           p("Tanarang’s Yaman description uses tivra Ma with the other degrees shuddha, assigns Ga and Ni as vadi and samvadi, and places the raga in the first night prahar. Treat these as this teaching source’s conventions. Its melodic examples frequently approach from lower Ni; a straight seven-note ascent alone misses that emphasis."),
           table(["Feature", "Listening task"], [
             ["Pitch material", "Sa Re Ga Ḿa Pa Dha Ni; hear the raised fourth against Sa."],
@@ -317,6 +305,7 @@ const INDIAN_CLASSICAL: Topic = {
         id: "durga-listening",
         title: "Listening study: Durga and omitted degrees",
         blocks: [
+          { type: "visual", id: "raga-listening-durga" },
           p("Durga omits Ga and Ni. Tanarang classifies it as audav–audav, groups it under Bilawal, gives Ma / Sa as the principal pair, and associates it with the second night prahar. Its descending outline includes a return from Pa to Dha before moving to Ma: descending does not necessarily mean moving down at every step."),
           table(["Feature", "What to notice"], [
             ["Available degrees", "Sa Re Ma Pa Dha: all five are shuddha."],
@@ -332,6 +321,7 @@ const INDIAN_CLASSICAL: Topic = {
         id: "malkauns-listening",
         title: "Listening study: Malkauns without Re or Pa",
         blocks: [
+          { type: "visual", id: "raga-listening-malkauns" },
           p("Malkauns uses Sa, komal ga, shuddha Ma, komal dha and komal ni. Re and Pa are omitted. Tanarang describes an audav–audav raga, with Ma / Sa as the principal pair and a third-night-prahar association. Its examples explore both the lower register and upper Sa."),
           table(["Feature", "Listening task"], [
             ["Pitch material", "Sa ga Ma dha ni; distinguish komal dha from shuddha Dha."],
@@ -390,6 +380,13 @@ const INDIAN_CLASSICAL: Topic = {
     ],
 };
 
+// Put the long companion and its contents list in the same order as the sidebar.
+const sourceSections = new Map(INDIAN_CLASSICAL.sections.map((section) => [section.id, section]));
+INDIAN_CLASSICAL.sections = RAGA_PARTS.flatMap((part, index) => {
+  const ids: string[] = [...(part.id === "pitch" ? ["traditions", "shruti-svara"] : []), ...part.lessons.map((lesson) => lesson.section), ...(part.id === "guitar" ? ["raga-practice-journal"] : [])];
+  return ids.map((id, sectionIndex) => ({ ...sourceSections.get(id)!, part: sectionIndex === 0 ? `Part ${index + 1} · ${part.title}` : undefined }));
+});
+
 export const RAGA_TOPICS: Topic[] = [
   INDIAN_CLASSICAL,
   ...RAGA_LESSONS.map((lesson, index): Topic => {
@@ -401,7 +398,8 @@ export const RAGA_TOPICS: Topic[] = [
     if (previous) navigation.push([`Previous · ${previous.label}`, `/learn/${previous.slug}`]);
     if (next) navigation.push([`Next · ${next.label}`, `/learn/${next.slug}`]);
     navigation.push(["Indian classical course overview", "/learn/indian-classical"]);
-    const context = lesson.partIndex === 1 ? INDIAN_CLASSICAL.sections.find((section) => section.id === "shruti-svara")!.blocks : [];
+    const context = lesson.partId === "pitch" ? sourceSections.get("shruti-svara")!.blocks : lesson.slug === "tala-practice" ? sourceSections.get("raga-practice-journal")!.blocks : [];
+    const guitarBlocks: Block[] = lesson.guitar === "melody" ? [{ type: "visual", id: `raga-guitar-${lesson.slug}` }, list(...GUITAR_LESSON_TASKS[lesson.slug])] : [tip("Apply the cycle on guitar", "Use a muted pluck or one comfortable Sa on each count, preserving the group starts. A count pattern does not prescribe the melodic rhythm of a composition."), list(...(GUITAR_LESSON_TASKS[lesson.slug] ?? [])), links(["Practice studio & metronome", "/practice"])];
     return {
       slug: lesson.slug,
       title: source.title,
@@ -409,7 +407,7 @@ export const RAGA_TOPICS: Topic[] = [
       sections: [
         { id: source.id, title: source.title, blocks: source.blocks.filter((block) => block.type === "visual" || block.type === "table") },
         { id: `${source.id}-notes`, title: lesson.reading, blocks: [...source.blocks.filter((block) => block.type !== "visual" && block.type !== "table"), ...context] },
-        ...(lesson.slug === "raga-guitar" ? [] : [{ id: "guitar-application", title: "Play this on guitar", blocks: [{ type: "visual", id: `raga-guitar-${lesson.slug}` } as Block, list(...GUITAR_LESSON_TASKS[lesson.slug])] }]),
+        ...(lesson.slug === "raga-guitar" || lesson.guitar === "none" ? [] : [{ id: "guitar-application", title: lesson.guitar === "rhythm" ? "Keep the cycle on guitar" : "Play this on guitar", blocks: guitarBlocks }]),
         { id: "apply-and-continue", title: "Try it yourself & continue", blocks: [list(...lesson.practice), links(...navigation)] },
       ],
     };

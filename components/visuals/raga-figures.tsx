@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { HINDUSTANI_POSITIONS } from "@/lib/music/raga";
 import { BarChart } from "./charts";
 import { HindustaniSvaraExplorer } from "./hindustani-svara-explorer";
@@ -10,13 +10,13 @@ import { KatapayadiChakras, MelakartaBuilder, MelakartaExplorer } from "./melaka
 import { RagaCurriculum } from "./raga-curriculum";
 import { RagaGuitar } from "@/components/music/raga-guitar";
 import { RAGA_LESSONS } from "@/lib/content/raga-curriculum";
+import { OrnamentExplorer } from "./raga-ornaments";
+import { SourceSymbolism } from "./raga-symbolism";
+import { CarnaticTalaExplorer, TeentalPractice } from "./raga-rhythm";
+import { ListeningStudy } from "./raga-listening";
+import { LISTENING_STUDIES, listeningSemitones } from "@/lib/music/raga-performance";
 
-const RAGAS = [
-  { name: "Yaman", pitches: [0, 2, 4, 6, 7, 9, 11] },
-  { name: "Durga", pitches: [0, 2, 5, 7, 9] },
-  { name: "Malkauns", pitches: [0, 3, 5, 8, 10] },
-];
-const TALAS: [string, string[]][] = [["Dhruva", ["L", "D", "L", "L"]], ["Matya", ["L", "D", "L"]], ["Rupaka", ["D", "L"]], ["Jhampa", ["L", "A", "D"]], ["Triputa", ["L", "D", "D"]], ["Ata", ["L", "L", "D", "D"]], ["Eka", ["L"]]];
+const RAGAS = LISTENING_STUDIES.map((study) => ({ name: study.name, pitches: listeningSemitones(study) }));
 
 function RagaComparison() {
   return <div className="space-y-5">
@@ -27,31 +27,14 @@ function RagaComparison() {
   </div>;
 }
 
-function TalaChart() {
-  const [jati, setJati] = useState(4);
-  return <div className="space-y-4">
-    <label className="flex flex-wrap items-center gap-3 text-sm font-medium">Laghu jati<select aria-label="Laghu jati" value={jati} onChange={(event) => setJati(Number(event.target.value))} className="rounded-md border bg-card p-2">{[[3, "Tisra"], [4, "Chaturasra"], [5, "Khanda"], [7, "Misra"], [9, "Sankirna"]].map(([value, name]) => <option value={value} key={value}>{name} · {value} counts</option>)}</select></label>
-    <BarChart title="Cycle length by tala" unit="counts" max={29} labelWidth="5rem" bars={TALAS.map(([label, angas]) => ({ label, value: angas.reduce((sum, anga) => sum + (anga === "L" ? jati : anga === "D" ? 2 : 1), 0), detail: angas.map((anga) => `${anga}=${anga === "L" ? jati : anga === "D" ? 2 : 1}`).join(" + ") }))} />
-    <p aria-live="polite" className="text-xs text-muted-foreground">L = laghu ({jati}); D = drutam (2); A = anudrutam (1). The chart keeps a fixed 0–29 scale so changing jati remains comparable.</p>
-    <div className="flex gap-1" aria-label={`Triputa grouping: ${jati} plus 2 plus 2 counts`}>{[jati, 2, 2].map((count, i) => <div key={i} style={{ flex: count }} className={`rounded-lg border p-3 text-center ${i === 0 ? "border-primary bg-primary/10" : "bg-muted"}`}><strong className="block text-sm">{i === 0 ? "L" : "D"} · {count}</strong></div>)}</div>
-    <p className="text-xs text-muted-foreground">Triputa above: segment widths represent counts. Chaturasra jati gives Adi tala’s 4 + 2 + 2 structure.</p>
-  </div>;
-}
-
-function TeentalCycle() {
-  const [beat, setBeat] = useState(0);
-  const gesture = beat === 0 ? "Clap · sam" : beat === 4 || beat === 12 ? "Clap" : beat === 8 ? "Wave · khali" : "Continue counting";
-  return <div className="space-y-4">
-    <h3 className="text-sm font-semibold">Teental: feel the four divisions</h3>
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{["Clap · sam", "Clap", "Wave · khali", "Clap"].map((label, group) => <div key={group} className="rounded-lg border p-2"><p className="mb-2 text-xs font-medium">{label}</p><div className="grid grid-cols-4 gap-1">{Array.from({ length: 4 }, (_, offset) => { const index = group * 4 + offset; return <button type="button" key={index} aria-label={`Beat ${index + 1}`} aria-pressed={beat === index} onClick={() => setBeat(index)} className={`rounded py-2 text-xs focus-visible:outline-2 focus-visible:outline-ring ${beat === index ? "bg-primary text-primary-foreground" : "bg-muted"}`}>{index + 1}</button>; })}</div></div>)}</div>
-    <div className="flex flex-wrap items-center gap-3"><button type="button" className="rounded-md border px-3 py-2 text-sm hover:bg-muted" onClick={() => setBeat((beat + 1) % 16)}>Next beat →</button><p aria-live="polite" className="text-sm">Beat {beat + 1} of 16 · {gesture}</p></div>
-    <p className="text-muted-foreground text-xs">4 + 4 + 4 + 4, then back to sam. Khali marks a division with a wave; it does not mean four beats of silence. Advance manually while keeping a steady pulse.</p>
-  </div>;
-}
-
 export const RAGA_VISUALS: Record<string, () => React.ReactNode> = {
   "raga-guitar": () => <Suspense fallback={<p className="text-sm text-muted-foreground">Loading guitar practice…</p>}><RagaGuitar /></Suspense>,
-  ...Object.fromEntries(RAGA_LESSONS.map((lesson) => [`raga-guitar-${lesson.slug}`, () => <Suspense fallback={<p className="text-sm text-muted-foreground">Loading guitar practice…</p>}><RagaGuitar lesson={lesson.slug} /></Suspense>])),
+  ...Object.fromEntries(RAGA_LESSONS.filter((lesson) => lesson.guitar === "melody").map((lesson) => [`raga-guitar-${lesson.slug}`, () => <Suspense fallback={<p className="text-sm text-muted-foreground">Loading guitar practice…</p>}><RagaGuitar lesson={lesson.slug} /></Suspense>])),
+  "raga-ornaments": () => <OrnamentExplorer />,
+  "raga-source-symbolism": () => <SourceSymbolism />,
+  "raga-listening-yaman": () => <ListeningStudy id="yaman" />,
+  "raga-listening-durga": () => <ListeningStudy id="durga" />,
+  "raga-listening-malkauns": () => <ListeningStudy id="malkauns" />,
   "hindustani-svara-explorer": () => <HindustaniSvaraExplorer />,
   "carnatic-svara-explorer": () => <CarnaticSvaraExplorer />,
   "raga-curriculum": () => <RagaCurriculum />,
@@ -65,6 +48,6 @@ export const RAGA_VISUALS: Record<string, () => React.ReactNode> = {
   "raga-katapayadi": () => <KatapayadiChakras />,
   "raga-melakarta-explorer": () => <Suspense fallback={<p className="p-4 text-sm text-muted-foreground">Loading the 72-melakarta explorer…</p>}><MelakartaExplorer /></Suspense>,
   "raga-comparison": () => <RagaComparison />,
-  "raga-tala-chart": () => <TalaChart />,
-  "raga-teental": () => <TeentalCycle />,
+  "raga-tala-chart": () => <CarnaticTalaExplorer />,
+  "raga-teental": () => <TeentalPractice />,
 };

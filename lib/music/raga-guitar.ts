@@ -1,5 +1,6 @@
 import { CARNATIC_SVARAS, HINDUSTANI_POSITIONS, MELAKARTAS, THAATS } from "./raga.ts";
 import { KAFI_STUDIES, svaraPitch } from "./raga-studies.ts";
+import { LISTENING_STUDIES } from "./raga-performance.ts";
 import { mod, TUNING } from "./theory.ts";
 
 export type GuitarTone = { symbol: string; offset: number };
@@ -19,6 +20,10 @@ export const GUITAR_STUDIES: GuitarStudy[] = [
   study("hindustani", "Hindustani · 12 positions", "Pitch maps", chromatic(false), "A chromatic naming exercise, not the scale of a particular raga."),
   study("carnatic", "Carnatic · 16 names", "Pitch maps", chromatic(true), "Shared names occupy the same fret. This is a naming map, not a raga."),
   ...KAFI_STUDIES.map((raga, index) => study(`raga-${index}`, `${raga.name} · taught outline`, "Raga outlines", raga.ascent.map((symbol) => ({ symbol, offset: svaraPitch(symbol) })), raga.treatment, raga.descent.map((symbol) => ({ symbol, offset: svaraPitch(symbol) })))),
+  ...LISTENING_STUDIES.flatMap((raga) => [
+    study(`listening-${raga.id}`, `${raga.name} · ${raga.id === "yaman" ? "pitch drill" : "taught outline"}`, "Raga outlines", raga.ascent.map((symbol) => ({ symbol, offset: svaraPitch(symbol) })), raga.routeNote, raga.descent.map((symbol) => ({ symbol, offset: svaraPitch(symbol) }))),
+    study(`phrase-${raga.id}`, `${raga.name} · short phrase excerpt`, "Raga outlines", raga.phrase.map((symbol) => ({ symbol, offset: svaraPitch(symbol) })), "A shortened teaching-source excerpt. Reversing it is a technical drill, not a sourced avaroha prescription. Sa may sound only in the reference drone."),
+  ]),
   ...THAATS.map((thaat, index) => study(`thaat-${index}`, `${thaat.name} · thaat`, "Ten thaats", [...thaat.semitones.map((offset, i) => ({ offset, symbol: thaat.notes.split(" ")[i] })), { offset: 12, symbol: "Sa′" }], "A parent-collection fingering exercise. The example raga’s movement and ornaments require separate study.")),
   ...MELAKARTAS.map((mela) => study(`melakarta-${mela.number}`, `${mela.number}. ${mela.name}`, "Melakartas", [...mela.semitones.map((offset, i) => ({ offset, symbol: mela.svaras[i] })), { offset: 12, symbol: "S′" }], "An equal-tempered pitch route for the modern sampurna collection. Learn raga-specific gamakas from a taught rendition.")),
 ];
@@ -30,6 +35,9 @@ export function guitarStudy(id: string): GuitarStudy {
 export function guitarLessonDefault(lesson: string, mela?: string | null) {
   if (mela && MELAKARTAS.some((item) => String(item.number) === mela)) return `melakarta-${mela}`;
   if (lesson === "carnatic-svaras") return "carnatic";
+  const listening = LISTENING_STUDIES.find((item) => `${item.id}-listening` === lesson);
+  if (listening) return `listening-${listening.id}`;
+  if (lesson === "gamaka") return "raga-0";
   if (["what-is-raga", "raga-versus-scale", "raga-elements", "raga-guitar"].includes(lesson)) return "raga-0";
   if (lesson === "thaats") return "thaat-0";
   if (lesson === "janaka-and-janya") return "melakarta-29";

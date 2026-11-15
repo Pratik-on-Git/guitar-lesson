@@ -26,6 +26,15 @@ test("the guitar lesson maps exact single-string notes, hand shifts and transpos
   await expect(guitar.locator("tbody tr")).toHaveCount(15);
 });
 
+test("quick material and tonic changes retain both guitar choices", async ({ page }) => {
+  await page.goto("/learn/raga-guitar");
+  const guitar = page.locator("#guitar-application");
+  await guitar.getByRole("combobox", { name: "Practice material", exact: true }).selectOption("thaat-3");
+  await guitar.getByRole("radiogroup", { name: "Guitar Sa", exact: true }).getByRole("radio", { name: "D", exact: true }).click();
+  await expect(guitar.getByRole("combobox", { name: "Practice material", exact: true })).toHaveValue("thaat-3");
+  await expect(guitar.getByRole("img", { name: /Sa D3/ })).toBeVisible();
+});
+
 test("raga routes preserve lower notes and descending turns, and playback stops when material changes", async ({ page }) => {
   await page.goto("/learn/raga-guitar");
   const guitar = page.locator("#guitar-application");
@@ -66,14 +75,14 @@ test("builder, scale and thaat links carry their selected material into guitar p
 
 test("every dedicated lesson has guitar practice and the new lesson appears in grouped navigation", async ({ page }) => {
   test.setTimeout(60_000);
-  for (const lesson of RAGA_LESSONS) {
+  for (const lesson of RAGA_LESSONS.filter((lesson) => lesson.guitar === "melody")) {
     await page.goto(`/learn/${lesson.slug}`);
     const guitar = page.locator("#guitar-application");
     await expect(guitar.getByRole("combobox", { name: "Practice material", exact: true })).toBeVisible();
     await expect(guitar.getByRole("img")).toBeVisible();
     await expect(page.getByRole("link", { name: /Berklee · Hammer-ons, pull-offs and finger slides/i })).toBeVisible();
   }
-  await expect(page.getByRole("navigation", { name: "Study topics" }).getByText(/Part 4 · Guitar Application/i)).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Study topics" }).getByText(new RegExp(RAGA_LESSONS.find((lesson) => lesson.slug === "raga-guitar")!.part, "i"))).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Study topics" }).getByRole("link", { name: /^Ragas on Guitar$/i })).toHaveAttribute("aria-current", "page");
 });
 
@@ -103,16 +112,4 @@ test("guitar charts, TAB and fingering tables stay inside mobile pages in both t
   expect(await tab.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
   await tab.evaluate((element) => { element.scrollLeft = element.scrollWidth; });
   expect(await tab.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
-});
-
-test("local guitar visual review", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/learn/raga-guitar");
-  const guitar = page.locator("#guitar-application");
-  await expect(guitar.getByRole("img")).toBeVisible();
-  await guitar.screenshot({ path: ".local/raga-guitar-desktop.png", style: "header { visibility: hidden !important; }" });
-  await page.setViewportSize({ width: 390, height: 844 });
-  await guitar.screenshot({ path: ".local/raga-guitar-mobile.png", style: "header { visibility: hidden !important; }" });
-  await page.getByRole("button", { name: /Switch to Dark Theme/i }).click();
-  await guitar.screenshot({ path: ".local/raga-guitar-dark.png", style: "header { visibility: hidden !important; }" });
 });

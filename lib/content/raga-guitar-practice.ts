@@ -1,5 +1,11 @@
 /** Original guitar tasks applying the lesson's reviewed pitch/grammar data. */
 export const GUITAR_LESSON_TASKS: Record<string, string[]> = {
+  gamaka: ["Listen and sing a short connection before choosing a slide, bend or legato approach.", "Compare pitch arrival and release with the source phrase; a generic guitar ornament is not automatically the raga’s required treatment."],
+  "carnatic-talas": ["Repeat one comfortable Sa or a muted pluck on each count while keeping the anga groups audible.", "For chaturasra Triputa, accent the starts of 4 + 2 + 2. Stop the click track and maintain the grouping yourself."],
+  "tala-practice": ["Use one muted guitar pluck per matra while keeping teental’s claps and wave mentally distinct.", "Continue all four counts of khali, then land on sam without speeding up the return."],
+  "yaman-listening": ["Locate Ḿa one fret above shuddha Ma and compare it with Sa.", "Use the phrase excerpt link to play lower Ni → Re → Ga with its exact registers; the straight pitch drill is only an orientation map."],
+  "durga-listening": ["Leave out Ga and Ni. Follow the descending Pa–Dha turn rather than sorting the notes into a straight line.", "Compare the route with a rendition and listen to where Pa continues rather than rests."],
+  "malkauns-listening": ["Use Sa ga Ma dha ni with a Sa-only drone. Do not substitute Pa from a familiar minor-pentatonic box.", "Open the low dha–ni phrase excerpt in the guitar workbench and compare its arrival on Sa."],
   "hindustani-svaras": ["On one string, compare re/Re, ga/Ga, Ma/Ḿa, dha/Dha and ni/Ni. Each adjacent pair is one fret apart in this map.", "Change Sa, sing the new tonic and find the same relative positions again. A twelve-fret move repeats a pitch class an octave higher."],
   "carnatic-svaras": ["Locate R2/G1 and D2/N1. Two names at a shared position require the same fret at the same register.", "Choose a melakarta and follow its specific degree labels. A shared fret does not make the named degree or gamaka interchangeable."],
   "svara-comparison": ["Select Western labels, find the tonic, then switch back to svaras without moving your hand.", "Compare one-string interval distances with a route across strings. Recalculate across the G–B boundary using the diagram."],

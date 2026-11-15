@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { startTransition, useOptimistic, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Guitar, MoveHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Segmented } from "@/components/ui/segmented";
-import { useQueryState } from "@/lib/use-query-state";
 import { GUITAR_STUDIES, guitarLessonDefault, guitarRoute, guitarStudy, guitarTab, playableRegions, playableStrings, practiceTones, soundingPitch } from "@/lib/music/raga-guitar";
 import { mod, neckNotes, STRING_NAMES } from "@/lib/music/theory";
 import type { SoundEvent } from "@/lib/music/sound";
@@ -17,8 +16,26 @@ import styles from "./raga-guitar.module.css";
 
 export function RagaGuitar({ lesson = "raga-guitar" }: { lesson?: string }) {
   const params = useSearchParams();
-  const [studyId, setStudy] = useQueryState("study", guitarLessonDefault(lesson, params.get("mela")));
-  const [saValue, setSa] = useQueryState("sa", "0");
+  const router = useRouter();
+  const pathname = usePathname();
+  const [optimisticQuery, setOptimisticQuery] = useOptimistic(params.toString());
+  const query = new URLSearchParams(optimisticQuery);
+  const defaultStudy = guitarLessonDefault(lesson, query.get("mela"));
+  const studyId = query.get("study") ?? defaultStudy;
+  const saValue = query.get("sa") ?? "0";
+  // Commit the complete local selection so rapid material/Sa changes compose.
+  function setParameter(name: string, value: string, fallback: string) {
+    const next = new URLSearchParams(optimisticQuery);
+    if (value === fallback) next.delete(name);
+    else next.set(name, value);
+    const search = next.toString();
+    startTransition(() => {
+      setOptimisticQuery(search);
+      router.replace(search ? `${pathname}?${search}` : pathname, { scroll: false });
+    });
+  }
+  const setStudy = (value: string) => setParameter("study", value, defaultStudy);
+  const setSa = (value: string) => setParameter("sa", value, "0");
   const sa = Number.isInteger(Number(saValue)) && Number(saValue) >= 0 && Number(saValue) < 12 ? Number(saValue) : 0;
   const saMidi = 48 + sa;
   const material = guitarStudy(studyId);
@@ -64,7 +81,7 @@ export function RagaGuitar({ lesson = "raga-guitar" }: { lesson?: string }) {
       <div className={styles.neck} tabIndex={0} role="region" aria-label="Guitar fretboard, scroll horizontally">
         <Fretboard notes={notes} frets={to} startFret={from} rootIndex={semitones.indexOf(0)} highlight={marks} selected={marks[stepIndex]} label={(index) => labels === "svara" ? symbols[index] : soundingPitch(saMidi + semitones[index]).replace(/\d+$/, "")} title={`${material.title}, Sa ${soundingPitch(saMidi)}, frets ${from}–${to}`} />
       </div>
-      <p className={styles.legend}><span>■ Sa · ring = selected step · high e is on top</span><span><MoveHorizontal size={13} aria-hidden /> Scroll the neck when needed</span></p>
+      <p className={styles.legend}><span>■ Sa when played · ring = selected step · high e is on top</span><span><MoveHorizontal size={13} aria-hidden /> Scroll the neck when needed</span></p>
       <div className={styles.stepCard}>
         <div className={styles.stepHeading}><span className={styles.badge}>Sa = {soundingPitch(saMidi)}</span><div className={styles.controls}><Button variant="outline" size="icon-sm" aria-label="Previous guitar step" onClick={() => setStep((stepIndex + route.length - 1) % route.length)}><ArrowLeft aria-hidden /></Button><Button variant="outline" size="icon-sm" aria-label="Next guitar step" onClick={() => setStep((stepIndex + 1) % route.length)}><ArrowRight aria-hidden /></Button></div></div>
         <div aria-live="polite" aria-atomic="true"><h4>Selected step {stepIndex + 1} of {route.length} · {selected.symbol}</h4><dl className={styles.facts}>{[["Sounding pitch", soundingPitch(selected.midi)], ["String", `${6 - selected.string} · ${STRING_NAMES[selected.string]}`], ["Fret", String(selected.fret)], ["Suggested finger", selected.finger === 0 ? "0 · open" : String(selected.finger)], ["Hand position", String(selected.position)]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>{selected.shift ? "Shift the hand here; the suggested route does not require a fixed stretch over the whole region." : "Pick this note clearly, sing its svara, then move to the next step."}</p></div>

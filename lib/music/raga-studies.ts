@@ -8,11 +8,13 @@ export const KAFI_STUDIES = [
 ] as const;
 
 export function svaraPitch(symbol: string): number {
-  if (symbol === "Sa′") return 12;
-  if (symbol === ",ni") return -2;
-  const pitch = HINDUSTANI_POSITIONS.findIndex((note) => note.symbol === symbol);
+  let name = symbol;
+  let register = 0;
+  while (name.startsWith(",")) { register -= 12; name = name.slice(1); }
+  while (name.endsWith("′")) { register += 12; name = name.slice(0, -1); }
+  const pitch = HINDUSTANI_POSITIONS.findIndex((note) => note.symbol === name);
   if (pitch < 0) throw new Error(`Unknown teaching-outline svara: ${symbol}`);
-  return pitch;
+  return pitch + register;
 }
 
 export function distinctDegrees(symbols: readonly string[]) {

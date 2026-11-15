@@ -71,7 +71,7 @@ export function RagaIdentity() {
   </div>;
 }
 
-function PhraseContour({ notes, label }: { notes: readonly string[]; label: string }) {
+export function PhraseContour({ notes, label }: { notes: readonly string[]; label: string }) {
   const width = 600;
   const points = notes.map((symbol, index) => ({ symbol, x: 28 + index * ((width - 56) / (notes.length - 1)), y: 30 + (12 - svaraPitch(symbol)) * 7 }));
   return <div className={styles.surface}><p className={styles.eyebrow}>{label}</p><div className={styles.contourPlot} role="img" aria-label={`${label}: ${notes.join(" ")}`}>

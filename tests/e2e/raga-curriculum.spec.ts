@@ -15,7 +15,8 @@ test("all lessons have grouped navigation, guitar application, sources and seque
     for (const part of RAGA_PARTS) await expect(nav.getByText(new RegExp(part.title, "i"))).toBeVisible();
     await expect(page.locator(`#${lesson.section}`)).toBeVisible();
     await expect(page.locator(`#${lesson.section}-notes`)).toBeVisible();
-    await expect(page.locator("#guitar-application")).toBeVisible();
+    if (lesson.guitar !== "none") await expect(page.locator("#guitar-application")).toBeVisible();
+    else await expect(page.locator("#guitar-application")).toHaveCount(0);
     await expect(page.getByRole("heading", { name: /^Sources & further reading$/i })).toBeVisible();
     const continuation = page.locator("#apply-and-continue");
     await expect(continuation.getByRole("listitem")).toHaveCount(2);

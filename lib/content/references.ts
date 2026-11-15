@@ -68,16 +68,24 @@ export const TOPIC_REFERENCES: Record<string, Reference[]> = {
 // Dedicated lessons retain the relevant evidence from the course's source list.
 for (const lesson of RAGA_LESSONS) {
   if (TOPIC_REFERENCES[lesson.slug]) continue;
-  const relevant = lesson.partIndex === 1
+  if (lesson.partId === "context") {
+    TOPIC_REFERENCES[lesson.slug] = [{ title: "Supplied PDF pp. 8–9 · reported associations, source context and limitations", href: "/learn/indian-classical#symbolism" }];
+    continue;
+  }
+  const relevant = lesson.partId === "pitch" || lesson.slug === "gamaka"
     ? /Carnatic concepts|Hindustani terms|Rao & Rao/
-    : lesson.partIndex === 2
+    : lesson.partId === "grammar"
       ? /Hindustani elements of raga|Bhimpalasi|Bageshree|Dhani|Origin and Evolution|Metropolitan/
-      : /Carnatic concepts|Carnatic composer|Musical Concepts I|Complete numbered/;
+      : lesson.partId === "rhythm"
+        ? /tala|SCERT/
+        : lesson.partId === "listening"
+          ? new RegExp(`Tanarang · ${lesson.slug.split("-")[0]}`, "i")
+          : /Carnatic concepts|Carnatic composer|Musical Concepts I|Complete numbered/;
   TOPIC_REFERENCES[lesson.slug] = TOPIC_REFERENCES["indian-classical"].filter((reference) => relevant.test(reference.title));
 }
 
 TOPIC_REFERENCES["raga-guitar"] = TOPIC_REFERENCES["indian-classical"].filter((reference) => /Bhimpalasi|Bageshree|Dhani|Rao & Rao/.test(reference.title));
-for (const slug of ["indian-classical", ...RAGA_LESSONS.map((lesson) => lesson.slug)]) {
+for (const slug of ["indian-classical", ...RAGA_LESSONS.filter((lesson) => lesson.guitar !== "none").map((lesson) => lesson.slug)]) {
   TOPIC_REFERENCES[slug] = [...TOPIC_REFERENCES[slug], ...GUITAR_REFERENCES];
 }
 

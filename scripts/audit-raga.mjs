@@ -11,6 +11,7 @@ import { RAGA_LESSONS, RAGA_PARTS } from "../lib/content/raga-curriculum.ts";
 import { distinctDegrees, KAFI_STUDIES, KATAPAYADI_EXAMPLES, svaraPitch } from "../lib/music/raga-studies.ts";
 import { GUITAR_MAX_FRET, GUITAR_STUDIES, guitarLessonDefault, guitarRoute, guitarTab, playableRegions, playableStrings, practiceTones } from "../lib/music/raga-guitar.ts";
 import { TUNING } from "../lib/music/theory.ts";
+import { angaCounts, JATIS, LISTENING_STUDIES, listeningSemitones, SOURCE_ASSOCIATIONS, TALA_PATTERNS, talaBeats } from "../lib/music/raga-performance.ts";
 
 assert.equal(CARNATIC_SVARAS.length, 16);
 assert.equal(new Set(CARNATIC_SVARAS.map((s) => s.symbol)).size, 16);
@@ -88,14 +89,14 @@ assert.ok(NAV.some((group) => group.items.some((item) => item.href === href)));
 assert.equal(STUDY_PAGES.filter((page) => page.href === href).length, 1);
 assert.ok(TOPIC_REFERENCES[topic.slug].length > 0);
 assert.equal(new Set(topic.sections.map((s) => s.id)).size, topic.sections.length);
-assert.deepEqual(RAGA_PARTS.map((part) => part.lessons.length), [3, 4, 4, 1]);
-assert.equal(new Set(RAGA_LESSONS.map((lesson) => lesson.slug)).size, 12);
+assert.deepEqual(RAGA_PARTS.map((part) => part.lessons.length), [3, 5, 4, 2, 3, 1, 1]);
+assert.equal(new Set(RAGA_LESSONS.map((lesson) => lesson.slug)).size, 19);
 for (const definition of RAGA_LESSONS) {
   const { slug } = definition;
   const lesson = getTopic(slug);
   assert.ok(lesson, `Missing dedicated lesson: ${slug}`);
-  assert.equal(lesson.sections.length, slug === "raga-guitar" ? 3 : 4);
-  assert.ok(lesson.sections.some((section) => section.id === "guitar-application"));
+  assert.equal(lesson.sections.length, slug === "raga-guitar" || definition.guitar === "none" ? 3 : 4);
+  assert.equal(lesson.sections.some((section) => section.id === "guitar-application"), definition.guitar !== "none");
   assert.equal(lesson.sections[0].id, definition.section);
   assert.ok(lesson.sections[0].blocks.some((block) => block.type === "visual"));
   const source = topic.sections.find((section) => section.id === definition.section);
@@ -130,8 +131,8 @@ for (const section of topic.sections) {
 }
 console.log("Raga audit passed: 16 svara names, 12 positions, 10 thaats, 12 chakras, 72 unique melakarta scales, source-wheel regressions, note spelling, search and lesson integration.");
 
-assert.equal(GUITAR_STUDIES.length, 87);
-assert.equal(new Set(GUITAR_STUDIES.map((study) => study.id)).size, 87);
+assert.equal(GUITAR_STUDIES.length, 93);
+assert.equal(new Set(GUITAR_STUDIES.map((study) => study.id)).size, 93);
 assert.equal(guitarLessonDefault("melakarta-chart"), "melakarta-1");
 assert.equal(guitarLessonDefault("melakarta-construction", "65"), "melakarta-65");
 assert.equal(guitarLessonDefault("janaka-and-janya"), "melakarta-29");
@@ -166,4 +167,29 @@ for (const material of GUITAR_STUDIES) {
 const cMajor = guitarRoute(GUITAR_STUDIES.find((study) => study.id === "thaat-0").ascent, 48, { mode: "single", string: 1 });
 assert.deepEqual(cMajor.map((step) => step.fret), [3, 5, 7, 8, 10, 12, 14, 15]);
 assert.equal(guitarRoute(GUITAR_STUDIES[0].ascent, 48, { mode: "single", string: 5 }).length, 0);
-console.log(`Guitar audit passed: ${guitarRoutes} complete routes, all 87 materials in 12 tonic pitch classes, exact registers, bounded frets, TAB, finger numbering and explicit hand shifts.`);
+console.log(`Guitar audit passed: ${guitarRoutes} complete routes, all ${GUITAR_STUDIES.length} materials in 12 tonic pitch classes, exact registers, bounded frets, TAB, finger numbering and explicit hand shifts.`);
+
+const expectedTalaCounts = [[11, 14, 17, 23, 29], [8, 10, 12, 16, 20], [5, 6, 7, 9, 11], [6, 7, 8, 10, 12], [7, 8, 9, 11, 13], [10, 12, 14, 18, 22], [3, 4, 5, 7, 9]];
+assert.equal(TALA_PATTERNS.length * JATIS.length, 35);
+TALA_PATTERNS.forEach((pattern, row) => JATIS.forEach((jati, column) => {
+  const beats = talaBeats(pattern, jati.count);
+  assert.equal(beats.length, expectedTalaCounts[row][column]);
+  pattern.angas.forEach((anga, group) => {
+    const segment = beats.filter((beat) => beat.group === group);
+    assert.equal(segment.length, angaCounts(anga, jati.count));
+    assert.equal(segment[0].gesture, "Clap");
+    if (anga === "D") assert.equal(segment[1].gesture, "Wave");
+  });
+}));
+assert.deepEqual(LISTENING_STUDIES.map(listeningSemitones), [[0, 2, 4, 6, 7, 9, 11], [0, 2, 5, 7, 9], [0, 3, 5, 8, 10]]);
+assert.deepEqual(LISTENING_STUDIES[1].descent, ["Sa′", "Dha", "Pa", "Dha", "Ma", "Re", "Sa"]);
+assert.equal(svaraPitch(",Ni"), -1);
+assert.equal(svaraPitch(",dha"), -4);
+assert.equal(SOURCE_ASSOCIATIONS.length, 7);
+const sourceSymbolTable = topic.sections.find((section) => section.id === "symbolism").blocks.find((block) => block.type === "table");
+assert.deepEqual(sourceSymbolTable.rows, SOURCE_ASSOCIATIONS.map((item) => [item.svara, item.animal, item.planet, item.colour, item.chakra]));
+assert.equal(TOPIC_REFERENCES["svara-symbolism"].some((reference) => /Fender|Berklee/.test(reference.title)), false);
+assert.equal(guitarLessonDefault("malkauns-listening"), "listening-malkauns");
+assert.ok(topic.sections.findIndex((section) => section.id === "carnatic-tala-structure") < topic.sections.findIndex((section) => section.id === "yaman-listening"));
+assert.equal(topic.sections.at(-1).id, "symbolism");
+console.log("Performance audit passed: 35 independent tala totals and anga gestures, three listening collections, register-aware phrases, source-symbolism separation and course order.");
