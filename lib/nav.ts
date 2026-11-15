@@ -94,7 +94,7 @@ export const NAV: NavGroup[] = [
     title: "Indian Classical Music",
     items: [
       { title: "Indian classical & raga", href: "/learn/indian-classical", icon: Music2, description: "Hindustani and Carnatic svaras, raga grammar, thaats, 72 melakartas, gamakas and tala." },
-      ...RAGA_LESSONS.map((lesson) => ({ title: lesson.label, href: `/learn/${lesson.slug}`, icon: lesson.partIndex === 1 ? ChartNoAxesColumnIncreasing : lesson.partIndex === 2 ? Music2 : Layers, description: lesson.description, part: lesson.part })),
+      ...RAGA_LESSONS.map((lesson) => ({ title: lesson.label, href: `/learn/${lesson.slug}`, icon: lesson.partIndex === 1 ? ChartNoAxesColumnIncreasing : lesson.partIndex === 2 ? Music2 : lesson.partIndex === 4 ? Guitar : Layers, description: lesson.description, part: lesson.part })),
     ],
   },
   {
@@ -159,11 +159,11 @@ export const NAV: NavGroup[] = [
 ];
 
 /** Every page that can be marked as studied, in reading order. */
-export const STUDY_PAGES: (NavLeaf & { group: string })[] = NAV.slice(1).flatMap((group) =>
+export const STUDY_PAGES: (NavLeaf & { group: string; part?: string })[] = NAV.slice(1).flatMap((group) =>
   group.items.flatMap((item) =>
     item.children
       ? item.children.map((child) => ({ ...child, title: `${child.title}`, group: group.title }))
-      : [{ title: item.title, href: item.href, group: group.title }],
+      : [{ title: item.title, href: item.href, group: group.title, part: item.part }],
   ),
 );
 

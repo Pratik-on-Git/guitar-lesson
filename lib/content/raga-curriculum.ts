@@ -29,6 +29,13 @@ export const RAGA_PARTS = [
       { slug: "melakarta-chart", section: "melakarta-chart", label: "All 72 melakartas", description: "Search the corrected list and filter by chakra or madhyama.", reading: "Using the corrected reference chart", practice: ["Find Sarasangi 27 and Harikambhoji 28 in the corrected order.", "Compare Mechakalyani 65 with Dhirashankarabharanam 29. Only Ma changes."] },
     ],
   },
+  {
+    title: "Guitar application",
+    description: "Take the pitch map onto the strings, then practise phrasing and articulation.",
+    lessons: [
+      { slug: "raga-guitar", section: "guitar-application", label: "Ragas on guitar", description: "Movable Sa, string and fret positions, TAB, suggested fingerings and playable raga outlines.", reading: "Tuning, hand positions & melodic technique", practice: ["Play an outline on one string, then find the same sounding pitches across strings.", "Record a short phrase and compare its pitch arrivals and articulation with a sourced rendition."] },
+    ],
+  },
 ] as const;
 
 export const RAGA_LESSONS = RAGA_PARTS.flatMap((part, index) =>

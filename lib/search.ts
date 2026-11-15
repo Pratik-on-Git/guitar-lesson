@@ -8,6 +8,7 @@ import { BOOK_ASSIGNMENTS } from "./content/book-assignments.ts";
 import { THEORY_CHAPTERS, THEORY_CORRECTIONS } from "./content/theory-book.ts";
 import { THEORY_FIGURES } from "./content/theory-book-assets.ts";
 import { MELAKARTAS } from "./music/raga.ts";
+import { RAGA_LESSONS } from "./content/raga-curriculum.ts";
 
 /* Flat index for the Ctrl+K search: pages, sections, scales, modes and chords. */
 
@@ -26,7 +27,7 @@ const plain = (text: string) =>
 
 function build(): SearchEntry[] {
   const entries: SearchEntry[] = [];
-  for (const mela of MELAKARTAS) entries.push({ title: `${mela.name} · melakarta ${mela.number}`, context: "Indian classical music · melakarta chart", href: "/learn/indian-classical#melakarta-chart", kind: "Section", keywords: `${mela.chakra} ${mela.svaras.join(" ")} ${mela.western.join(" ")}` });
+  for (const mela of MELAKARTAS) entries.push({ title: `${mela.name} · melakarta ${mela.number}`, context: "Indian classical music · melakarta chart", href: `/learn/melakarta-chart?mela=${mela.number}#melakarta-chart`, kind: "Section", keywords: `${mela.chakra} ${mela.svaras.join(" ")} ${mela.western.join(" ")}` });
   for (const figure of THEORY_FIGURES) entries.push({ title: `${figure.title} · PDF p. ${figure.page}`, context: "Music theory · illustration atlas", href: `/books/music-theory?figure=${figure.id}#source-figures`, kind: "Section", keywords: "music theory illustration comparison table" });
   for (const chapter of THEORY_CHAPTERS) entries.push({ title: chapter.title, context: "Music Theory book guide", href: `/books/music-theory#${chapter.id}`, kind: "Section", keywords: `${chapter.summary} ${chapter.lessons.map((l) => l.title).join(" ")}` });
   for (const entry of THEORY_CORRECTIONS) entries.push({ title: entry.title, context: "Music theory · corrections", href: "/books/music-theory#corrections", kind: "Section", keywords: entry.text });
@@ -41,6 +42,7 @@ function build(): SearchEntry[] {
 
   for (const topic of TOPICS) {
     for (const section of topic.sections) {
+      if (topic.slug === "indian-classical" && RAGA_LESSONS.some((lesson) => lesson.section === section.id)) continue;
       const words = section.blocks
         .map((b) => ("term" in b ? b.term : "") + " " + ("text" in b ? b.text : "") + " " + (b.type === "table" ? b.rows.flat().join(" ") : b.type === "list" ? b.items.join(" ") : ""))
         .join(" ")

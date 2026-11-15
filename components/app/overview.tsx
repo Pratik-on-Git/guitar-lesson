@@ -3,7 +3,7 @@
 import { titleCaseLabel } from "@/lib/title-case";
 
 import Link from "next/link";
-import { useState, useSyncExternalStore, type ReactNode } from "react";
+import { Fragment, useState, useSyncExternalStore, type ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, AudioWaveform, BookOpen, CalendarDays, Check, ChevronDown, ChevronRight, CircleCheck, Clock3, Drum, Guitar, Info, Layers, Library, ListMusic, Music2, Sparkles, Target, type LucideIcon } from "lucide-react";
 import { STUDY_PAGES } from "@/lib/nav";
 import { calendarLabel, practiceSummary, studySummary } from "@/lib/overview";
@@ -164,7 +164,10 @@ function StudyMap({ study }: { study: Study }) {
       const Icon = group.items[0].icon;
       return <details key={group.title} className="overview-mapPart">
         <summary className="overview-mapSummary">{titleCaseLabel(<><IconTile icon={<Icon />} tone={group.done === group.total ? "success" : "primary"} /><span className="min-w-0 flex-1"><span className="text-muted-foreground block text-xs tracking-wider">Part {String(index + 1).padStart(2, "0")}</span><span className="mt-0.5 block text-sm font-medium">{group.title}</span></span><span className="text-muted-foreground text-xs tabular-nums">{group.done}/{group.total}</span><ChevronDown className={cn("overview-mapChevron", "size-3.5 shrink-0 text-muted-foreground")} aria-hidden /></>)}</summary>
-        <ul className="mx-4 mb-3 border-t pt-2">{group.pages.map((page) => <li key={page.href}><Link href={page.href} className="overview-mapLink">{titleCaseLabel(<><span>{page.title}</span>{study.remaining.some((remaining) => remaining.href === page.href) ? <ChevronRight className="size-3 shrink-0 text-muted-foreground" aria-hidden /> : <CircleCheck className="size-3.5 shrink-0 text-success" aria-label="Studied" />}</>)}</Link></li>)}</ul>
+          <ul className="mx-4 mb-3 border-t pt-2">{group.pages.map((page, pageIndex) => <Fragment key={page.href}>
+            {page.part && page.part !== group.pages[pageIndex - 1]?.part && <li className="px-2 pt-4 pb-1 text-xs font-semibold leading-5 text-muted-foreground">{titleCaseLabel(page.part)}</li>}
+            <li><Link href={page.href} className="overview-mapLink">{titleCaseLabel(<><span>{page.title}</span>{study.remaining.some((remaining) => remaining.href === page.href) ? <ChevronRight className="size-3 shrink-0 text-muted-foreground" aria-hidden /> : <CircleCheck className="size-3.5 shrink-0 text-success" aria-label="Studied" />}</>)}</Link></li>
+          </Fragment>)}</ul>
       </details>;
     })}</div>
   </Section>;

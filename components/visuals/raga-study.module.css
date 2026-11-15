@@ -53,11 +53,13 @@
 .factor strong { color: var(--primary); font-size: 1.5rem; }
 .factor small { color: var(--muted-foreground); font-size: .75rem; }
 .arrow { color: var(--muted-foreground); flex-shrink: 0; }
-.contour { display: block; width: 100%; min-width: 480px; height: auto; color: var(--chart-1); }
-.contour text { font-size: 12px; fill: var(--foreground); font-family: var(--font-mono); }
+.contourPlot { position: relative; height: 174px; margin-top: .375rem; }
+.contour { display: block; width: 100%; height: 174px; color: var(--chart-1); }
+.contourPoint { position: absolute; transform: translate(-50%, -50%); }
+.contourDot { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--card); border: 2px solid var(--chart-1); }
+.contourLabel { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: .75rem; white-space: nowrap; }
 .contour .guide { stroke: var(--border); stroke-dasharray: 3 5; }
 .contour polyline { fill: none; stroke: currentColor; stroke-width: 2; }
-.contour circle { fill: var(--card); stroke: currentColor; stroke-width: 2; }
 .results { max-height: 430px; overflow-y: auto; padding: .375rem; scrollbar-width: thin; }
 .resultButton { display: grid; grid-template-columns: 2rem minmax(0, 1fr); align-content: start; gap: .25rem .5rem; width: 100%; padding: .75rem; border: 1px solid var(--border); border-radius: .625rem; text-align: left; background: var(--card); cursor: pointer; }
 .resultButton[aria-pressed="true"] { border-color: var(--primary); background: var(--accent); }

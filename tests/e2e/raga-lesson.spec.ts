@@ -151,7 +151,7 @@ test("raga notes are discoverable, sourced and complete through the chart", asyn
   await expect(page.locator("#raga-vs-scale")).toContainText("Re is not mandatory in the pentatonic form");
   await expect(page.locator("#carnatic-svaras")).toContainText("E𝄫");
   await expect(page.locator("#carnatic-svaras")).toContainText("B𝄫");
-  await expect(page.locator("#classification tbody tr")).toHaveCount(10);
+  await expect(page.locator('#classification [data-slot="table-container"] tbody tr')).toHaveCount(10);
   await expect(page.locator("#melakarta-chart tbody tr")).toHaveCount(72);
   await expect(page.locator("#melakarta-chart tbody tr").nth(26)).toContainText("Sarasangi");
   await expect(page.locator("#melakarta-chart tbody tr").nth(27)).toContainText("Harikambhoji");
@@ -163,8 +163,9 @@ test("raga notes are discoverable, sourced and complete through the chart", asyn
   await page.keyboard.press("Control+k");
   await page.getByRole("combobox", { name: /^Search$/i, exact: true }).fill("Rasikapriya");
   await page.getByRole("option").filter({ hasText: "Rasikapriya · melakarta 72" }).click();
-  await expect(page).toHaveURL("/learn/indian-classical#melakarta-chart");
-  await expect(page.locator("#melakarta-chart")).toBeVisible();
+  await expect(page).toHaveURL("/learn/melakarta-chart?mela=72#melakarta-chart");
+  await expect(page.locator("#melakarta-chart:visible")).toBeVisible();
+  await expect(page.locator('#melakarta-chart:visible [aria-live="polite"]')).toContainText("Rasikapriya");
 });
 
 test("the complete melakarta table scrolls inside a mobile page", async ({ page }) => {
@@ -172,6 +173,7 @@ test("the complete melakarta table scrolls inside a mobile page", async ({ page 
   const response = await page.goto("/learn/indian-classical#melakarta-chart");
   expect(response?.status()).toBe(200);
   await expect(page.locator("#melakarta-chart tbody tr")).toHaveCount(72);
+  await page.locator("#melakarta-chart summary").click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   const wrapper = page.locator('#melakarta-chart [data-slot="table-container"]');
   expect(await wrapper.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);

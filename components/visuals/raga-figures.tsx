@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { CARNATIC_SVARAS, HINDUSTANI_POSITIONS } from "@/lib/music/raga";
+import { Suspense, useState } from "react";
+import { HINDUSTANI_POSITIONS } from "@/lib/music/raga";
 import { BarChart } from "./charts";
 import { HindustaniSvaraExplorer } from "./hindustani-svara-explorer";
 import { CarnaticSvaraExplorer } from "./carnatic-svara-explorer";
+import { JanakaJanya, KafiComparison, RagaElements, RagaIdentity, SvaraComparison, ThaatExplorer } from "./raga-grammar";
+import { KatapayadiChakras, MelakartaBuilder, MelakartaExplorer } from "./melakarta-study";
+import { RagaCurriculum } from "./raga-curriculum";
+import { RagaGuitar } from "@/components/music/raga-guitar";
+import { RAGA_LESSONS } from "@/lib/content/raga-curriculum";
 
 const RAGAS = [
   { name: "Yaman", pitches: [0, 2, 4, 6, 7, 9, 11] },
@@ -12,17 +17,6 @@ const RAGAS = [
   { name: "Malkauns", pitches: [0, 3, 5, 8, 10] },
 ];
 const TALAS: [string, string[]][] = [["Dhruva", ["L", "D", "L", "L"]], ["Matya", ["L", "D", "L"]], ["Rupaka", ["D", "L"]], ["Jhampa", ["L", "A", "D"]], ["Triputa", ["L", "D", "D"]], ["Ata", ["L", "L", "D", "D"]], ["Eka", ["L"]]];
-
-function PitchMap() {
-  const [selected, setSelected] = useState(0);
-  return <div className="space-y-4">
-    <h3 className="text-sm font-semibold">One octave, two naming systems</h3>
-    <p className="text-muted-foreground text-xs">Choose a pitch position to compare its names. Numbers count semitones above Sa, not shrutis.</p>
-    <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">{HINDUSTANI_POSITIONS.map((note, i) => <button key={i} type="button" aria-pressed={selected === i} onClick={() => setSelected(i)} className={`rounded-lg border p-3 text-left focus-visible:outline-2 focus-visible:outline-ring ${selected === i ? "border-primary bg-primary/10" : "bg-muted/40"}`}><span className="text-muted-foreground block text-xs">{i} semitones</span><strong className="mt-1 block text-sm">{note.symbol}</strong><span className="text-xs">{note.western}</span></button>)}</div>
-    <p aria-live="polite" className="rounded-lg bg-muted p-3 text-sm"><strong>{HINDUSTANI_POSITIONS[selected].name}</strong> · Carnatic: {CARNATIC_SVARAS.filter((note) => note.semitones === selected).map((note) => `${note.symbol} (${note.name})`).join(" / ")}</p>
-    <p className="text-muted-foreground text-xs">Equal-tempered location map, Sa = C. Performance intonation and gamaka are not represented by these fixed positions.</p>
-  </div>;
-}
 
 function RagaComparison() {
   return <div className="space-y-5">
@@ -56,9 +50,20 @@ function TeentalCycle() {
 }
 
 export const RAGA_VISUALS: Record<string, () => React.ReactNode> = {
+  "raga-guitar": () => <Suspense fallback={<p className="text-sm text-muted-foreground">Loading guitar practice…</p>}><RagaGuitar /></Suspense>,
+  ...Object.fromEntries(RAGA_LESSONS.map((lesson) => [`raga-guitar-${lesson.slug}`, () => <Suspense fallback={<p className="text-sm text-muted-foreground">Loading guitar practice…</p>}><RagaGuitar lesson={lesson.slug} /></Suspense>])),
   "hindustani-svara-explorer": () => <HindustaniSvaraExplorer />,
   "carnatic-svara-explorer": () => <CarnaticSvaraExplorer />,
-  "raga-pitch-map": () => <PitchMap />,
+  "raga-curriculum": () => <RagaCurriculum />,
+  "raga-pitch-map": () => <SvaraComparison />,
+  "raga-identity": () => <RagaIdentity />,
+  "raga-kafi-comparison": () => <KafiComparison />,
+  "raga-elements": () => <RagaElements />,
+  "raga-thaats": () => <ThaatExplorer />,
+  "raga-janaka-janya": () => <JanakaJanya />,
+  "raga-melakarta-builder": () => <Suspense fallback={<p className="text-sm text-muted-foreground">Loading melakarta builder…</p>}><MelakartaBuilder /></Suspense>,
+  "raga-katapayadi": () => <KatapayadiChakras />,
+  "raga-melakarta-explorer": () => <Suspense fallback={<p className="p-4 text-sm text-muted-foreground">Loading the 72-melakarta explorer…</p>}><MelakartaExplorer /></Suspense>,
   "raga-comparison": () => <RagaComparison />,
   "raga-tala-chart": () => <TalaChart />,
   "raga-teental": () => <TeentalCycle />,

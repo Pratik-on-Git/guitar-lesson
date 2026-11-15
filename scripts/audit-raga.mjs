@@ -7,6 +7,10 @@ import { TOPIC_REFERENCES } from "../lib/content/references.ts";
 import { NAV, STUDY_PAGES } from "../lib/nav.ts";
 import { search } from "../lib/search.ts";
 import { pc, parseNote } from "../lib/music/theory.ts";
+import { RAGA_LESSONS, RAGA_PARTS } from "../lib/content/raga-curriculum.ts";
+import { distinctDegrees, KAFI_STUDIES, KATAPAYADI_EXAMPLES, svaraPitch } from "../lib/music/raga-studies.ts";
+import { GUITAR_MAX_FRET, GUITAR_STUDIES, guitarLessonDefault, guitarRoute, guitarTab, playableRegions, playableStrings, practiceTones } from "../lib/music/raga-guitar.ts";
+import { TUNING } from "../lib/music/theory.ts";
 
 assert.equal(CARNATIC_SVARAS.length, 16);
 assert.equal(new Set(CARNATIC_SVARAS.map((s) => s.symbol)).size, 16);
@@ -45,7 +49,7 @@ for (const [index, mela] of MELAKARTAS.entries()) {
   if (index < 36) {
     assert.deepEqual(MELAKARTAS[index + 36].semitones, mela.semitones.map((pitch, i) => i === 3 ? pitch + 1 : pitch));
   }
-  assert.ok(search(mela.name).some((entry) => entry.href === "/learn/indian-classical#melakarta-chart" && entry.title.startsWith(mela.name)), `Search missing ${mela.name}`);
+  assert.ok(search(mela.name).some((entry) => entry.href === `/learn/melakarta-chart?mela=${mela.number}#melakarta-chart` && entry.title.startsWith(mela.name)), `Search missing ${mela.name}`);
 }
 for (const chakra of CHAKRAS) assert.equal(MELAKARTAS.filter((m) => m.chakra === chakra.name).length, 6);
 
@@ -84,15 +88,33 @@ assert.ok(NAV.some((group) => group.items.some((item) => item.href === href)));
 assert.equal(STUDY_PAGES.filter((page) => page.href === href).length, 1);
 assert.ok(TOPIC_REFERENCES[topic.slug].length > 0);
 assert.equal(new Set(topic.sections.map((s) => s.id)).size, topic.sections.length);
-for (const slug of ["hindustani-svaras", "carnatic-svaras"]) {
+assert.deepEqual(RAGA_PARTS.map((part) => part.lessons.length), [3, 4, 4, 1]);
+assert.equal(new Set(RAGA_LESSONS.map((lesson) => lesson.slug)).size, 12);
+for (const definition of RAGA_LESSONS) {
+  const { slug } = definition;
   const lesson = getTopic(slug);
   assert.ok(lesson, `Missing dedicated lesson: ${slug}`);
-  assert.equal(lesson.sections[0], topic.sections.find((section) => section.id === slug));
-  assert.ok(lesson.sections[0].blocks.some((block) => block.type === "visual" && block.id.endsWith("svara-explorer")));
+  assert.equal(lesson.sections.length, slug === "raga-guitar" ? 3 : 4);
+  assert.ok(lesson.sections.some((section) => section.id === "guitar-application"));
+  assert.equal(lesson.sections[0].id, definition.section);
+  assert.ok(lesson.sections[0].blocks.some((block) => block.type === "visual"));
+  const source = topic.sections.find((section) => section.id === definition.section);
+  const preserved = lesson.sections.flatMap((section) => section.blocks);
+  for (const block of source.blocks) assert.ok(preserved.includes(block), `Source block lost in ${slug}`);
   assert.equal(STUDY_PAGES.filter((page) => page.href === `/learn/${slug}`).length, 1);
-  assert.ok(NAV.find((group) => group.title === "Indian Classical Music").items.some((item) => item.href === `/learn/${slug}`));
+  assert.ok(NAV.find((group) => group.title === "Indian Classical Music").items.some((item) => item.href === `/learn/${slug}` && item.part === definition.part));
   assert.ok(TOPIC_REFERENCES[slug].length > 0);
-  assert.ok(search(slug.replaceAll("-", " ")).some((entry) => entry.kind === "Page" && entry.href === `/learn/${slug}`));
+  assert.ok(search(definition.label).some((entry) => entry.kind === "Page" && entry.href === `/learn/${slug}`));
+  for (const block of lesson.sections.find((section) => section.id === "apply-and-continue").blocks.filter((block) => block.type === "links")) {
+    for (const link of block.items) assert.ok(getTopic(link.href.slice(7)), `Broken course link in ${slug}`);
+  }
+}
+assert.deepEqual(KAFI_STUDIES.map((raga) => [distinctDegrees(raga.ascent), distinctDegrees(raga.descent)]), [[5, 7], [6, 7], [5, 5]]);
+assert.equal(svaraPitch(",ni"), -2);
+assert.equal(svaraPitch("Sa′"), 12);
+for (const example of KATAPAYADI_EXAMPLES) {
+  assert.equal(example.secondDigit * 10 + example.firstDigit, example.number);
+  assert.equal(MELAKARTAS[example.number - 1].name, example.name);
 }
 const chart = topic.sections.find((s) => s.id === "melakarta-chart").blocks.find((b) => b.type === "table");
 assert.equal(chart.rows.length, 72);
@@ -107,3 +129,41 @@ for (const section of topic.sections) {
   }
 }
 console.log("Raga audit passed: 16 svara names, 12 positions, 10 thaats, 12 chakras, 72 unique melakarta scales, source-wheel regressions, note spelling, search and lesson integration.");
+
+assert.equal(GUITAR_STUDIES.length, 87);
+assert.equal(new Set(GUITAR_STUDIES.map((study) => study.id)).size, 87);
+assert.equal(guitarLessonDefault("melakarta-chart"), "melakarta-1");
+assert.equal(guitarLessonDefault("melakarta-construction", "65"), "melakarta-65");
+assert.equal(guitarLessonDefault("janaka-and-janya"), "melakarta-29");
+let guitarRoutes = 0;
+for (const material of GUITAR_STUDIES) {
+  for (let saMidi = 48; saMidi < 60; saMidi++) {
+    for (const direction of ["ascent", "descent", "both"]) {
+      const tones = practiceTones(material, direction);
+      const regions = playableRegions(tones, saMidi);
+      const strings = playableStrings(tones, saMidi);
+      assert.ok(regions.length && strings.length, `${material.id}: missing playable route at ${saMidi}`);
+      for (const option of [...regions.map((start) => ({ mode: "region", start })), ...strings.map((string) => ({ mode: "single", string }))]) {
+        const route = guitarRoute(tones, saMidi, option);
+        assert.equal(route.length, tones.length);
+        assert.equal(guitarTab(route).split("\n").length, 6);
+        route.forEach((step, index) => {
+          assert.equal(TUNING[step.string] + step.fret, saMidi + tones[index].offset);
+          assert.equal(step.symbol, tones[index].symbol);
+          assert.ok(step.fret >= 0 && step.fret <= GUITAR_MAX_FRET);
+          assert.ok(step.finger >= 0 && step.finger <= 4);
+          if (step.fret) assert.equal(step.position + step.finger - 1, step.fret);
+          else assert.equal(step.finger, 0);
+          if (index) assert.equal(step.shift, step.position !== route[index - 1].position);
+          if (option.mode === "single") assert.equal(step.string, option.string);
+          else assert.ok(step.fret >= option.start && step.fret <= option.start + 4);
+        });
+        guitarRoutes++;
+      }
+    }
+  }
+}
+const cMajor = guitarRoute(GUITAR_STUDIES.find((study) => study.id === "thaat-0").ascent, 48, { mode: "single", string: 1 });
+assert.deepEqual(cMajor.map((step) => step.fret), [3, 5, 7, 8, 10, 12, 14, 15]);
+assert.equal(guitarRoute(GUITAR_STUDIES[0].ascent, 48, { mode: "single", string: 5 }).length, 0);
+console.log(`Guitar audit passed: ${guitarRoutes} complete routes, all 87 materials in 12 tonic pitch classes, exact registers, bounded frets, TAB, finger numbering and explicit hand shifts.`);

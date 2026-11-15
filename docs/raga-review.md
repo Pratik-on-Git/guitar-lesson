@@ -74,6 +74,47 @@ These are sources for particular claims, not endorsements of every statement in 
 - `scripts/audit-raga.mjs`, included in `npm run test:data`: pitch spellings checked with the existing note parser, 72 unique strictly ordered scales, all 36 M1/M2 pairs, six members per chakra, independent landmark expectations, all six formerly mislabelled M2 D2N3 rows, seven thaat correspondences, and topic/navigation/search/table integrity.
 - `tests/e2e/raga-lesson.spec.ts`: source-library navigation to the lesson, rendered table coverage, source links, search for the final melakarta, and horizontal table scrolling without mobile page overflow. The existing route sweep also includes the new lesson automatically.
 
+## Visual curriculum and dedicated lessons
+
+`lib/content/raga-curriculum.ts` supplies the reading order, sidebar part labels, course overview and previous/next links. The twelve dedicated lessons provide an interactive exploration, reviewed explanatory notes and practice prompts with course navigation. Each theory lesson also includes its own guitar workbench and contextual guitar tasks. The main `/learn/indian-classical` lesson retains its original section anchors and full source content.
+
+| Part | Dedicated routes under `/learn/` |
+| --- | --- |
+| 1 · Pitch & svaras | `hindustani-svaras`, `carnatic-svaras`, `svara-comparison` |
+| 2 · Raga grammar & classification | `what-is-raga`, `raga-versus-scale`, `raga-elements`, `thaats` |
+| 3 · Carnatic ragas & melakarta | `janaka-and-janya`, `melakarta-construction`, `katapayadi-and-chakras`, `melakarta-chart` |
+| 4 · Guitar application | `raga-guitar` |
+
+The sidebar, overview study map and dedicated pages share these parts. Each dedicated route has its own existing browser-local study-progress key. Relevant references follow each lesson; the full source list remains on the main lesson.
+
+The new visuals compare three pitch-naming systems, illustrate independent ascent/descent jati counts, trace the three Kafi-family teaching outlines, separate note roles from the tonic, compare ten thaat memberships, explain janaka/janya relationships, construct all allowed melakarta combinations, demonstrate three documented Katapayadi examples and explore twelve chakras. `lib/music/raga-studies.ts` supplies the same Kafi outlines to both the contour diagrams and reference table. Contour spacing does not encode rhythm or gamaka. Katapayadi examples do not attempt arbitrary decoding of Roman names.
+
+The 72-scale explorer combines name/number/svara search with chakra and Ma-half filters and includes an explicit empty state and reset. `?mela=28` selects a scale; `?chakra=Bana` filters a group. Builder, chakra and global search links open `/learn/melakarta-chart` with these parameters. Individual melakarta search entries now target that dedicated page. The complete corrected table remains available as a native disclosure.
+
+`scripts/audit-raga.mjs` additionally checks the twelve-page curriculum, retained source blocks, unique progress entries, references and course links, all three Kafi degree-count pairs and the documented Katapayadi results. `tests/e2e/raga-curriculum.spec.ts` covers grouped discovery, lesson sequence, controls, shared spellings, combined explorer filters, cross-page selected values and mobile widths, alongside the original raga, sidebar and overview suites.
+
+## Guitar application: research and implementation
+
+The guitar workbench retains standard tuning and uses a reference Sa in sounding octave 3. Its 87 materials comprise two chromatic naming maps, three documented Kafi-family outlines, ten thaat exercises and all 72 melakarta collections. It preserves registers and phrase order, rather than treating every example as an unordered pitch-class set. Choosing a different Sa recalculates exact MIDI pitches and string/fret locations.
+
+Source pages reviewed for this addition:
+
+- [Fender, standard tuning](https://www.fender.com/articles/setup/standard-tuning-how-eadgbe-came-to-be): open-string sequence and the G–B major-third exception.
+- [Fender, scale positions](https://www.fender.com/articles/scales/blues-guitar-scale): fretting-finger numbering, the relationship between index-finger placement and hand position, and explicit shifts. No blues exercise was relabelled as a raga.
+- [Kim Perlak / Berklee, hammer-ons, pull-offs and slides](https://online.berklee.edu/takenote/guitar-techniques-hammer-ons-pull-offs-and-slides/): mechanics of connecting fretted notes. The app's compact technique descriptions and generated routes are original teaching aids.
+- [George Howlett, survey of Sa locations](https://ragajunglism.org/ragas/instruments/sa-survey/): performer-dependent tonic locations; the app does not prescribe one concert pitch for a raga or use survey averages as requirements.
+- [Tanarang, Bhimpalasi](https://tanarang.com/raag-bheempalasi/): ascending omissions, descending movement, principal resting notes and the need to learn note treatment in phrases.
+
+The official Berklee handbook could not be retrieved, so it is not a supporting app reference. The tonebase notation workbook was initially available but timed out on follow-up and was not used for additional claims.
+
+`lib/music/raga-guitar.ts` generates routes inside frets 0–19, either on one string or in a five-fret region. These regions are not presented as rigid four-finger positions: suggested fingerings track the current four-fret hand position and mark shifts. Route selection favours shorter fret/string movement while preserving every requested sounding pitch. TAB is generated from the same route. Numerical fingerings are suggestions, not canonical performance fingerings.
+
+The workbench exposes ascent/descent/combined routes, a movable Sa, note labels, a manual step locator, TAB and a fingering reference. Synthesized playback uses the same MIDI pitches with equal beat spacing and an optional finite Sa drone. Changes to material, tonic, route or tempo dispose of the old player. Recordings, performance timing and gamaka are not synthesized or claimed to be reproduced. Guitar technique is separated from tradition-specific ornamentation in the explanatory notes.
+
+Melakarta builder selections now use a single `mela` value, shared with their guitar defaults. Thaat, raga-outline and melakarta views link to `/learn/raga-guitar?study=...`; the guitar workbench carries its selected material and Sa into the full lesson. `sa=0` through `sa=11` select C3 through B3. References accompany all dedicated lessons.
+
+The data audit checks 41,467 complete routes over all materials, twelve tonic pitch classes and three directions. It checks exact registers, frets, string membership, finger bounds, hand shifts and six-line TAB. Independent landmarks include C-major notes on string 5 at frets 3, 5, 7, 8, 10, 12, 14 and 15. Browser coverage in `tests/e2e/raga-guitar.spec.ts` exercises transposition, lower ni, descending turns, carried selections, playback lifecycle and mobile scrolling.
+
 Automated checks validate arithmetic and app behaviour. They cannot establish a universal interpretation of raga performance, chronology or symbolism. The cited teaching forms and explicitly retained uncertainties remain part of the lesson.
 
 Validation on 2026-11-15: the data audits, ESLint and production build passed. Both new browser tests passed, including mobile table scrolling, and desktop/mobile screenshots were visually reviewed. Both full browser runs passed 20 of 21 tests: the existing voicing-control test lost the preceding voicing-type update when inversion was changed immediately afterwards. Both isolated repeats passed without edits. The trace is consistent with separate query setters constructing URLs from an older query snapshot; this is an app-level timing concern, not evidence of a raga pitch error or a Next.js framework defect. No voicing or shared URL-state implementation was changed in this content review.

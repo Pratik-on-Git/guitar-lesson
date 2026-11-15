@@ -1,10 +1,13 @@
 import type { Block, Topic } from "./types.ts";
 import { CARNATIC_SVARAS, HINDUSTANI_POSITIONS, THAATS, CHAKRAS, MELAKARTAS } from "../music/raga.ts";
+import { RAGA_LESSONS, RAGA_PARTS } from "./raga-curriculum.ts";
+import { KAFI_STUDIES } from "../music/raga-studies.ts";
+import { GUITAR_LESSON_TASKS } from "./raga-guitar-practice.ts";
 
 const p = (text: string): Block => ({ type: "p", text });
 const term = (t: string, text: string): Block => ({ type: "term", term: t, text });
 const list = (...items: string[]): Block => ({ type: "list", items });
-const table = (columns: string[], rows: string[][], caption?: string): Block => ({ type: "table", columns, rows, caption, firstColumnHeader: true });
+const table = (columns: string[], rows: string[][], caption?: string, summary?: string): Block => ({ type: "table", columns, rows, caption, summary, firstColumnHeader: true });
 const tip = (title: string, text: string): Block => ({ type: "callout", tone: "tip", title, text });
 const fix = (title: string, text: string): Block => ({ type: "callout", tone: "fix", title, text });
 const links = (...items: [string, string][]): Block => ({ type: "links", items: items.map(([label, href]) => ({ label, href })) });
@@ -19,12 +22,13 @@ const INDIAN_CLASSICAL: Topic = {
       {
         id: "traditions",
         title: "Two traditions: Hindustani and Carnatic",
+        part: "Part 1 · Pitch & svaras",
         blocks: [
+          { type: "visual", id: "raga-curriculum" },
           p("Hindustani music is associated with northern South Asia; Carnatic music with South India. Both have long, interconnected histories and are now practised worldwide. Raga supplies a melodic framework; tala organises recurring rhythmic cycles."),
           p("Their differentiation was gradual over the medieval and early modern periods. Persian and Central Asian influences and court patronage helped shape Hindustani practice. The shared theoretical heritage includes the Natyashastra and Sarngadeva’s 13th-century Sangita Ratnakara."),
           fix("History: a gradual development", "The source’s Mughal-period explanation is too narrow: the development of distinct northern and southern traditions began earlier and continued over centuries."),
           tip("Reading this lesson", "Pitch tables compare with 12-tone equal temperament, with Sa = C. They do not prescribe performance tuning or equate a raga with a Western scale."),
-          links(["Hindustani svaras: dedicated lesson", "/learn/hindustani-svaras"], ["Carnatic svaras: dedicated lesson", "/learn/carnatic-svaras"]),
           links(["History: NIOS, chapter 1", "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch1.pdf"]),
         ],
       },
@@ -86,7 +90,8 @@ const INDIAN_CLASSICAL: Topic = {
           table(
             ["Semitones", "Carnatic", "Hindustani", "Western (Sa = C)"],
             HINDUSTANI_POSITIONS.map((s, semitones) => [String(semitones), CARNATIC_SVARAS.filter((c) => c.semitones === semitones).map((c) => c.symbol).join(" / "), s.name + " (" + s.symbol + ")", s.western]),
-            "Pitch-class correspondences only. Full Carnatic names and enharmonic spellings appear above.",
+            "Pitch-class correspondences only. The dedicated Carnatic svara lesson gives all full names and enharmonic spellings.",
+            "Open the complete naming reference",
           ),
           tip("Shuddha has different meanings", "Hindustani shuddha notes form the Bilawal collection. In Carnatic naming, shuddha Ri, Ga, Dha and Ni are their lowest variants: R1, G1, D1 and N1. The same adjective does not indicate the same pitch in both traditions."),
         ],
@@ -94,7 +99,9 @@ const INDIAN_CLASSICAL: Topic = {
       {
         id: "what-is-raga",
         title: "What a raga is",
+        part: "Part 2 · Raga grammar & classification",
         blocks: [
+          { type: "visual", id: "raga-identity" },
           p("A raga is a melodic framework with a recognisable identity. Its grammar includes characteristic movement, emphasis, phrase endings and ornaments. Traditional mood (rasa), time-of-day and seasonal associations also inform Hindustani practice."),
           p("Jati describes the number of distinct note degrees in ascent and descent. Repeating Sa at the octave does not add another degree:"),
           list("Sampurna — seven notes", "Shadav / shadava — six notes", "Audav / audava — five notes"),
@@ -107,15 +114,13 @@ const INDIAN_CLASSICAL: Topic = {
         id: "raga-vs-scale",
         title: "Raga versus scale: three Kafi-family examples",
         blocks: [
+          { type: "visual", id: "raga-kafi-comparison" },
           p("A scale describes an ordered pitch collection. A raga also specifies how notes behave in phrases. Bhimpalasi and Bageshree are conventionally grouped under Kafi thaat, yet their movement and treatment of Pa and Dha distinguish them."),
           table(
             ["Raga", "Ascent (outline)", "Descent (outline)", "Vadi / samvadi"],
-            [
-              ["Bhimpalasi", ",ni Sa ga Ma Pa ni Sa′", "Sa′ ni Dha Pa Ma ga Re Sa", "Ma / Sa"],
-              ["Bageshree (one taught form)", "Sa Re ga Ma Dha ni Sa′", "Sa′ ni Dha Ma Pa Dha Ma ga Re Sa", "Ma / Sa"],
-              ["Dhani (pentatonic form)", "Sa ga Ma Pa ni Sa′", "Sa′ ni Pa Ma ga Sa", "ga / ni"],
-            ],
+            KAFI_STUDIES.map((raga) => [raga.name === "Bageshree" ? "Bageshree (one taught form)" : raga.name === "Dhani" ? "Dhani (pentatonic form)" : raga.name, raga.ascent.join(" "), raga.descent.join(" "), `${raga.vadi} / ${raga.samvadi}`]),
             "Outlines follow Tanarang’s teaching descriptions, simplifying phrase extensions. Ma = shuddha Ma; ga and ni = komal; Sa′ = upper Sa; ,ni = lower ni. Listen to the linked renditions.",
+            "Compare all three teaching outlines in a table",
           ),
           p("Bhimpalasi omits Re and Dha in ascent and includes them in descent. Bageshree has several taught forms: Tanarang’s includes Re in ascent, while other versions omit it. Pa is omitted in ascent and restrained or used in characteristic turns in descent."),
           p("Dhani is commonly taught without Re and Dha in either direction. Tanarang also documents an older six-note descent and occasional touches of Re. The PDF’s alpa-Re example belongs to that variant; Re is not mandatory in the pentatonic form."),
@@ -130,6 +135,7 @@ const INDIAN_CLASSICAL: Topic = {
         id: "raga-elements",
         title: "Defining elements of a raga",
         blocks: [
+          { type: "visual", id: "raga-elements" },
           term("Aroha / arohana and avaroha / avarohana", "Ascending and descending movement. Either may be vakra (turning or zig-zag). Their note sets can differ."),
           term("Pakad and chalan", "Pakad is a characteristic identifying phrase; chalan is the broader pattern of melodic movement. A pitch list alone leaves both out."),
           term("Vadi and samvadi", "In Hindustani descriptions, vadi is the principal note and samvadi the next in importance. They are commonly described as a fourth or fifth apart. The tonic remains Sa. Bhimpalasi’s usual pair is shuddha Ma and Sa."),
@@ -144,6 +150,7 @@ const INDIAN_CLASSICAL: Topic = {
         id: "classification",
         title: "Historical classification and the ten thaats",
         blocks: [
+          { type: "visual", id: "raga-thaats" },
           term("Grama, murchhana and jati", "Ancient theory discusses Shadja and Madhyama gramas as tonal systems, murchhanas as successive note sequences beginning on different degrees, and jatis as melodic types with rules. These precede modern classification; gramas are not simply modern thaats under older names."),
           term("Raga–ragini families", "Historical schemes personified ragas as family groups, with raginis and offspring called ragaputras and ragaputris. Lists varied. Ragamala series often show six principal ragas, each with five or six raginis. This is cultural history rather than a modern parent-scale method."),
           term("Thaat", "Bhatkhande’s influential Hindustani system uses ten seven-note parent collections. A thaat is an ascending scale for classification, not a raga to be performed. Some assignments are approximate or disputed; ten thaats do not exhaust all possible seven-note collections."),
@@ -151,6 +158,7 @@ const INDIAN_CLASSICAL: Topic = {
             ["Thaat", "Notes", "Western pitch collection", "Example raga"],
             THAATS.map((t) => [t.name, t.notes, t.comparison, t.example]),
             "Comparisons use the same tonic. A raga may omit notes or use variants not captured by its thaat.",
+            "Open the ten-thaat reference table",
           ),
           links(
             ["Historical tonal systems: SPMVV", "https://spmvv.ac.in/ddefiles/ugcproposals/2025/05/MAMUD1_1_Origin_and_Evolution_of_Music_I.pdf"],
@@ -161,7 +169,9 @@ const INDIAN_CLASSICAL: Topic = {
       {
         id: "carnatic-raga",
         title: "Carnatic ragas: janaka and janya",
+        part: "Part 3 · Carnatic ragas & melakarta",
         blocks: [
+          { type: "visual", id: "raga-janaka-janya" },
           p("Melakarta (janaka) ragas are parents in the modern Carnatic classification. Janya ragas are associated with a parent but may omit notes, use vakra movement or differ in ascent and descent. Upanga ragas use only their parent’s notes; bhashanga ragas also admit anya svaras, notes foreign to the parent."),
           p("A janya relationship does not prove that a raga was historically invented from that parent. Several parent assignments may be possible when notes are omitted; tradition and melodic affinity also matter."),
           p("The Carnatic Trinity is Tyagaraja (1767–1847), Muthuswami Dikshitar (1775–1835) and Syama Sastri (1762–1827). Their lives and compositions span the late 18th and early 19th centuries."),
@@ -173,6 +183,7 @@ const INDIAN_CLASSICAL: Topic = {
         id: "melakarta",
         title: "How the 72 melakartas are constructed",
         blocks: [
+          { type: "visual", id: "raga-melakarta-builder" },
           p("Venkatamakhin’s 17th-century Chaturdandi Prakashika is a landmark in 72-mela classification. The modern regular sampurna scheme is associated with later standardisation by Govindacharya. Distinguish it from the asampurna tradition followed by Muthuswami Dikshitar. Dates for the later standardisation vary between accounts."),
           p("The modern scheme requires a complete, straight ascent and descent with the same seven degrees, including Sa and Pa, and reaching upper Sa:"),
           list(
@@ -190,12 +201,15 @@ const INDIAN_CLASSICAL: Topic = {
         id: "katapayadi",
         title: "Katapayadi numbering and the twelve chakras",
         blocks: [
+          { type: "visual", id: "raga-katapayadi" },
           p("Katapayadi associates consonants with digits. In standard melakarta names, the first two encoded digits, reversed, give the number. Vowels carry no value; precise consonants matter, so simplified Roman spelling alone is not a reliable general decoder."),
           p("Harikambhoji: ha = 8, ri = 2 → 28. Dhirashankarabharanam: dhi = 9, ra = 2 → 29. Mechakalyani: ma = 5, cha = 6 → 65 (unaspirated ca, often written ‘cha’ in English)."),
           p("Each chakra contains six scales. Ri, Ga and Ma stay constant within it; Dha–Ni follows D1N1, D1N2, D1N3, D2N2, D2N3, D3N3. Chakra names are traditional numeric mnemonics:"),
           table(
             ["#", "Chakra", "Mnemonic", "Melakartas"],
             CHAKRAS.map((c, i) => [String(i + 1), c.name, c.meaning, (i * 6 + 1) + "–" + (i * 6 + 6)]),
+            "Each chakra contains six melakartas; the first six use M1 and the last six M2.",
+            "Open the twelve-chakra reference table",
           ),
           fix("Use the source’s own chart errata", "The wheel on PDF p. 6 swaps Sarasangi and Harikambhoji and mislabels D2N3 combinations on its M2 half. Its caption already identifies both mistakes. Correct values: Sarasangi 27, Harikambhoji 28 and D2N3 (or N3D2 when printed in reverse order)."),
           links(["Mela numbering and parent assignments: SPMVV", "https://spmvv.ac.in/ddefiles/ugcproposals/2025/05/MAMUD1_2_Musical_Concepts_I.pdf"]),
@@ -205,18 +219,37 @@ const INDIAN_CLASSICAL: Topic = {
         id: "melakarta-chart",
         title: "All 72 melakartas: corrected chart",
         blocks: [
-          p("This table replaces the source wheel with the modern sampurna list in number order. Roman spellings vary. Each row lists seven degrees: add upper S to complete the ascent, then reverse it for descent."),
+          { type: "visual", id: "raga-melakarta-explorer" },
+          p("This corrected reference replaces the source wheel with the modern sampurna list in number order. Roman spellings vary. Each scale lists seven degrees: add upper S to complete the ascent, then reverse it for descent."),
           table(
             ["#", "Melakarta", "Chakra", "Svaras", "Western (Sa = C)"],
             MELAKARTAS.map((m) => [String(m.number), m.name, m.chakra, m.svaras.join(" "), m.western.join(" ")]),
             "Western notes are 12-TET comparisons; the pitch list does not supply a raga’s characteristic gamakas.",
+            "Open the complete 72-row reference table",
           ),
           p("Useful pitch-collection comparisons: Hanumatodi (8) with Phrygian / Bhairavi thaat; Mayamalavagowla (15) with double harmonic major / Bhairav; Natabhairavi (20) with natural minor / Asavari; Kharaharapriya (22) with Dorian / Kafi; Harikambhoji (28) with Mixolydian / Khamaj; Dhirashankarabharanam (29) with major / Bilawal; Mechakalyani (65) with Lydian / Kalyan. These do not make the ragas interchangeable."),
         ],
       },
       {
+        id: "guitar-application",
+        title: "Indian classical music on guitar",
+        part: "Part 4 · Guitar application",
+        blocks: [
+          { type: "visual", id: "raga-guitar" },
+          p("Keep standard tuning E A D G B E, from string 6 to string 1. The map recalculates frets for your chosen Sa. The G–B pair is a major third; the other adjacent open-string pairs are fourths, so moving a pattern between strings needs care."),
+          term("A fret, a finger and a hand position", "TAB numbers name frets. Fretting fingers are numbered 1 index, 2 middle, 3 ring and 4 little finger; 0 means an open string. A basic position assigns the index finger to its named fret and the next three fingers to successive frets. The workbench uses five-fret regions and marks any required shift instead of prescribing one fixed stretch."),
+          term("Single string, then across strings", "Start with one string to connect interval size with fret distance: one fret represents one equal-tempered semitone. Sing each arrival. Then play the same sounding pitches in a compact region across strings. Lower ni and upper Sa retain their registers in the TAB."),
+          term("Finger slide", "Pick the starting note and move the fretting finger along the same string while it sounds. Aim for a clear arrival at the target fret. This means a finger slide, not a separate bottleneck-slide setup."),
+          term("Hammer-on and pull-off", "For a hammer-on, hold a lower fretted note and sound the higher one with another fretting finger. For a pull-off, prepare the lower note first, then release the higher finger with enough plucking motion to sound it. Compare their articulation with separately picked notes."),
+          tip("From guitar technique to raga phrasing", "Slides, bends and legato are tools for approaching pitch movement. Their contour, timing and emphasis must come from a taught phrase; an ordinary bend or repeated vibrato is not automatically the required meend or gamaka. Use the linked raga descriptions and recordings to compare your result."),
+          tip("How to practise the generated routes", "Start with a clear picked note at each step. Say the svara, check the string and fret, then add one deliberate connection or pause. The suggested fingerings and even-beat audio are original practice aids, not a traditional composition or a prescribed performance fingering."),
+          links(["Guitar tuning lesson", "/learn/tuning"], ["Practice studio & metronome", "/practice"], ["Listening lab", "/listening"]),
+        ],
+      },
+      {
         id: "gamaka",
         title: "Gamaka and melodic ornamentation",
+        part: "Further study · Listening, rhythm & practice",
         blocks: [
           p("Gamaka includes movements on and between notes that help establish a raga’s identity. Learn its shapes through phrases and renditions. Historical classifications vary; no single count is a universal checklist for present-day performance."),
           p("The fifteen-gamaka classification associated with Sangita Ratnakara is commonly transliterated as:"),
@@ -357,37 +390,28 @@ const INDIAN_CLASSICAL: Topic = {
     ],
 };
 
-// Reuse the same source sections, with the explorer first on a dedicated page.
-const svaraSections = (id: string) => [id, "shruti-svara"].flatMap((wanted) =>
-  INDIAN_CLASSICAL.sections.filter((section) => section.id === wanted),
-);
-
 export const RAGA_TOPICS: Topic[] = [
   INDIAN_CLASSICAL,
-  {
-    slug: "hindustani-svaras",
-    title: "Hindustani svaras: 12 positions",
-    description: "Explore the twelve Hindustani pitch positions, their shuddha, komal and tivra forms, and their relationships to a movable Sa.",
-    sections: [
-      ...svaraSections("hindustani-svaras"),
-      {
-        id: "related-lessons",
-        title: "Continue exploring",
-        blocks: [links(["Carnatic svaras: 16 names, 12 positions", "/learn/carnatic-svaras"], ["Indian classical music & raga", "/learn/indian-classical"], ["Tuning and cents", "/learn/tuning"])],
-      },
-    ],
-  },
-  {
-    slug: "carnatic-svaras",
-    title: "Carnatic svaras: 16 names, 12 positions",
-    description: "Explore all sixteen Carnatic svara names across twelve pitch positions, including shared pairs, note roles and Western spellings.",
-    sections: [
-      ...svaraSections("carnatic-svaras"),
-      {
-        id: "related-lessons",
-        title: "Continue exploring",
-        blocks: [links(["Hindustani svaras: 12 positions", "/learn/hindustani-svaras"], ["Indian classical music & raga", "/learn/indian-classical"], ["Tuning and cents", "/learn/tuning"])],
-      },
-    ],
-  },
+  ...RAGA_LESSONS.map((lesson, index): Topic => {
+    const source = INDIAN_CLASSICAL.sections.find((section) => section.id === lesson.section);
+    if (!source) throw new Error(`Missing curriculum source: ${lesson.section}`);
+    const previous = RAGA_LESSONS[index - 1];
+    const next = RAGA_LESSONS[index + 1];
+    const navigation: [string, string][] = [];
+    if (previous) navigation.push([`Previous · ${previous.label}`, `/learn/${previous.slug}`]);
+    if (next) navigation.push([`Next · ${next.label}`, `/learn/${next.slug}`]);
+    navigation.push(["Indian classical course overview", "/learn/indian-classical"]);
+    const context = lesson.partIndex === 1 ? INDIAN_CLASSICAL.sections.find((section) => section.id === "shruti-svara")!.blocks : [];
+    return {
+      slug: lesson.slug,
+      title: source.title,
+      description: `${lesson.description} ${RAGA_PARTS[lesson.partIndex - 1].description}`,
+      sections: [
+        { id: source.id, title: source.title, blocks: source.blocks.filter((block) => block.type === "visual" || block.type === "table") },
+        { id: `${source.id}-notes`, title: lesson.reading, blocks: [...source.blocks.filter((block) => block.type !== "visual" && block.type !== "table"), ...context] },
+        ...(lesson.slug === "raga-guitar" ? [] : [{ id: "guitar-application", title: "Play this on guitar", blocks: [{ type: "visual", id: `raga-guitar-${lesson.slug}` } as Block, list(...GUITAR_LESSON_TASKS[lesson.slug])] }]),
+        { id: "apply-and-continue", title: "Try it yourself & continue", blocks: [list(...lesson.practice), links(...navigation)] },
+      ],
+    };
+  }),
 ];

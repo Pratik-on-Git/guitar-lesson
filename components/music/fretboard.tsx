@@ -28,6 +28,7 @@ export function Fretboard({
   rootIndex = 0,
   highlight,
   duplicates = [],
+  selected,
   title,
 }: {
   notes: FretNote[];
@@ -42,6 +43,8 @@ export function Fretboard({
   highlight?: FretNote[];
   /** Repeated sounding pitch locations in a Double Note shape. */
   duplicates?: FretNote[];
+  /** Ring the learner's currently selected route step. */
+  selected?: FretNote;
   title: string;
 }) {
   const nutX = PAD_X + OPEN_W;
@@ -147,6 +150,7 @@ export function Fretboard({
               ) : (
                 <circle cx={x} cy={y} r={DOT} fill="var(--foreground)" />
               )}
+              {selected?.string === n.string && selected.fret === n.fret && <circle cx={x} cy={y} r={DOT + 4} fill="none" stroke="var(--chart-2)" strokeWidth={2.5} />}
               <text
                 x={x}
                 y={y + 4}

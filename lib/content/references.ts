@@ -1,6 +1,8 @@
 export type Reference = { title: string; href: string };
 import { BOOK_TITLE, BOOK_TOPIC_PAGES } from "./book.ts";
 import { THEORY_BOOK, THEORY_TOPIC_PAGES } from "./theory-book.ts";
+import { RAGA_LESSONS } from "./raga-curriculum.ts";
+import { GUITAR_REFERENCES } from "./raga-guitar-practice.ts";
 
 const acoustics = { title: "UNSW · Sound, frequency and pitch", href: "https://phys.unsw.edu.au/jw/musFAQ.html" };
 const major = { title: "Open Music Theory · Major scales and key signatures", href: "https://viva.pressbooks.pub/openmusictheory/chapter/major-scales/" };
@@ -62,6 +64,22 @@ export const TOPIC_REFERENCES: Record<string, Reference[]> = {
     { title: "Metropolitan Museum of Art · Ragamala families (educator resource)", href: "https://resources.metmuseum.org/resources/metpublications/pdf/The_Art_of_South_and_Southeast_Asia_A_Resource_for_Educators.pdf" },
   ],
 };
+
+// Dedicated lessons retain the relevant evidence from the course's source list.
+for (const lesson of RAGA_LESSONS) {
+  if (TOPIC_REFERENCES[lesson.slug]) continue;
+  const relevant = lesson.partIndex === 1
+    ? /Carnatic concepts|Hindustani terms|Rao & Rao/
+    : lesson.partIndex === 2
+      ? /Hindustani elements of raga|Bhimpalasi|Bageshree|Dhani|Origin and Evolution|Metropolitan/
+      : /Carnatic concepts|Carnatic composer|Musical Concepts I|Complete numbered/;
+  TOPIC_REFERENCES[lesson.slug] = TOPIC_REFERENCES["indian-classical"].filter((reference) => relevant.test(reference.title));
+}
+
+TOPIC_REFERENCES["raga-guitar"] = TOPIC_REFERENCES["indian-classical"].filter((reference) => /Bhimpalasi|Bageshree|Dhani|Rao & Rao/.test(reference.title));
+for (const slug of ["indian-classical", ...RAGA_LESSONS.map((lesson) => lesson.slug)]) {
+  TOPIC_REFERENCES[slug] = [...TOPIC_REFERENCES[slug], ...GUITAR_REFERENCES];
+}
 
 export const SCALE_REFERENCES: Reference[] = [major, minor, modes, jazz, bebop];
 export const MODE_REFERENCES: Reference[] = [minor, modes, jazz];

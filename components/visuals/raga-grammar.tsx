@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowDown, ArrowRight, Layers, Route, Sparkles } from "lucide-react";
 import { Segmented } from "@/components/ui/segmented";
 import { CARNATIC_SVARAS, HINDUSTANI_POSITIONS, THAATS } from "@/lib/music/raga";
@@ -73,12 +74,12 @@ export function RagaIdentity() {
 function PhraseContour({ notes, label }: { notes: readonly string[]; label: string }) {
   const width = 600;
   const points = notes.map((symbol, index) => ({ symbol, x: 28 + index * ((width - 56) / (notes.length - 1)), y: 30 + (12 - svaraPitch(symbol)) * 7 }));
-  return <div className={styles.surface}><p className={styles.eyebrow}>{label}</p><div className="overflow-x-auto" tabIndex={0} role="region" aria-label={`${label} contour, scroll horizontally`}>
-    <svg viewBox={`0 0 ${width} 174`} role="img" aria-label={`${label}: ${notes.join(" ")}`} className={styles.contour}>
+  return <div className={styles.surface}><p className={styles.eyebrow}>{label}</p><div className={styles.contourPlot} role="img" aria-label={`${label}: ${notes.join(" ")}`}>
+    <svg viewBox={`0 0 ${width} 174`} preserveAspectRatio="none" aria-hidden className={styles.contour}>
       {[0, 5, 12].map((pitch) => <line className={styles.guide} key={pitch} x1="15" x2="585" y1={30 + (12 - pitch) * 7} y2={30 + (12 - pitch) * 7} />)}
       <polyline points={points.map(({ x, y }) => `${x},${y}`).join(" ")} />
-      {points.map(({ symbol, x, y }, i) => <g key={i}><circle cx={x} cy={y} r="4" /><text x={x} y={y + 22} textAnchor="middle">{symbol}</text></g>)}
     </svg>
+    {points.map(({ symbol, x, y }, i) => <span key={i} className={styles.contourPoint} aria-hidden style={{ left: `${x / width * 100}%`, top: `${y / 174 * 100}%` }}><span className={styles.contourDot} /><span className={styles.contourLabel}>{symbol}</span></span>)}
   </div><p className={styles.muted}>{notes.join(" → ")}</p></div>;
 }
 
@@ -92,6 +93,7 @@ export function KafiComparison() {
     <PhraseContour label={`${raga.name} · ascent`} notes={raga.ascent} />
     <PhraseContour label={`${raga.name} · descent`} notes={raga.descent} />
     <div className={`${styles.surface} ${styles.detail}`} aria-live="polite"><h4>{raga.name}: what to notice</h4><p>{raga.treatment}</p></div>
+    <Link className={styles.link} href={`/learn/raga-guitar?study=raga-${selected}#guitar-application`}>Play the {raga.name} outline on guitar <ArrowRight size={15} aria-hidden /></Link>
     <p className={styles.muted}>Contours connect nominal pitch positions in note order. Spacing does not encode rhythm, duration or performance ornament. These are teaching outlines, with documented variants in the notes below.</p>
   </div>;
 }
@@ -129,6 +131,7 @@ export function ThaatExplorer() {
       <tbody>{THAATS.map((item, row) => <tr key={item.name} data-selected={selected === row}><th scope="row"><button type="button" aria-pressed={selected === row} onClick={() => setSelected(row)}>{item.name}</button></th>{HINDUSTANI_POSITIONS.map((note, i) => <td key={i}>{(item.semitones as readonly number[]).includes(i) ? <span className={styles.filled}>{note.symbol}</span> : <span className={styles.empty}>—</span>}</td>)}</tr>)}</tbody>
     </table></div>
     <div className={`${styles.surface} ${styles.detail}`} aria-live="polite"><h4>{thaat.name}</h4><NoteChips notes={thaat.notes.split(" ")} /><div className={styles.grid2}><div><span className={styles.eyebrow}>Western pitch collection</span><p>{thaat.comparison === "—" ? "No short comparison listed" : thaat.comparison}</p></div><div><span className={styles.eyebrow}>Example raga</span><p>{thaat.example}</p></div></div></div>
+    <Link className={styles.link} href={`/learn/raga-guitar?study=thaat-${selected}#guitar-application`}>Play {thaat.name} as a guitar scale exercise <ArrowRight size={15} aria-hidden /></Link>
     <div className={styles.grid3}>{[
       ["Ancient theory", "Grama · murchhana · jati", "Tonal systems, successive sequences and melodic types with rules."],
       ["Historical family schemes", "Raga · ragini", "Personified families and Ragamala traditions, with varying lists."],
