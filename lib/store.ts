@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 
 /*
  * Small localStorage-backed stores. The server (and first client render)
@@ -87,7 +87,19 @@ export function useTheme(): [Theme, (theme: Theme) => void] {
     () => window.matchMedia("(prefers-color-scheme: dark)").matches,
     () => false,
   );
-  const theme: Theme = saved ?? (system ? "dark" : "light");
+  const theme: Theme = saved === "light" || saved === "dark" ? saved : (system ? "dark" : "light");
+  useEffect(() => {
+    // Read the current preference here as well, so hydration's server snapshot
+    // never briefly overwrites the theme already applied by the head script.
+    const preference = themeStore.get();
+    const resolved = preference === "light" || preference === "dark"
+      ? preference
+      : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.classList.toggle("dark", resolved === "dark");
+    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
+      meta.content = resolved === "dark" ? "#09090c" : "#f3f4f7";
+    });
+  }, [theme]);
   const setTheme = useCallback(
     (next: Theme) => {
       document.documentElement.classList.toggle("dark", next === "dark");

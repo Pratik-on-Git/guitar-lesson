@@ -1,11 +1,7 @@
 import { cn } from "@/lib/utils";
 import { StudyToggle } from "./study-toggle";
 
-/*
- * The page-context block every screen opens with (emp-dashboard
- * `page-header.tsx`): a bold display title, a muted description, actions
- * right-aligned from `sm` up (full-width on phones), then any meta row.
- */
+/* Shared page hierarchy: fluid title, readable description, wrapping actions. */
 export function PageHeader({
   title,
   description,
@@ -25,11 +21,11 @@ export function PageHeader({
 }) {
   const hasActions = Boolean(studyHref || actions);
   return (
-    <header className={cn("space-y-3", className)}>
+    <header className={cn("page-heading space-y-4", className)}>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
         {/* `min-w-48`: the title keeps real room, so a wide action cluster wraps instead of crushing it. */}
-        <div className="min-w-48 flex-1 space-y-1">
-          <h1 className="text-display text-foreground font-bold tracking-tight text-balance">{title}</h1>
+        <div className="min-w-48 flex-1 space-y-3">
+          <h1 className="text-display text-foreground font-medium tracking-tight text-balance">{title}</h1>
           {description ? <p className="text-body text-muted-foreground max-w-3xl">{description}</p> : null}
         </div>
         {hasActions ? (
@@ -62,7 +58,7 @@ export function Section({
 }) {
   const headingId = id ? `${id}-title` : undefined;
   return (
-    <section id={id} aria-labelledby={headingId} className={cn("min-w-0 scroll-mt-24 space-y-3", className)}>
+    <section id={id} aria-labelledby={headingId} className={cn("min-w-0 scroll-mt-24 space-y-4", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="min-w-0 space-y-0.5">
           <h2 id={headingId} className="text-heading text-foreground font-semibold">

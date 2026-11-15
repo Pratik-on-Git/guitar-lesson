@@ -2,9 +2,16 @@
 .overview-mainColumn, .overview-sideColumn { display: flex; min-width: 0; flex-direction: column; gap: 1rem; }
 .overview-chartsRow { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 1rem; }
 .overview-card { min-width: 0; gap: 1.25rem; padding: 1.25rem; border-radius: var(--radius-xl); }
-.overview-metric { display: block; min-width: 0; padding: 1rem; background: var(--card); border-radius: var(--radius-xl); box-shadow: 0 0 0 1px color-mix(in oklab, var(--foreground) 10%, transparent), var(--shadow-xs); transition: box-shadow 180ms, background 180ms; }
-.overview-metric:hover, .overview-toolLink:hover { background: color-mix(in oklab, var(--primary) 3%, var(--card)); box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 35%, transparent); }
-.overview-arrowLink { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 50%; background: var(--muted); color: var(--muted-foreground); transition: background 150ms, color 150ms; }
+.overview-metric { display: block; position: relative; min-width: 0; padding: 1.25rem; color: var(--on-gradient); border: 1px solid #ffffff50; border-radius: var(--radius-xl); box-shadow: inset 0 1px 3px #ffffffa0, inset 0 -2px 4px #00000010, var(--elevation-1); transition: transform 180ms var(--ease-out), box-shadow 180ms; }
+.overview-metric[data-tone="cyan"] { background: var(--gradient-cyan); }
+.overview-metric[data-tone="orange"] { background: var(--gradient-orange); }
+.overview-metric[data-tone="violet"] { background: var(--gradient-violet); }
+.overview-metric .text-muted-foreground { color: #303943; }
+.overview-metric .icon-tile { color: #303943; background: #ffffff30; border: 1px solid #ffffff40; border-radius: 50%; }
+.overview-metricValue { margin-block: .75rem .375rem; font-size: clamp(2.5rem, 4cqi, 3.5rem); line-height: 1; letter-spacing: -.065em; font-weight: 300; font-variant-numeric: tabular-nums; }
+.overview-metric:hover { transform: translateY(-3px); box-shadow: inset 0 1px 3px #ffffffc0, var(--elevation-2); }
+.overview-toolLink:hover { background: var(--accent); box-shadow: 0 0 0 1px var(--primary), var(--elevation-1); }
+.overview-arrowLink { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 2rem; height: 2rem; border-radius: var(--radius-md); background: var(--muted); color: var(--muted-foreground); transition: background 150ms, color 150ms; }
 .overview-arrowLink:hover { background: color-mix(in oklab, var(--primary) 12%, transparent); color: var(--primary); }
 .overview-callout { display: flex; align-items: center; gap: .625rem; border-radius: var(--radius-lg); background: color-mix(in oklab, var(--primary) 6%, var(--card)); padding: .875rem; font-size: .75rem; line-height: 1.6; color: var(--muted-foreground); }
 .overview-callout strong { color: var(--primary); font-weight: 600; }
@@ -12,25 +19,25 @@
 .overview-gauge svg { display: block; width: 100%; overflow: visible; }
 .overview-gaugeTrack { fill: var(--muted); stroke: var(--muted); }
 .overview-gaugeValue { position: absolute; inset: auto 0 0; text-align: center; }
-.overview-gaugeValue > span { font-size: clamp(2rem, 3.1vw, 3.25rem); font-weight: 600; line-height: 1.1; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
-.overview-gaugeValue > p { margin-top: .5rem; font-size: .6875rem; color: var(--muted-foreground); }
+.overview-gaugeValue > span { font-size: clamp(2rem, 3.1vw, 3.25rem); font-weight: 300; line-height: 1.1; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
+.overview-gaugeValue > p { margin-top: .5rem; font-size: .75rem; color: var(--muted-foreground); }
 .overview-statusGauge { margin-top: auto; max-width: 250px; }
 .overview-statusGauge .overview-gaugeValue > span { font-size: 2.5rem; }
 .overview-insetMetric { min-width: 0; padding: .875rem; border-radius: var(--radius-lg); background: var(--muted); }
-.overview-insetMetric > span { display: flex; align-items: center; gap: .375rem; font-size: .6875rem; color: var(--muted-foreground); }
-.overview-insetMetric p { margin-top: .75rem; font-size: 1.625rem; line-height: 1; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
-.overview-insetMetric small { font-size: .6875rem; font-weight: 400; letter-spacing: normal; color: var(--muted-foreground); }
+.overview-insetMetric > span { display: flex; align-items: center; gap: .375rem; font-size: .75rem; color: var(--muted-foreground); }
+.overview-insetMetric p { margin-top: .75rem; font-size: 1.625rem; line-height: 1; font-weight: 400; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
+.overview-insetMetric small { font-size: .75rem; font-weight: 400; letter-spacing: normal; color: var(--muted-foreground); }
 .overview-barChart { display: flex; gap: .375rem; height: 172px; }
 .overview-barButton { display: flex; min-width: 0; flex: 1; flex-direction: column; align-items: center; gap: .625rem; border-radius: var(--radius-sm); color: var(--muted-foreground); }
 .overview-barTrack { display: flex; align-items: end; width: 100%; max-width: 38px; flex: 1; overflow: hidden; border-radius: 999px; background: var(--muted); }
-.overview-barFill { width: 100%; border-radius: 999px; background: color-mix(in oklab, var(--primary) 60%, var(--foreground)); transition: height 450ms ease, background 150ms; }
+.overview-barFill { width: 100%; border-radius: 999px; background: linear-gradient(0deg, var(--primary), var(--success)); transition: height 450ms ease, background 150ms; }
 .overview-barSelected { color: var(--primary); font-weight: 600; }
 .overview-barSelected .overview-barTrack { box-shadow: 0 0 0 2px var(--card), 0 0 0 3px color-mix(in oklab, var(--primary) 50%, transparent); }
 .overview-barSelected .overview-barFill, .overview-barButton:hover .overview-barFill { background: var(--primary); }
 .overview-partDetail { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
 .overview-lessonLink { display: flex; align-items: center; gap: .75rem; padding: .875rem .5rem; border-radius: var(--radius-lg); transition: background 150ms; }
 .overview-lessonLink:hover, .overview-mapLink:hover { background: var(--muted); }
-.overview-lessonNumber { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--muted); color: var(--muted-foreground); font-size: .6875rem; font-variant-numeric: tabular-nums; }
+.overview-lessonNumber { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--muted); color: var(--muted-foreground); font-size: .75rem; font-variant-numeric: tabular-nums; }
 .overview-lessonNumberActive { background: color-mix(in oklab, var(--primary) 12%, transparent); color: var(--primary); }
 .overview-activityBody { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 2rem; }
 .overview-focusMeter { display: flex; height: 3rem; gap: 3px; margin: 1.25rem 0 1rem; overflow: hidden; border-radius: var(--radius-sm); background: var(--muted); mask-image: repeating-linear-gradient(90deg, black 0, black calc(3.333% - 4px), transparent calc(3.333% - 4px), transparent 3.333%); }
@@ -44,16 +51,18 @@
 .overview-heatCell[data-level="2"], .overview-heatLegend[data-level="2"] { background: color-mix(in oklab, var(--primary) 50%, var(--muted)); }
 .overview-heatCell[data-level="3"], .overview-heatLegend[data-level="3"] { background: color-mix(in oklab, var(--primary) 75%, var(--muted)); }
 .overview-heatCell[data-level="4"], .overview-heatLegend[data-level="4"] { background: var(--primary); }
-.overview-toolLink { display: flex; align-items: center; gap: .75rem; padding: 1rem; border-radius: var(--radius-xl); background: var(--card); box-shadow: 0 0 0 1px var(--border); transition: box-shadow 150ms, background 150ms; }
+.overview-toolLink { display: flex; align-items: center; gap: .75rem; padding: 1.25rem; border-radius: var(--radius-xl); background: var(--surface-gradient); box-shadow: 0 0 0 1px var(--border), inset 0 1px 0 var(--surface-edge); transition: box-shadow 150ms, background 150ms; }
 .overview-mapPart { min-width: 0; border: 1px solid var(--border); border-radius: var(--radius-xl); background: var(--card); }
 .overview-mapSummary { display: flex; align-items: center; gap: .75rem; padding: 1rem; border-radius: var(--radius-xl); list-style: none; cursor: pointer; }
 .overview-mapSummary::-webkit-details-marker { display: none; }
 .overview-mapSummary:hover { background: color-mix(in oklab, var(--muted) 60%, transparent); }
 .overview-mapPart[open] .overview-mapChevron { rotate: 180deg; }
 .overview-mapLink { display: flex; align-items: center; justify-content: space-between; gap: .75rem; border-radius: var(--radius-sm); padding: .5rem; font-size: .75rem; line-height: 1.5; }
-.overview-footerStrip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem; background: var(--muted); border-radius: var(--radius-xl); }
+.overview-footerStrip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem; background: linear-gradient(110deg, color-mix(in srgb, var(--glow-pink) 12%, var(--card)), color-mix(in srgb, var(--glow-violet) 10%, var(--card))); border: 1px solid var(--border); border-radius: var(--radius-xl); }
 .overview-metric:focus-visible, .overview-arrowLink:focus-visible, .overview-barButton:focus-visible, .overview-lessonLink:focus-visible, .overview-heatCell:focus-visible, .overview-toolLink:focus-visible, .overview-mapSummary:focus-visible, .overview-mapLink:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
 @media (min-width: 1536px) { .overview-dashboard, .overview-mainColumn, .overview-sideColumn, .overview-chartsRow { gap: 1.25rem; } .overview-card { padding: 1.5rem; } .overview-barChart { height: 190px; } }
 @media (max-width: 1199px) { .overview-dashboard { grid-template-columns: minmax(0, 1fr); } .overview-sideColumn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); order: -1; align-items: start; } .overview-gauge { max-width: 290px; } .overview-gaugeValue > span { font-size: 2.75rem; } .overview-statusGauge { max-width: 250px; } }
 @media (max-width: 639px) { .overview-chartsRow, .overview-activityBody { display: grid; grid-template-columns: minmax(0, 1fr); } .overview-card { padding: 1.125rem; } .overview-mainColumn, .overview-sideColumn { display: contents; } .overview-dashboard > .overview-mainColumn > :first-child { order: -3; } .overview-sideColumn > :first-child { order: -2; } .overview-chartsRow { order: -1; } .overview-gauge { max-width: 330px; } .overview-statusGauge { max-width: 245px; } .overview-heatCell { max-height: none; } .overview-activityBody { gap: 1.5rem; } }
 @media (prefers-reduced-motion: reduce) { .overview-barFill, .overview-metric, .overview-arrowLink, .overview-lessonLink, .overview-heatCell, .overview-toolLink { transition: none; } }
+
+.overview-journey { background-image: radial-gradient(ellipse at 90% 0%, color-mix(in srgb, var(--glow-lime) 12%, transparent), transparent 55%), var(--surface-gradient); }

@@ -25,8 +25,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     // --background in each theme, as hex (browser UI chrome doesn't take oklch everywhere).
-    { media: "(prefers-color-scheme: light)", color: "#fbfdfc" },
-    { media: "(prefers-color-scheme: dark)", color: "#050f0d" },
+    { media: "(prefers-color-scheme: light)", color: "#f3f4f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090c" },
   ],
 };
 

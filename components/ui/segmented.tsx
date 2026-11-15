@@ -2,20 +2,15 @@
 
 import { cn } from "@/lib/utils";
 
-/*
- * The dashboards' segmented control (emp-dashboard `line-tabs.tsx`): a muted,
- * bordered track; the selected item is a raised card in the brand colour.
- * The class strings are exported so other pickers (keys, modes, chord
- * categories) match it exactly.
- */
+/* Recessed track with raised selection; exported styles also serve music pickers. */
 export const SEGMENTED_TRACK =
-  "rounded-xl border border-border/70 bg-muted/60 p-1";
+  "segmented-track rounded-xl border border-border/70 bg-muted/60 p-1";
 
 export const SEGMENTED_ITEM =
-  "text-muted-foreground hover:text-foreground hover:bg-card/50 inline-flex items-center justify-center gap-1.5 rounded-lg whitespace-nowrap border border-transparent font-medium shadow-none transition-all duration-150 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] [&_svg:not([class*='size-'])]:size-3.5";
+  "segmented-item text-muted-foreground hover:text-foreground hover:bg-card/50 inline-flex items-center justify-center gap-1.5 rounded-lg whitespace-nowrap border border-transparent font-medium shadow-none transition-all duration-150 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] [&_svg:not([class*='size-'])]:size-3.5";
 
 export const SEGMENTED_ITEM_ACTIVE =
-  "bg-card text-primary hover:bg-card hover:text-primary border-border/80 font-semibold shadow-xs";
+  "segmented-active bg-card text-primary hover:bg-card hover:text-primary border-border/80 font-semibold shadow-xs";
 
 /** Arrow-key movement across a radiogroup's items, as native radios have. Put it on the group. */
 export function onRadioGroupKeyDown(event: React.KeyboardEvent<HTMLElement>) {

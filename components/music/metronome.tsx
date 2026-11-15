@@ -29,7 +29,14 @@ export function Metronome() {
     catch { setError("Metronome audio is unavailable in this browser."); }
   }
   return <Panel title="Practice metronome" description="Four quarter-note beats per bar, with an accent on beat 1. Count straight eighths or three equal triplet notes within each click.">
-    <div className="flex flex-wrap items-center gap-5"><label className="text-sm font-medium">Tempo · {bpm} BPM<input aria-label="Metronome tempo" type="range" min={30} max={240} value={bpm} onChange={(e) => setBpm(Number(e.target.value))} className="mt-3 block w-52 max-w-full accent-primary" /></label><button type="button" className={buttonVariants({ variant: running ? "secondary" : "default" })} onClick={toggle}>{running ? "Stop metronome" : "Start metronome"}</button><div className="flex gap-2" aria-label={`Beat ${beat + 1} of 4`}>{[0, 1, 2, 3].map((i) => <span key={i} className={`grid size-8 place-items-center rounded-full border text-xs ${running && beat === i ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>{i + 1}</span>)}</div></div>
+    <div className="metronome-console">
+      <div className="metronome-readout"><strong>{bpm}</strong><span>beats / minute</span></div>
+      <div className="space-y-6">
+        <label className="block text-sm font-medium">Find your tempo<input aria-label="Metronome tempo" type="range" min={30} max={240} value={bpm} onChange={(e) => setBpm(Number(e.target.value))} className="mt-4 block w-full" /></label>
+        <div className="flex items-center gap-2" aria-label={`Beat ${beat + 1} of 4`}>{[0, 1, 2, 3].map((i) => <span key={i} className="metronome-beat" data-active={running && beat === i}>{i + 1}</span>)}<span className="ml-2 text-xs text-muted-foreground">4/4 time</span></div>
+      </div>
+      <button type="button" className={buttonVariants({ variant: running ? "secondary" : "default", size: "lg" })} onClick={toggle}>{running ? "Stop metronome" : "Start metronome"}</button>
+    </div>
     {error && <p role="status" className="mt-3 text-sm">{error}</p>}
   </Panel>;
 }

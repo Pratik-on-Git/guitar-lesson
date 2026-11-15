@@ -167,6 +167,7 @@ export type Crumb = { label: string; href?: string };
  */
 export function crumbsFor(pathname: string): Crumb[] {
   const home: Crumb = { label: "Overview", href: "/" };
+  if (pathname === "/design-system") return [home, { label: "Design system" }];
   for (const group of NAV) {
     for (const item of group.items) {
       const child = item.children?.find((c) => c.href === pathname);

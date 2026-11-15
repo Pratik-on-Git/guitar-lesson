@@ -2,10 +2,17 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function StudySelect({ label, value, onChange, options }: { label: string; value: string; onChange: (value: string) => void; options: { value: string; label: string }[] }) {
   const id = useId();
-  return <div className="flex min-w-0 flex-1 flex-col gap-2 text-sm font-medium"><label htmlFor={id}>{label}</label><select id={id} className="w-full min-w-0 rounded-lg border bg-background p-3 text-foreground" value={value} onChange={(event) => onChange(event.target.value)}>{options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select></div>;
+  return <div className="flex min-w-0 flex-1 flex-col gap-2 text-sm font-medium">
+    <label htmlFor={id}>{label}</label>
+    <Select items={options} value={value} onValueChange={(next) => { if (next !== null) onChange(next); }}>
+      <SelectTrigger id={id} className="w-full min-w-0"><SelectValue /></SelectTrigger>
+      <SelectContent alignItemWithTrigger={false}><SelectGroup>{options.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectGroup></SelectContent>
+    </Select>
+  </div>;
 }
 
 /** User-triggered, finite Web Audio playback. Oscillators and contexts are cleaned up. */

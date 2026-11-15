@@ -6,30 +6,34 @@ test.beforeEach(async ({ page }) => { page.on("pageerror", (error) => { throw er
 test("every diagram sheet is drawn as code and atlas filters preserve deep links", async ({ page }) => {
   expect(FRET_SHEETS).toHaveLength(63);
   await page.goto("/book?page=55");
-  await expect(page.getByLabel("Diagram sheet")).toHaveValue("55");
+  await expect(page.getByLabel("Diagram sheet")).toContainText("p. 55");
   await expect(page.getByRole("group", { name: /^Augmented \(Scales & modes\), page 55$/ })).toBeVisible();
   await expect(page.getByRole("img", { name: /^Position 1: A-root shape/ })).toBeVisible();
   await page.getByRole("radio", { name: "C", exact: true }).click();
   await expect(page.getByRole("img", { name: /^Position 1: C-root shape/ })).toBeVisible();
   await page.getByRole("radio", { name: /^Drop 3(?!\d)/ }).click();
-  await page.getByLabel("Diagram sheet").selectOption("80");
+  await page.getByLabel("Diagram sheet").click();
+  await page.getByRole("option", { name: /^p\. 80 ·/ }).click();
   await expect(page).toHaveURL(/page=80/);
   await page.reload();
-  await expect(page.getByLabel("Diagram sheet")).toHaveValue("80");
+  await expect(page.getByLabel("Diagram sheet")).toContainText("p. 80");
   await expect(page.getByRole("link", { name: "Open interactive lesson" })).toHaveAttribute("href", "/voicings?chord=half-diminished&voicing=drop-3");
 });
 
 test("voicing inversion controls produce correct pitch order and reload", async ({ page }) => {
   await page.goto("/voicings?key=c&chord=major-7&inversion=2");
   await expect(page.locator("main")).toContainText("G3 → C4 → E4 → B4");
-  await page.getByLabel("Voicing type", { exact: true }).selectOption("drop-3");
-  await page.getByLabel("Resulting bass inversion").selectOption("1");
+  await page.getByLabel("Voicing type", { exact: true }).click();
+  await page.getByRole("option", { name: "Drop 3", exact: true }).click();
+  await page.getByLabel("Resulting bass inversion").click();
+  await page.getByRole("option", { name: "First inversion", exact: true }).click();
   await expect(page.locator("main")).toContainText("E3 → C4 → G4 → B4");
   await page.reload();
-  await expect(page.getByLabel("Voicing type", { exact: true })).toHaveValue("drop-3");
+  await expect(page.getByLabel("Voicing type", { exact: true })).toContainText("Drop 3");
   await expect(page.locator("main")).toContainText("E3 → C4 → G4 → B4");
-  await page.getByLabel("Chord quality", { exact: true }).selectOption("minor");
-  await expect(page.getByLabel("Voicing type", { exact: true })).toHaveValue("close");
+  await page.getByLabel("Chord quality", { exact: true }).click();
+  await page.getByRole("option", { name: "Minor triad", exact: true }).click();
+  await expect(page.getByLabel("Voicing type", { exact: true })).toContainText("Close position");
   await expect(page.locator("main")).toContainText("E♭4 → G4 → C5");
 });
 
@@ -46,10 +50,11 @@ test("double-note construction draws and explains the repeated G/B pitch", async
 test("arpeggios and harmonization transpose selected chord tones", async ({ page }) => {
   await page.goto("/arpeggios?key=c&chord=diminished-7");
   await expect(page.locator("main")).toContainText("C E♭ G♭ B𝄫");
-  await page.getByLabel("Practice region", { exact: true }).selectOption("7");
+  await page.getByLabel("Practice region", { exact: true }).click();
+  await page.getByRole("option", { name: "Frets 7–11", exact: true }).click();
   await expect(page).toHaveURL(/fret=7/);
   await page.reload();
-  await expect(page.getByLabel("Practice region", { exact: true })).toHaveValue("7");
+  await expect(page.getByLabel("Practice region", { exact: true })).toContainText("Frets 7–11");
   await page.goto("/harmonization?key=a&family=harmonic-minor");
   const table = page.locator("section").filter({ has: page.getByRole("heading", { name: "Diatonic chords", exact: true }) });
   await expect(table).toContainText("G♯°7");
@@ -65,7 +70,8 @@ test("scale choices separate contained chords from contextual tension", async ({
   await page.goto("/improvisation?key=g&tab=pentatonics&recipe=altered-third");
   await expect(page.getByRole("heading", { name: "B♭ minor pentatonic over G7alt", exact: true })).toBeVisible();
   await expect(page.locator("main")).toContainText("♯9 ♯11 ♭13 ♭7 ♭9");
-  await page.getByLabel("Desired sound", { exact: true }).selectOption("altered-below");
+  await page.getByLabel("Desired sound", { exact: true }).click();
+  await page.getByRole("option", { name: "Dominant tension · whole step below", exact: true }).click();
   await expect(page.locator("main")).toContainText("♭7 ♭9 ♯9 11 ♭13");
 });
 
@@ -77,7 +83,8 @@ test("practice checks interval quality, reveals answers and preserves a session"
   await page.getByRole("button", { name: "Next question", exact: false }).click();
   await page.getByRole("button", { name: "Reveal answer", exact: true }).click();
   await expect(page.getByRole("status").filter({ hasText: "d5" })).toBeVisible();
-  await page.getByLabel("Exercise type", { exact: true }).selectOption("missing-note");
+  await page.getByLabel("Exercise type", { exact: true }).click();
+  await page.getByRole("option", { name: "Spell an interval's top note", exact: true }).click();
   await page.getByRole("textbox", { name: "Your answer", exact: true }).fill("C#");
   await page.getByRole("button", { name: "Check answer", exact: true }).click();
   await expect(page.getByRole("status").filter({ hasText: "Correct:" })).toBeVisible();

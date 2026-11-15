@@ -37,10 +37,10 @@ function CardHeading({ eyebrow, title, href, label, children }: { eyebrow: strin
   </div>;
 }
 
-function Metric({ label, value, detail, icon: Icon, href, suffix }: { label: string; value: number; detail: string; icon: LucideIcon; href: string; suffix?: string }) {
-  return <Link href={href} className="overview-metric">
+function Metric({ label, value, detail, icon: Icon, href, suffix, tone }: { label: string; value: number; detail: string; icon: LucideIcon; href: string; suffix?: string; tone: "cyan" | "orange" | "violet" }) {
+  return <Link href={href} className="overview-metric" data-tone={tone}>
     <div className="flex items-start justify-between gap-2"><span className="text-muted-foreground text-xs font-medium">{label}</span><IconTile icon={<Icon />} tone="brand" /></div>
-    <p className="-mt-1 text-[1.875rem] leading-tight font-semibold tracking-tight tabular-nums">{value.toLocaleString("en-GB")}<span className="text-muted-foreground ml-1 text-sm font-normal">{suffix}</span></p>
+    <p className="overview-metricValue">{value.toLocaleString("en-GB")}<span className="ml-2 text-sm font-normal tracking-normal">{suffix}</span></p>
     <p className="text-muted-foreground mt-1 text-xs">{detail}</p>
   </Link>;
 }
@@ -57,7 +57,7 @@ function arcPath(start: number, end: number, outer = 142, inner = 88) {
 function ProgressGauge({ study }: { study: Study }) {
   const percent = study.total ? study.done / study.total * 100 : 0;
   const next = study.remaining[0];
-  return <Card as="section" aria-label="Study progress" className="overview-card">
+  return <Card as="section" aria-label="Study progress" className="overview-card overview-journey">
     <CardHeading eyebrow="One page at a time" title="Your learning journey" href="#study-map" label="Explore your study map" />
     <div className="overview-callout"><Sparkles className="text-primary size-4 shrink-0" aria-hidden /><p>{study.done === 0 ? "Your next chapter starts here." : next ? <><strong>{study.done} pages</strong> studied. Keep building.</> : "Every page studied. Make it music."}</p></div>
     <div className="overview-gauge" role="img" aria-label={`${percent.toFixed(1)}% studied: ${study.done} of ${study.total} pages`}>
@@ -73,7 +73,7 @@ function ProgressGauge({ study }: { study: Study }) {
       <div className="overview-insetMetric"><span><BookOpen className="size-3.5" aria-hidden />To explore</span><p>{study.total - study.done}<small> pages</small></p></div>
     </div>
     <Link href={next?.href ?? "/practice"} className={cn(buttonVariants(), "w-full justify-between")}><span>{next ? study.done ? "Continue learning" : "Start learning" : "Put it into practice"}</span><ArrowRight aria-hidden /></Link>
-    <p className="text-muted-foreground text-center text-[11px] leading-relaxed">Marked as studied, at your own pace.</p>
+    <p className="text-muted-foreground text-center text-xs leading-relaxed">Marked as studied, at your own pace.</p>
   </Card>;
 }
 
@@ -87,11 +87,11 @@ function PartChart({ study }: { study: Study }) {
       {study.groups.map((part, index) => <Tooltip key={part.title} content={`${part.title}: ${part.done} of ${part.total} pages studied`}>
         <button type="button" aria-label={`${part.title}: ${part.done} of ${part.total} pages studied`} aria-pressed={selected === index} onClick={() => setSelected(index)} className={cn("overview-barButton", selected === index && "overview-barSelected")}>
           <span className="overview-barTrack"><span className="overview-barFill" style={{ height: `${part.done / part.total * 100}%` }} /></span>
-          <span className="text-[10px] font-medium tabular-nums">{String(index + 1).padStart(2, "0")}</span>
+          <span className="text-xs font-medium tabular-nums">{String(index + 1).padStart(2, "0")}</span>
         </button>
       </Tooltip>)}
     </div>
-    <div className="overview-partDetail" aria-live="polite"><div><p className="text-muted-foreground text-[11px]">Part {String(selected + 1).padStart(2, "0")}</p><h3 className="mt-1 text-sm font-semibold">{group.title}</h3><p className="text-muted-foreground mt-1 text-xs">{group.done} of {group.total} pages studied</p></div><Link href={group.next?.href ?? group.pages[0].href} className="overview-arrowLink" aria-label={`Study ${group.title}`}><ArrowRight className="size-4" aria-hidden /></Link></div>
+    <div className="overview-partDetail" aria-live="polite"><div><p className="text-muted-foreground text-xs">Part {String(selected + 1).padStart(2, "0")}</p><h3 className="mt-1 text-sm font-semibold">{group.title}</h3><p className="text-muted-foreground mt-1 text-xs">{group.done} of {group.total} pages studied</p></div><Link href={group.next?.href ?? group.pages[0].href} className="overview-arrowLink" aria-label={`Study ${group.title}`}><ArrowRight className="size-4" aria-hidden /></Link></div>
   </Card>;
 }
 
@@ -113,7 +113,7 @@ function StudyStatus({ study }: { study: Study }) {
       })}</svg><div className="overview-gaugeValue"><span>{total}</span><p>learning parts</p></div>
     </div>
     <ul className="space-y-3">{segments.map((segment) => <li key={segment.label} className="flex items-center gap-2 text-xs"><span className="size-2 shrink-0 rounded-full" style={{ background: segment.color, opacity: segment.label === "Not started" ? 0.5 : 1 }} /><span className="text-muted-foreground">{segment.label}</span><strong className="ml-auto font-semibold tabular-nums">{segment.count}</strong></li>)}</ul>
-    <p className="text-muted-foreground mt-auto border-t pt-3 text-[11px] leading-relaxed">A part is complete when every page in it is marked as studied.</p>
+    <p className="text-muted-foreground mt-auto border-t pt-3 text-xs leading-relaxed">A part is complete when every page in it is marked as studied.</p>
   </Card>;
 }
 
@@ -122,8 +122,8 @@ function NextLessons({ study }: { study: Study }) {
   const pages = (complete ? STUDY_PAGES : study.remaining).slice(0, 5);
   return <Card as="section" aria-label={complete ? "Revisit your foundations" : "Up next"} className="overview-card">
     <CardHeading eyebrow={complete ? "Keep it fresh" : "A little direction"} title={complete ? "Revisit your foundations" : "Up next for you"} href="#study-map" label="Browse the full study map" />
-    <ol className="-mx-2">{pages.map((page, index) => <li key={page.href}><Link href={page.href} className="overview-lessonLink"><span className={cn("overview-lessonNumber", index === 0 && "overview-lessonNumberActive")}>{complete ? <Check className="size-4" aria-hidden /> : String(index + 1).padStart(2, "0")}</span><span className="min-w-0 flex-1"><span className="block text-sm font-medium leading-snug">{page.title}</span><span className="text-muted-foreground mt-1 block text-[11px]">{page.group}</span></span><ChevronRight className="text-muted-foreground size-3.5 shrink-0" aria-hidden /></Link></li>)}</ol>
-    <p className="text-muted-foreground border-t pt-3 text-[11px] leading-relaxed">{complete ? "You’ve covered the map. Revisit a lesson or try a new practice focus." : "The next unstudied pages, in your course’s reading order."}</p>
+    <ol className="-mx-2">{pages.map((page, index) => <li key={page.href}><Link href={page.href} className="overview-lessonLink"><span className={cn("overview-lessonNumber", index === 0 && "overview-lessonNumberActive")}>{complete ? <Check className="size-4" aria-hidden /> : String(index + 1).padStart(2, "0")}</span><span className="min-w-0 flex-1"><span className="block text-sm font-medium leading-snug">{page.title}</span><span className="text-muted-foreground mt-1 block text-xs">{page.group}</span></span><ChevronRight className="text-muted-foreground size-3.5 shrink-0" aria-hidden /></Link></li>)}</ol>
+    <p className="text-muted-foreground border-t pt-3 text-xs leading-relaxed">{complete ? "You’ve covered the map. Revisit a lesson or try a new practice focus." : "The next unstudied pages, in your course’s reading order."}</p>
   </Card>;
 }
 
@@ -140,19 +140,19 @@ function PracticeActivity({ practice, days, ready }: { practice: Practice; days:
         <div className="overview-focusMeter" role="img" aria-label={practice.count ? practice.focus.map((focus) => `${focus.name}: ${focus.minutes} minutes`).join(", ") : "No saved practice in this period"}>
           {practice.focus.map((focus, index) => <span key={focus.name} style={{ flex: focus.minutes, background: focusColors[index] }} />)}
         </div>
-        {practice.focus.length ? <ul className="space-y-2">{practice.focus.map((focus, index) => <li key={focus.name} className="flex items-start gap-2 text-[11px]"><span className="mt-1 size-2 shrink-0 rounded-full" style={{ background: focusColors[index] }} /><span className="text-muted-foreground flex-1">{focus.name}</span><span className="shrink-0 font-medium tabular-nums">{focus.minutes} min</span></li>)}</ul> : <Link href="/practice" className="text-primary mt-1 inline-flex items-center gap-1 text-xs font-medium underline-offset-4 hover:underline">Plan your first session <ArrowRight className="size-3" aria-hidden /></Link>}
+        {practice.focus.length ? <ul className="space-y-2">{practice.focus.map((focus, index) => <li key={focus.name} className="flex items-start gap-2 text-xs"><span className="mt-1 size-2 shrink-0 rounded-full" style={{ background: focusColors[index] }} /><span className="text-muted-foreground flex-1">{focus.name}</span><span className="shrink-0 font-medium tabular-nums">{focus.minutes} min</span></li>)}</ul> : <Link href="/practice" className="text-primary mt-1 inline-flex items-center gap-1 text-xs font-medium underline-offset-4 hover:underline">Plan your first session <ArrowRight className="size-3" aria-hidden /></Link>}
       </div>
       <div className="min-w-0">
-        <div className="text-muted-foreground mb-3 flex items-center justify-between gap-2 text-[11px]"><span>{ready && practice.activity.length ? `${calendarLabel(practice.activity[0].date, { day: "numeric", month: "short" })} – ${calendarLabel(practice.activity[practice.activity.length - 1].date, { day: "numeric", month: "short" })}` : "Loading your calendar…"}</span><span>IST</span></div>
+        <div className="text-muted-foreground mb-3 flex items-center justify-between gap-2 text-xs"><span>{ready && practice.activity.length ? `${calendarLabel(practice.activity[0].date, { day: "numeric", month: "short" })} – ${calendarLabel(practice.activity[practice.activity.length - 1].date, { day: "numeric", month: "short" })}` : "Loading your calendar…"}</span><span>IST</span></div>
         <div className="overview-heatmap">
-          {practice.activity.slice(0, 7).map((day) => <span key={`label-${day.date}`} className="text-muted-foreground text-center text-[10px]">{calendarLabel(day.date, { weekday: "short" }).slice(0, 1)}</span>)}
+          {practice.activity.slice(0, 7).map((day) => <span key={`label-${day.date}`} className="text-muted-foreground text-center text-xs">{calendarLabel(day.date, { weekday: "short" }).slice(0, 1)}</span>)}
           {practice.activity.map((day) => <Tooltip key={day.date} content={`${calendarLabel(day.date, { day: "numeric", month: "short" })}: ${day.minutes} min · ${day.sessions} ${day.sessions === 1 ? "session" : "sessions"}`}><button type="button" className="overview-heatCell" data-level={day.minutes === 0 ? 0 : day.minutes < 15 ? 1 : day.minutes < 30 ? 2 : day.minutes < 60 ? 3 : 4} aria-label={`${calendarLabel(day.date, { day: "numeric", month: "long" })}: ${day.minutes} minutes, ${day.sessions} ${day.sessions === 1 ? "session" : "sessions"}`} aria-pressed={selected === day.date} onClick={() => setSelected(day.date)} /></Tooltip>)}
         </div>
-        <div className="text-muted-foreground mt-3 flex items-center justify-end gap-1 text-[10px]"><span className="mr-1">0 min</span>{[0, 1, 2, 3, 4].map((level) => <span key={level} className="overview-heatLegend" data-level={level} />)}<span className="ml-1">60+ min</span></div>
-        <p className="text-muted-foreground mt-3 min-h-8 text-[11px] leading-relaxed" aria-live="polite">{selectedDay ? `${calendarLabel(selectedDay.date, { day: "numeric", month: "short" })} · ${selectedDay.minutes} min · ${selectedDay.sessions} saved ${selectedDay.sessions === 1 ? "session" : "sessions"}` : "Select a day to see your saved practice."}</p>
+        <div className="text-muted-foreground mt-3 flex items-center justify-end gap-1 text-xs"><span className="mr-1">0 min</span>{[0, 1, 2, 3, 4].map((level) => <span key={level} className="overview-heatLegend" data-level={level} />)}<span className="ml-1">60+ min</span></div>
+        <p className="text-muted-foreground mt-3 min-h-8 text-xs leading-relaxed" aria-live="polite">{selectedDay ? `${calendarLabel(selectedDay.date, { day: "numeric", month: "short" })} · ${selectedDay.minutes} min · ${selectedDay.sessions} saved ${selectedDay.sessions === 1 ? "session" : "sessions"}` : "Select a day to see your saved practice."}</p>
       </div>
     </div>
-    <p className="text-muted-foreground flex items-start gap-2 border-t pt-3 text-[11px] leading-relaxed"><Info className="mt-0.5 size-3 shrink-0" aria-hidden />Based on your latest 30 saved sessions. Minutes are self-reported; dates use India Standard Time.</p>
+    <p className="text-muted-foreground flex items-start gap-2 border-t pt-3 text-xs leading-relaxed"><Info className="mt-0.5 size-3 shrink-0" aria-hidden />Based on your latest 30 saved sessions. Minutes are self-reported; dates use India Standard Time.</p>
   </Card>;
 }
 
@@ -161,7 +161,7 @@ function StudyMap({ study }: { study: Study }) {
     <div className="grid items-start gap-3 md:grid-cols-2 xl:grid-cols-3">{study.groups.map((group, index) => {
       const Icon = group.items[0].icon;
       return <details key={group.title} className="overview-mapPart">
-        <summary className="overview-mapSummary"><IconTile icon={<Icon />} tone={group.done === group.total ? "success" : "primary"} /><span className="min-w-0 flex-1"><span className="text-muted-foreground block text-[10px] uppercase tracking-wider">Part {String(index + 1).padStart(2, "0")}</span><span className="mt-0.5 block text-sm font-medium">{group.title}</span></span><span className="text-muted-foreground text-[11px] tabular-nums">{group.done}/{group.total}</span><ChevronDown className={cn("overview-mapChevron", "size-3.5 shrink-0 text-muted-foreground")} aria-hidden /></summary>
+        <summary className="overview-mapSummary"><IconTile icon={<Icon />} tone={group.done === group.total ? "success" : "primary"} /><span className="min-w-0 flex-1"><span className="text-muted-foreground block text-xs uppercase tracking-wider">Part {String(index + 1).padStart(2, "0")}</span><span className="mt-0.5 block text-sm font-medium">{group.title}</span></span><span className="text-muted-foreground text-xs tabular-nums">{group.done}/{group.total}</span><ChevronDown className={cn("overview-mapChevron", "size-3.5 shrink-0 text-muted-foreground")} aria-hidden /></summary>
         <ul className="mx-4 mb-3 border-t pt-2">{group.pages.map((page) => <li key={page.href}><Link href={page.href} className="overview-mapLink"><span>{page.title}</span>{study.remaining.some((remaining) => remaining.href === page.href) ? <ChevronRight className="size-3 shrink-0 text-muted-foreground" aria-hidden /> : <CircleCheck className="size-3.5 shrink-0 text-success" aria-label="Studied" />}</Link></li>)}</ul>
       </details>;
     })}</div>
@@ -176,15 +176,27 @@ export function OverviewDashboard({ library }: { library: LibraryCounts }) {
   const study = studySummary(studied);
   const practice = practiceSummary(sessions, days, new Date(minute * 60_000 + 59_999));
   const next = study.remaining[0];
-  return <div className="flex flex-col gap-7">
+  return <div className="flex flex-col gap-8">
     <PageHeader title="Overview" description="A little theory. A little practice. A more musical you." actions={<><Link href="/practice" className={buttonVariants({ variant: "outline" })}><Guitar aria-hidden />Practice studio</Link><Link href={next?.href ?? "/books/music-theory"} className={buttonVariants()}>{next ? study.done ? "Continue learning" : "Start learning" : "Revisit the course"}<ArrowRight aria-hidden /></Link></>} />
+    <section className="resonance-feature flex items-center justify-between gap-6" aria-label="Your daily inspiration">
+      <div className="relative z-10 space-y-5">
+        <p className="feature-eyebrow flex items-center gap-2"><span className="size-1.5 rounded-full bg-current" aria-hidden />Tune in. Find your flow.</p>
+        <h2>Small steps.<br />Better music.</h2>
+        <p className="max-w-sm text-sm leading-relaxed">Explore a sound. Understand a little more.<br className="max-sm:hidden" /> Make today’s practice your own.</p>
+        <Link href="/practice" className={buttonVariants({ size: "lg" })}>Find your rhythm<ArrowUpRight aria-hidden /></Link>
+      </div>
+      <div className="mr-6 hidden shrink-0 flex-col items-center gap-7 sm:flex" aria-hidden>
+        <div className="feature-orb"><div className="feature-wave">{Array.from({ length: 7 }, (_, i) => <span key={i} />)}</div></div>
+        <span className="text-xs tracking-[.18em] text-[#bdc6d2] uppercase">Listen. Learn. Play.</span>
+      </div>
+    </section>
     <div className="flex flex-wrap items-center justify-between gap-3"><div className="flex items-center gap-2"><span className="bg-primary size-1.5 rounded-full" aria-hidden /><p className="text-muted-foreground text-xs">Your personal learning dashboard</p></div><div className="flex items-center gap-2"><span className="text-muted-foreground text-xs">Practice window</span><Segmented label="Practice period" size="sm" value={days} onChange={setDays} options={[{ value: 7, label: "7 days" }, { value: 28, label: "28 days" }]} /></div></div>
     <div className="overview-dashboard">
       <div className="overview-mainColumn">
         <div className="grid gap-3 sm:grid-cols-3">
-          <Metric label="Study library" value={library.topics} detail="Written lessons to explore" icon={BookOpen} href="#study-map" />
-          <Metric label="Practice logged" value={practice.minutes} suffix="min" detail={`Saved in the last ${days} days`} icon={Clock3} href="/practice" />
-          <Metric label="Saved sessions" value={practice.count} detail={`Across ${practice.activeDays} active ${practice.activeDays === 1 ? "day" : "days"}`} icon={CalendarDays} href="/practice" />
+          <Metric label="Study library" value={library.topics} detail="Written lessons to explore" icon={BookOpen} href="#study-map" tone="cyan" />
+          <Metric label="Practice logged" value={practice.minutes} suffix="min" detail={`Saved in the last ${days} days`} icon={Clock3} href="/practice" tone="orange" />
+          <Metric label="Saved sessions" value={practice.count} detail={`Across ${practice.activeDays} active ${practice.activeDays === 1 ? "day" : "days"}`} icon={CalendarDays} href="/practice" tone="violet" />
         </div>
         <div className="overview-chartsRow"><PartChart study={study} /><StudyStatus study={study} /></div>
         <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-sm font-semibold">Time with your instrument</h2><span className="text-muted-foreground text-xs">Last {days} days</span></div>
@@ -202,6 +214,6 @@ export function OverviewDashboard({ library }: { library: LibraryCounts }) {
     </Section>
     <StudyMap study={study} />
     <div className="overview-footerStrip"><div className="flex items-center gap-3"><IconTile icon={<Music2 />} tone="primary" /><div><p className="text-sm font-medium">Make something of what you know.</p><p className="text-muted-foreground mt-0.5 text-xs">Find your pulse, write a phrase, or return to the source.</p></div></div><div className="flex flex-wrap gap-2"><Link href="/rhythm-lab" className={buttonVariants({ variant: "outline", size: "sm" })}><Drum aria-hidden />Rhythm lab</Link><Link href="/composition" className={buttonVariants({ variant: "outline", size: "sm" })}><Music2 aria-hidden />Compose</Link><Link href="/books/music-theory" className={buttonVariants({ variant: "outline", size: "sm" })}><BookOpen aria-hidden />Theory book</Link><Link href="/book" className={buttonVariants({ variant: "outline", size: "sm" })}><Guitar aria-hidden />Fretboard book</Link></div></div>
-    <p className="text-muted-foreground flex items-center justify-center gap-1.5 text-center text-[11px]"><Target className="size-3 shrink-0" aria-hidden />Progress and practice are saved in this browser.</p>
+    <p className="text-muted-foreground flex items-center justify-center gap-1.5 text-center text-xs"><Target className="size-3 shrink-0" aria-hidden />Progress and practice are saved in this browser.</p>
   </div>;
 }

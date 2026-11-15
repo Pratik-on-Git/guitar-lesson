@@ -188,7 +188,7 @@ function SearchBody({ onDone }: { onDone: () => void }) {
                 key={s}
                 type="button"
                 onClick={() => setQuery(s)}
-                className="border-border text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary rounded-full border px-2.5 py-1 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                className="border-border text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary rounded-md border px-2.5 py-1 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               >
                 {s}
               </button>

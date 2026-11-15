@@ -8,6 +8,7 @@ import { Panel } from "@/components/app/panel";
 import { buttonVariants } from "@/components/ui/button";
 import { Segmented } from "@/components/ui/segmented";
 import { RootPicker, useRootParam } from "@/components/music/controls";
+import { StudySelect } from "@/components/music/study-controls";
 import { FretSheetView, type SheetLabels } from "@/components/visuals/fret-sheet";
 
 export function BookAtlas() {
@@ -31,12 +32,7 @@ export function BookAtlas() {
       <div className="space-y-5">
         <Segmented label="Diagram chapter" value={activeChapter} onChange={setChapter} options={chapters.map((value) => ({ value, label: value, count: value === "All" ? BOOK_DIAGRAMS.length : BOOK_DIAGRAMS.filter((s) => s.chapter === value).length }))} />
         <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
-          <label className="flex flex-col gap-2 text-sm font-medium">
-            Diagram sheet
-            <select value={selected.page} onChange={(e) => setPage(e.target.value)} className="bg-background w-full min-w-0 rounded-lg border p-3">
-              {sheets.map((s) => <option key={s.page} value={s.page}>p. {s.page} · {s.chapter} · {s.title}</option>)}
-            </select>
-          </label>
+          <StudySelect label="Diagram sheet" value={String(selected.page)} onChange={setPage} options={sheets.map((s) => ({ value: String(s.page), label: `p. ${s.page} · ${s.chapter} · ${s.title}` }))} />
           <Segmented<SheetLabels> label="Label notes by" size="sm" value={labels === "note" ? "note" : "degree"} onChange={setLabels} options={[{ value: "degree", label: "Degrees" }, { value: "note", label: "Notes" }]} />
         </div>
         <RootPicker value={rootPc} onChange={setRootPc} label="Key (the book uses A)" />

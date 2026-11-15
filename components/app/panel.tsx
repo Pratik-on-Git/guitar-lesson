@@ -1,11 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Card, CardAction, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
-/*
- * One block of study material, on the design system's Card: a hairline ring
- * card with a title row (title, description, trailing action) separated from
- * the body by a rule, as the dashboards' data cards are.
- */
+/* A titled learning or tool surface, composed from the shared Card primitives. */
 export function Panel({
   id,
   title,

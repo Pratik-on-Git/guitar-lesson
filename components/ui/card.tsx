@@ -1,10 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/*
- * Card, copied from @subtrait/ui. Every edge is driven by one `--card-spacing`
- * variable, so `size="sm"` retunes header, content and footer together; a
- * `ring-1` hairline plus `shadow-xs` gives the flat, tight look.
- */
+/* Shared raised surface. One spacing variable aligns header, body, and footer. */
 function Card({
   className,
   size = "default",
@@ -16,7 +12,7 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "group/card bg-card text-card-foreground ring-foreground/10 flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm shadow-xs ring-1 [--card-spacing:--spacing(6)] data-[size=sm]:[--card-spacing:--spacing(4)] max-sm:[--card-spacing:--spacing(4)]",
+        "instrument-surface group/card bg-card text-card-foreground ring-border flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm shadow-xs ring-1 [--card-spacing:--spacing(6)] data-[size=sm]:[--card-spacing:--spacing(4)] max-sm:[--card-spacing:--spacing(4)]",
         className,
       )}
       {...props}

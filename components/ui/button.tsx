@@ -2,20 +2,16 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-/*
- * Button: variants and sizes copied from @subtrait/ui's `button.tsx`, class
- * string for class string. Composition goes through Base UI's `render` prop;
- * for a plain link, put `buttonVariants()` on a <Link> instead.
- */
+/* Shared action geometry and semantic variants; links use buttonVariants(). */
 const buttonVariants = cva(
-  "group/button focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 inline-flex shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-3 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "ui-button group/button focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 inline-flex shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-3 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         // `button-sheen` (globals.css) is the hover sweep and glow.
         default: "button-sheen bg-primary text-primary-foreground hover:bg-[var(--button-primary-hover)]",
         outline:
-          "border-primary/40 text-primary bg-background hover:bg-primary/10 hover:border-primary aria-expanded:bg-primary/10 aria-expanded:border-primary dark:bg-background dark:hover:bg-primary/15",
+          "border-border text-foreground bg-card hover:bg-accent hover:border-input aria-expanded:bg-primary/10 aria-expanded:border-primary dark:bg-background dark:hover:bg-primary/15",
         "outline-destructive":
           "border-destructive/40 text-destructive bg-background hover:bg-destructive/10 hover:border-destructive aria-expanded:bg-destructive/10 aria-expanded:border-destructive focus-visible:border-destructive/60 focus-visible:ring-destructive/20 dark:border-destructive/60 dark:bg-background dark:hover:bg-destructive/15",
         secondary:
@@ -32,11 +28,11 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+        default: "h-10 gap-2 px-4 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
         xs: "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-8 gap-1 rounded-[min(var(--radius-md),10px)] px-2.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",
-        lg: "h-10 gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
-        icon: "size-9",
+        lg: "h-12 gap-2 px-5 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
+        icon: "size-10",
         "icon-xs": "size-6 rounded-[min(var(--radius-md),8px)] [&_svg:not([class*='size-'])]:size-3",
         "icon-sm": "size-8 rounded-[min(var(--radius-md),10px)]",
         "icon-lg": "size-10",

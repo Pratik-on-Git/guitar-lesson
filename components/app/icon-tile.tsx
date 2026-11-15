@@ -32,7 +32,7 @@ export function IconTile({
   return (
     <span
       className={cn(
-        "icon-tile flex shrink-0 items-center justify-center rounded-md",
+        "icon-tile flex shrink-0 items-center justify-center rounded-xl",
         SIZE_CLASS[size],
         TONE_CLASS[tone],
         className,

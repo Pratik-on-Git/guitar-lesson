@@ -16,11 +16,7 @@ import { SearchDialog } from "./search-dialog";
 import { SidebarNav } from "./sidebar-nav";
 import { ThemeToggle } from "./theme-toggle";
 
-/*
- * App frame, after emp-dashboard's ConsoleLayout: a floating sidebar card
- * (icon rail when collapsed, a sheet on phones), a floating header card over
- * a blurred, fading backdrop, the page in a 90rem column, then the footer.
- */
+/* Responsive frame: floating neutral navigation, toolbar, content, and footer. */
 
 // One timing for the collapse, shared by the rail width and the labels inside it.
 const MORPH = "duration-300 ease-[cubic-bezier(0.2,0,0,1)] motion-reduce:duration-0";
@@ -66,7 +62,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             collapsed ? "w-[calc(3.5rem+0.75rem+2px)]" : "w-64",
           )}
         >
-          <div className="bg-sidebar text-sidebar-foreground flex h-full flex-col overflow-hidden rounded-xl border">
+          <div className="app-sidebar bg-sidebar text-sidebar-foreground flex h-full flex-col overflow-hidden rounded-xl border">
             <SidebarBrand collapsed={collapsed} />
             {/* The rail still scrolls on short screens, but without a bar: one would eat the icons' width. */}
             <div
@@ -86,7 +82,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Sized by container, not viewport, so the header adapts to the sidebar's width too. */}
           <header className="@container/header sticky top-0 z-40 px-4 before:absolute before:inset-0 before:mask-[linear-gradient(var(--card),var(--card)_18%,transparent_100%)] before:backdrop-blur-md sm:px-6">
-            <div className="bg-card relative mx-auto mt-3 flex w-full max-w-348 items-center justify-between gap-2 rounded-xl border px-2 py-2 shadow-xs sm:gap-4 sm:px-4">
+            <div className="app-toolbar bg-card relative mx-auto mt-3 flex w-full max-w-348 items-center justify-between gap-2 rounded-xl border px-2 py-2 shadow-xs sm:gap-4 sm:px-4">
               <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-3">
                 <Dialog open={sheet} onOpenChange={setSheet}>
                   <Button
@@ -148,7 +144,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </header>
 
-          <main id="content" className="mx-auto w-full max-w-360 flex-1 px-4 py-6 sm:px-6">
+          <main id="content" className="app-content mx-auto w-full max-w-360 flex-1 px-4 py-8 sm:px-6">
             {children}
           </main>
 
@@ -181,7 +177,7 @@ function SidebarBrand({ collapsed, onNavigate }: { collapsed: boolean; onNavigat
           )}
         >
           <span className="text-foreground truncate text-base font-semibold">Guitar Notes</span>
-          <span className="text-sidebar-foreground/60 truncate text-xs">Theory study notes</span>
+          <span className="text-sidebar-foreground/60 truncate text-xs">A little more musical.</span>
         </span>
       </Link>
     </div>
@@ -314,7 +310,8 @@ function Footer() {
     <footer className="border-t">
       <div className="text-muted-foreground mx-auto flex w-full max-w-360 items-center justify-between gap-3 px-4 py-3 max-sm:flex-col sm:gap-6 sm:px-6">
         <p className="text-sm text-balance max-sm:text-center">Guitar Notes · Theory & practice</p>
-        <div className="flex items-center gap-5 max-sm:hidden">
+        <div className="flex flex-wrap items-center justify-center gap-5">
+          <Link href="/design-system" className="hover:text-foreground text-sm transition duration-300">Design system</Link>
           <Link href="/scales" className="hover:text-foreground text-sm transition duration-300">
             Scales
           </Link>
