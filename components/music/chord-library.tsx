@@ -263,7 +263,7 @@ function ChordDetail({ chordId, rootPc, onClose }: { chordId: string; rootPc: nu
         ))}
       </ol>
       {chord.fix && (
-        <div role="note" className="border-primary/25 bg-primary/5 mb-5 flex max-w-[880px] gap-3 rounded-xl border px-4 py-3 text-sm">
+        <div role="note" className="border-primary/25 bg-primary/5 mb-5 flex w-full min-w-0 gap-3 rounded-xl border px-4 py-3 text-sm">
           <PenLine className="text-primary mt-0.5 size-4 shrink-0" aria-hidden />
           <span>
             <span className="font-medium">Corrected from your notes. </span>

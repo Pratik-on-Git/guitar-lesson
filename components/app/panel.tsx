@@ -24,7 +24,7 @@ export function Panel({
   const titleId = id ? `${id}-title` : undefined;
   const hasHeader = Boolean(title || action);
   return (
-    <Card as="section" id={id} aria-labelledby={title ? titleId : undefined} className={cn("min-w-0 scroll-mt-24", className)}>
+    <Card as="section" id={id} aria-labelledby={title ? titleId : undefined} className={cn("w-full min-w-0 scroll-mt-24", className)}>
       {hasHeader ? (
         <CardHeader className="border-b">
           {title ? (

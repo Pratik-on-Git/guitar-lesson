@@ -43,7 +43,7 @@ export function Widget({ name }: { name: WidgetName }) {
   const Component = WIDGETS[name];
   return (
     // An inset well inside the panel: the diagram reads as one object, apart from the prose around it.
-    <div className="bg-muted/30 ring-border/70 max-w-[920px] min-w-0 rounded-xl p-4 ring-1 sm:p-5">
+    <div className="bg-muted/30 ring-border/70 w-full min-w-0 rounded-xl p-4 ring-1 sm:p-5">
       <Component />
     </div>
   );

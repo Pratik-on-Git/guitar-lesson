@@ -55,7 +55,7 @@ function BlockView({ block }: { block: Block }) {
 
     case "facts":
       return (
-        <FactGrid className="max-w-[880px]">
+        <FactGrid className="w-full min-w-0">
           {block.items.map((item) => (
             <Fact key={item.label} label={item.label} value={item.value} />
           ))}
@@ -77,7 +77,7 @@ function BlockView({ block }: { block: Block }) {
 
     case "visual":
       return (
-        <figure className="max-w-[880px]">
+        <figure className="w-full min-w-0">
           <div className="bg-card rounded-xl border p-3 sm:p-4">
             <TheoryVisual id={block.id} />
           </div>
@@ -121,7 +121,7 @@ export function Callout({ tone, title, text }: { tone: keyof typeof CALLOUT; tit
     <aside
       role="note"
       className={cn(
-        "grid max-w-[880px] grid-cols-[calc(var(--spacing)*4)_1fr] items-start gap-x-3 gap-y-0.5 rounded-xl border px-4 py-3 text-sm [&>svg]:size-4 [&>svg]:translate-y-0.5",
+        "grid w-full min-w-0 grid-cols-[calc(var(--spacing)*4)_minmax(0,1fr)] items-start gap-x-3 gap-y-0.5 rounded-xl border px-4 py-3 text-sm [&>svg]:size-4 [&>svg]:translate-y-0.5",
         className,
       )}
     >

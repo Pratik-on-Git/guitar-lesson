@@ -91,7 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Sized by container, not viewport, so the header adapts to the sidebar's width too. */}
           <header className="@container/header sticky top-0 z-40 px-4 before:absolute before:inset-0 before:mask-[linear-gradient(var(--card),var(--card)_18%,transparent_100%)] before:backdrop-blur-md sm:px-6">
-            <div className="app-toolbar bg-card relative mx-auto mt-3 flex w-full max-w-348 items-center justify-between gap-2 rounded-xl border px-2 py-2 shadow-xs sm:gap-4 sm:px-4">
+            <div className="app-toolbar bg-card relative mt-3 flex w-full items-center justify-between gap-2 rounded-xl border px-2 py-2 shadow-xs sm:gap-4 sm:px-4">
               <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-3">
                 <Dialog open={sheet} onOpenChange={setSheet}>
                   <Button
@@ -154,7 +154,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </header>
 
-          <main id="content" className="app-content mx-auto w-full max-w-360 flex-1 px-4 py-8 sm:px-6">
+          <main id="content" className="app-content w-full min-w-0 flex-1 px-4 py-8 sm:px-6">
             {children}
           </main>
 
@@ -318,7 +318,7 @@ function Breadcrumbs() {
 function Footer() {
   return (
     <footer className="border-t">
-      <div className="text-muted-foreground mx-auto flex w-full max-w-360 items-center justify-between gap-3 px-4 py-3 max-sm:flex-col sm:gap-6 sm:px-6">
+      <div className="text-muted-foreground flex w-full min-w-0 items-center justify-between gap-3 px-4 py-3 max-sm:flex-col sm:gap-6 sm:px-6">
         <p className="text-sm text-balance max-sm:text-center">Guitar Notes · Theory & practice</p>
         <div className="flex flex-wrap items-center justify-center gap-5">
           <Link href="/design-system" className="hover:text-foreground text-sm transition duration-300">{titleCaseLabel(<>Design system</>)}</Link>
