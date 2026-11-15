@@ -4,7 +4,7 @@ import { titleCaseLabel } from "@/lib/title-case";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Suspense, useId, useState } from "react";
+import { Fragment, Suspense, useId, useState } from "react";
 import { AudioWaveform, BookOpen, ChevronRight, CircleCheck, Drum, Guitar, KeyRound, Layers, ListMusic, Music2, Palette, Shapes } from "lucide-react";
 import { NAV, isActive, type NavGroup, type NavItem } from "@/lib/nav";
 import { useSidebarCollapsed, useStudied } from "@/lib/store";
@@ -117,7 +117,10 @@ function NavSection({ group, index, pathname, collapsed, onNavigate, isStudied }
     </Tooltip>
     <div id={listId} hidden={!expanded}>
       <ul className="my-2 ml-4 flex min-w-0 flex-col gap-1 border-l border-sidebar-border pl-2">
-        {group.items.map(item => <NavEntry key={item.href} item={item} pathname={pathname} collapsed={false} onNavigate={onNavigate} isStudied={isStudied} />)}
+        {group.items.map((item, index) => <Fragment key={item.href}>
+          {item.part && item.part !== group.items[index - 1]?.part && <li className="px-2.5 pt-4 pb-1 text-xs leading-5 font-medium text-muted-foreground">{titleCaseLabel(item.part)}</li>}
+          <NavEntry item={item} pathname={pathname} collapsed={false} onNavigate={onNavigate} isStudied={isStudied} />
+        </Fragment>)}
       </ul>
     </div>
   </div>;

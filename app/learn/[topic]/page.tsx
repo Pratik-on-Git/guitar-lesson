@@ -21,6 +21,7 @@ import { LESSON_VISUALS, CHART_TITLES } from "@/lib/content/lesson-visuals";
 import { THEORY_FIGURES } from "@/lib/content/theory-book-assets";
 import { BOOK_DIAGRAMS } from "@/lib/content/book";
 import type { Block } from "@/lib/content/types";
+import { RAGA_LESSONS } from "@/lib/content/raga-curriculum";
 
 export function generateStaticParams() {
   return TOPICS.map((t) => ({ topic: t.slug }));
@@ -45,6 +46,7 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
   if (!topic) notFound();
   const href = `/learn/${topic.slug}`;
   const part = NAV.find((g) => g.items.some((i) => i.href === href))?.title;
+  const lesson = RAGA_LESSONS.find((entry) => entry.slug === topic.slug);
 
   return (
     <div className="flex flex-col gap-6 md:gap-8">
@@ -55,6 +57,7 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
         meta={
           <>
             {part ? <StatusBadge tone="brand">{part}</StatusBadge> : null}
+            {lesson ? <StatusBadge tone="neutral">{lesson.part}</StatusBadge> : null}
             <StatusBadge tone="neutral">
               {topic.sections.length} {topic.sections.length === 1 ? "section" : "sections"}
             </StatusBadge>
@@ -64,9 +67,12 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_220px]">
         <div className="flex min-w-0 flex-col gap-4 md:gap-6">
           {topic.sections.map((section) => (
-            <Panel key={section.id} id={section.id} title={section.title}>
-              <Blocks blocks={[...section.blocks, ...visualBlocks(topic.slug, section.id)]} />
-            </Panel>
+            <div key={section.id} className="min-w-0 space-y-3">
+              {section.part && <p className="pt-3 text-xs font-semibold tracking-wide text-primary">{titleCaseLabel(section.part)}</p>}
+              <Panel id={section.id} title={section.title}>
+                <Blocks blocks={[...section.blocks, ...visualBlocks(topic.slug, section.id)]} />
+              </Panel>
+            </div>
           ))}
           <References entries={TOPIC_REFERENCES[topic.slug] ?? []} />
           {BOOK_TOPIC_PAGES[topic.slug] && <BookSource pages={BOOK_TOPIC_PAGES[topic.slug]} />}
@@ -83,6 +89,7 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
               <ol className="border-border flex flex-col gap-0.5 border-l">
                 {topic.sections.map((s) => (
                   <li key={s.id}>
+                    {s.part && <p className="pt-4 pb-1 pl-3.5 text-xs font-semibold text-foreground">{titleCaseLabel(s.part)}</p>}
                     <a
                       href={`#${s.id}`}
                       className="text-muted-foreground hover:border-primary hover:text-primary -ml-px block border-l-2 border-transparent py-1.5 pl-3.5 text-sm transition-colors"

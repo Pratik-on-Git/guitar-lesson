@@ -83,10 +83,10 @@ const MELAKARTA_NAMES = [
 
 export type CarnaticSvara = (typeof CARNATIC_SVARAS)[number]["symbol"];
 
-const RI_GA: readonly (readonly [CarnaticSvara, CarnaticSvara])[] = [
+export const RI_GA: readonly (readonly [CarnaticSvara, CarnaticSvara])[] = [
   ["R1", "G1"], ["R1", "G2"], ["R1", "G3"], ["R2", "G2"], ["R2", "G3"], ["R3", "G3"],
 ];
-const DHA_NI: readonly (readonly [CarnaticSvara, CarnaticSvara])[] = [
+export const DHA_NI: readonly (readonly [CarnaticSvara, CarnaticSvara])[] = [
   ["D1", "N1"], ["D1", "N2"], ["D1", "N3"], ["D2", "N2"], ["D2", "N3"], ["D3", "N3"],
 ];
 

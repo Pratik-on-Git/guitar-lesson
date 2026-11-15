@@ -38,6 +38,7 @@ export type Block =
 export type Section = {
   id: string;
   title: string;
+  part?: string;
   blocks: Block[];
 };
 

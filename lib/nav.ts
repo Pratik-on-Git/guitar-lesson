@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { MODE_FAMILIES } from "./music/modes.ts";
 import { SCALES } from "./music/scales.ts";
+import { RAGA_LESSONS } from "./content/raga-curriculum.ts";
 
 /*
  * One map of the study app: the sidebar, breadcrumbs, search and the
@@ -29,6 +30,7 @@ export type NavLeaf = { title: string; href: string };
 export type NavItem = NavLeaf & {
   icon: LucideIcon;
   description: string;
+  part?: string;
   /** Sub-pages shown nested under the item. */
   children?: NavLeaf[];
 };
@@ -92,8 +94,7 @@ export const NAV: NavGroup[] = [
     title: "Indian Classical Music",
     items: [
       { title: "Indian classical & raga", href: "/learn/indian-classical", icon: Music2, description: "Hindustani and Carnatic svaras, raga grammar, thaats, 72 melakartas, gamakas and tala." },
-      { title: "Hindustani svaras", href: "/learn/hindustani-svaras", icon: ChartNoAxesColumnIncreasing, description: "Twelve pitch positions, shuddha, komal and tivra forms, with an interactive pitch ladder." },
-      { title: "Carnatic svaras", href: "/learn/carnatic-svaras", icon: ChartNoAxesColumnIncreasing, description: "Sixteen names across twelve pitch positions, with shared pairs and Western spellings." },
+      ...RAGA_LESSONS.map((lesson) => ({ title: lesson.label, href: `/learn/${lesson.slug}`, icon: lesson.partIndex === 1 ? ChartNoAxesColumnIncreasing : lesson.partIndex === 2 ? Music2 : Layers, description: lesson.description, part: lesson.part })),
     ],
   },
   {
