@@ -67,6 +67,13 @@
   --surface-edge: rgb(255 255 255 / .85);
   --surface-gradient: linear-gradient(155deg, #ffffff, #fdfdfe 75%, #f5f7fa);
   --surface-inset: inset 0 1px 3px rgb(28 34 53 / .05);
+  --feature-background: radial-gradient(ellipse at 95% 110%, #d6ebae90, transparent 48%), radial-gradient(ellipse at 70% -60%, #b5e5f5a0, transparent 65%), linear-gradient(130deg, #ffffff, #edf5f7);
+  --feature-foreground: #202127;
+  --feature-muted: #4b5d69;
+  --feature-accent: #356128;
+  --feature-border: #cbdce0;
+  --feature-orb: radial-gradient(circle at 35% 22%, #ffffff, #def7fc 14%, #9dd9e8 38%, #65a8b9 65%, #e7f2c8 100%);
+  --feature-orb-ring: #3e829638;
   --elevation-1: 0 2px 4px rgb(26 30 45 / .025), 0 8px 24px -16px rgb(26 30 45 / .16);
   --elevation-2: 0 12px 40px -20px rgb(26 30 45 / .2);
   --elevation-3: 0 24px 80px -20px rgb(26 30 45 / .25);
@@ -148,6 +155,13 @@
   --surface-edge: rgb(255 255 255 / .09);
   --surface-gradient: linear-gradient(150deg, #222329, #191a1f 45%, #1b1c21);
   --surface-inset: inset 0 2px 5px rgb(0 0 0 / .3);
+  --feature-background: radial-gradient(ellipse at 95% 110%, #a2c27665, transparent 48%), radial-gradient(ellipse at 70% -60%, #2975a880, transparent 65%), linear-gradient(130deg, #24262d, #14161b);
+  --feature-foreground: #f4f5f8;
+  --feature-muted: #bdc6d2;
+  --feature-accent: #c3e6bc;
+  --feature-border: #3d414c;
+  --feature-orb: radial-gradient(circle at 35% 22%, #ffffff, #b7e7f3 14%, #65adc8 38%, #386c8390 65%, #e2f3b7 100%);
+  --feature-orb-ring: #c5e7ea25;
   --elevation-1: 0 4px 10px rgb(0 0 0 / .12), 0 12px 24px -16px rgb(0 0 0 / .4);
   --elevation-2: 0 12px 40px -16px rgb(0 0 0 / .5);
   --elevation-3: 0 24px 80px -16px rgb(0 0 0 / .75);

@@ -183,16 +183,14 @@ export function OverviewDashboard({ library }: { library: LibraryCounts }) {
   const next = study.remaining[0];
   return <div className="flex flex-col gap-8">
     <PageHeader title="Overview" actions={<><Link href="/practice" className={buttonVariants({ variant: "secondary" })}>{titleCaseLabel(<><Guitar aria-hidden />Practice studio</>)}</Link><Link href={next?.href ?? "/books/music-theory"} className={buttonVariants()}>{titleCaseLabel(<>{next ? study.done ? "Continue learning" : "Start learning" : "Revisit the course"}<ArrowRight aria-hidden /></>)}</Link></>} />
-    <section className="resonance-feature flex items-center justify-between gap-6" aria-label="Your daily inspiration">
-      <div className="relative z-10 space-y-5">
-        <p className="feature-eyebrow flex items-center gap-2"><span className="size-1.5 rounded-full bg-current" aria-hidden />Tune in. Find your flow.</p>
+    <section className="resonance-feature overview-feature flex items-center justify-between gap-6" aria-label="Your daily inspiration">
+      <div className="relative z-10 space-y-4">
         <h2>{titleCaseLabel(<>Small steps.<br />Better music.</>)}</h2>
-        <p className="max-w-sm text-sm leading-relaxed">Explore a sound. Understand a little more.<br className="max-sm:hidden" /> Make today’s practice your own.</p>
-        <Link href="/practice" className={buttonVariants({ size: "lg" })}>{titleCaseLabel(<>Find your rhythm<ArrowUpRight aria-hidden /></>)}</Link>
+        <Link href="/practice" className={buttonVariants()}>{titleCaseLabel(<>Find your rhythm<ArrowUpRight aria-hidden /></>)}</Link>
       </div>
-      <div className="mr-6 hidden shrink-0 flex-col items-center gap-7 sm:flex" aria-hidden>
+      <div className="mr-2 hidden shrink-0 flex-col items-center gap-4 sm:flex" aria-hidden>
         <div className="feature-orb"><div className="feature-wave">{Array.from({ length: 7 }, (_, i) => <span key={i} />)}</div></div>
-        <span className="text-xs tracking-[.18em] text-[#bdc6d2]">Listen. Learn. Play.</span>
+        <span className="text-xs tracking-[.18em] text-[var(--feature-muted)]">Listen. Learn. Play.</span>
       </div>
     </section>
     <div className="flex flex-wrap items-center justify-between gap-3"><div className="flex items-center gap-2"><span className="bg-primary size-1.5 rounded-full" aria-hidden /><p className="text-muted-foreground text-xs">Your personal learning dashboard</p></div><div className="flex items-center gap-2"><span className="text-muted-foreground text-xs">Practice window</span><Segmented label="Practice period" size="sm" value={days} onChange={setDays} options={[{ value: 7, label: "7 days" }, { value: 28, label: "28 days" }]} /></div></div>
