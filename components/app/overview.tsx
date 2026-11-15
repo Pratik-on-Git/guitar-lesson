@@ -122,7 +122,7 @@ function StudyStatus({ study }: { study: Study }) {
 function NextLessons({ study }: { study: Study }) {
   const complete = !study.remaining.length;
   const pages = (complete ? STUDY_PAGES : study.remaining).slice(0, 5);
-  return <Card as="section" aria-label={complete ? "Revisit your foundations" : "Up next"} className="overview-card">
+  return <Card as="section" aria-label={complete ? "Revisit your foundations" : "Up next"} className="overview-card overview-next">
     <CardHeading eyebrow={complete ? "Keep it fresh" : "A little direction"} title={complete ? "Revisit your foundations" : "Up next for you"} href="#study-map" label="Browse the full study map" />
     <ol className="-mx-2">{pages.map((page, index) => <li key={page.href}><Link href={page.href} className="overview-lessonLink">{titleCaseLabel(<><span className={cn("overview-lessonNumber", index === 0 && "overview-lessonNumberActive")}>{complete ? <Check className="size-4" aria-hidden /> : String(index + 1).padStart(2, "0")}</span><span className="min-w-0 flex-1"><span className="block text-sm font-medium leading-snug">{page.title}</span><span className="text-muted-foreground mt-1 block text-xs">{page.group}</span></span><ChevronRight className="text-muted-foreground size-3.5 shrink-0" aria-hidden /></>)}</Link></li>)}</ol>
     <p className="text-muted-foreground border-t pt-3 text-xs leading-relaxed">{complete ? "You’ve covered the map. Revisit a lesson or try a new practice focus." : "The next unstudied pages, in your course’s reading order."}</p>

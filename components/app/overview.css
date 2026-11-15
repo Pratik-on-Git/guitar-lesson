@@ -68,6 +68,8 @@
   .overview-sideColumn { grid-column: 2; }
   .overview-sideColumn > :first-child { grid-row: 1 / span 2; }
   .overview-sideColumn > :last-child { grid-row: 4; }
+  .overview-next > ol { display: grid; flex: 1; grid-template-rows: repeat(5, 1fr); }
+  .overview-next .overview-lessonLink { height: 100%; padding-block: .25rem; }
 }
 .overview-sideColumn > .overview-card:not(.overview-journey) > p:last-child { margin-top: auto; }
 .overview-journey > .overview-gauge { margin-block: auto; }
