@@ -3,6 +3,7 @@
 @import "shadcn/tailwind.css";
 @import "./theme.css";
 @import "./surfaces.css";
+@import "./buttons.css";
 
 @custom-variant dark (&:is(.dark *));
 

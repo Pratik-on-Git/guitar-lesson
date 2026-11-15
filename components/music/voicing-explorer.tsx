@@ -1,5 +1,7 @@
 "use client";
 
+import { buttonVariants } from "@/components/ui/button";
+
 import { titleCaseLabel } from "@/lib/title-case";
 
 import Link from "next/link";
@@ -80,7 +82,7 @@ export function VoicingExplorer() {
       </> : <p className="text-sm leading-6">This exact spacing has no grip within frets 0–24 and a seven-fret span on the selected strings. Choose another string set or voicing type; use the source sheets to study practical alternatives and omitted-tone shapes.</p>}
     </Panel>
     <BookSource pages={kind === "close" ? "58–64" : kind === "drop-2" ? "65–73" : "74–81"} diagramPage={sourcePage} />
-    <Link href="/learn/voicings" className="text-sm font-medium text-primary hover:underline">{titleCaseLabel(<>Read the inversion and drop recipes →</>)}</Link>
+    <Link href="/learn/voicings" className={buttonVariants({ variant: "tertiary" })}>{titleCaseLabel(<>Read the inversion and drop recipes →</>)}</Link>
     <References entries={CHORD_REFERENCES} />
   </div>;
 }

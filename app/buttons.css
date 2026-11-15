@@ -1,0 +1,98 @@
+/* Shared button materials and states. Use Button or buttonVariants for semantics.
+ * Tertiary uses a quiet tinted surface for contextual actions. */
+.ui-button, button, [data-slot="select-trigger"] { border-radius: var(--radius-md); }
+.ui-button { transition-duration: var(--motion-fast); }
+.button-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border: 1px solid var(--input);
+  box-shadow: inset 0 1px 0 var(--surface-edge), 0 1px 2px rgb(0 0 0 / .06);
+}
+.button-secondary:hover:not(:disabled):not([aria-disabled="true"]),
+.button-secondary[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--secondary) 92%, var(--foreground));
+  border-color: color-mix(in srgb, var(--input) 70%, var(--foreground));
+}
+.button-secondary:active:not(:disabled) { background: var(--muted); }
+.button-outline { border: 1px solid var(--border); }
+.button-tertiary {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: .875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
+  height: auto;
+  min-height: 2.5rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: .5rem .875rem;
+  gap: .5rem;
+  justify-content: center;
+  white-space: normal;
+  text-align: left;
+  background: color-mix(in srgb, var(--primary) 7%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--border));
+  box-shadow: inset 0 1px 0 var(--surface-edge), 0 1px 2px rgb(0 0 0 / .04);
+  color: var(--primary);
+}
+.button-tertiary:hover:not(:is(:disabled, [aria-disabled="true"], [data-disabled])) {
+  background: color-mix(in srgb, var(--primary) 13%, var(--card));
+  border-color: color-mix(in srgb, var(--primary) 48%, var(--border));
+  text-decoration: none;
+}
+.button-tertiary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+  text-decoration: none;
+}
+.button-tertiary:active:not(:is(:disabled, [aria-disabled="true"], [data-disabled])) {
+  color: var(--accent-foreground);
+  background: var(--accent);
+  border-color: var(--primary);
+  box-shadow: var(--surface-inset);
+  translate: 0 1px;
+}
+.button-tertiary:is(.h-8, [data-size="sm"]) { min-height: 2rem; padding: .375rem .75rem; }
+.button-tertiary:is(.h-12, [data-size="lg"]) { min-height: 3rem; padding: .625rem 1.25rem; }
+.button-tertiary:is(:disabled, [aria-disabled="true"], [data-disabled]) {
+  opacity: .5;
+  cursor: not-allowed;
+  pointer-events: none;
+  text-decoration: none;
+}
+.button-tertiary svg {
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  pointer-events: none;
+  transition: translate var(--motion-fast) var(--ease-out);
+}
+.button-tertiary:hover:not(:is(:disabled, [aria-disabled="true"], [data-disabled])) svg.lucide-arrow-right { translate: 2px 0; }
+@media (pointer: coarse) {
+  .button-tertiary, .button-tertiary:is(.h-8, [data-size="sm"]) { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button-tertiary, .button-tertiary svg { transition: none; }
+  .button-tertiary:hover svg.lucide-arrow-right { translate: none; }
+}
+@media (forced-colors: active) {
+  .button-tertiary { color: ButtonText; background: ButtonFace; border: 1px solid ButtonText; forced-color-adjust: auto; }
+  .button-tertiary:focus-visible { outline-color: Highlight; }
+  .button-tertiary:is(:disabled, [aria-disabled="true"], [data-disabled]) { color: GrayText; }
+}
+.button-sheen {
+  color: var(--on-gradient);
+  background: var(--gradient-action);
+  border-color: #b5d8c6;
+  box-shadow: inset 0 1px 2px #ffffffc0, inset 0 -2px 4px #234b4020, 0 3px 8px #0000000a;
+}
+.button-sheen:hover { filter: brightness(1.045); box-shadow: inset 0 1px 3px #ffffff, 0 4px 18px #8cdcf026; }
+.button-sheen:active { filter: brightness(.96); }
+.button-sheen:disabled { filter: none; }
