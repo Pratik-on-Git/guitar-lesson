@@ -1,3 +1,4 @@
+import { chooseOption } from "./select-helpers";
 import { expect, test } from "./fixtures";
 import { RAGA_LESSONS, RAGA_PARTS } from "../../lib/content/raga-curriculum";
 
@@ -74,12 +75,12 @@ test("Kafi contours, note roles, thaats and parent relationships respond to sele
 
 test("melakarta construction links to the selected corrected scale and filters combine correctly", async ({ page }) => {
   await page.goto("/learn/melakarta-construction");
-  await page.getByRole("combobox", { name: "Ri–Ga pair", exact: true }).selectOption("4");
-  await page.getByRole("combobox", { name: "Dha–Ni pair", exact: true }).selectOption("3");
+  await chooseOption(page, page.getByRole("combobox", { name: "Ri–Ga pair", exact: true }), "R2 G3");
+  await chooseOption(page, page.getByRole("combobox", { name: "Dha–Ni pair", exact: true }), "D2 N2");
   const result = page.locator('#melakarta [aria-live="polite"]');
   await expect(result).toContainText("Harikambhoji");
   await expect(result).toContainText("Melakarta 28");
-  await page.getByRole("combobox", { name: "Madhyama", exact: true }).selectOption("1");
+  await chooseOption(page, page.getByRole("combobox", { name: "Madhyama", exact: true }), "M2 · numbers 37–72");
   await expect(result).toContainText("Vachaspati");
   await expect(result).toContainText("Melakarta 64");
   await page.getByRole("link", { name: /Find Vachaspati/i }).click();
@@ -93,7 +94,7 @@ test("melakarta construction links to the selected corrected scale and filters c
   await expect(results.getByRole("button")).toHaveCount(1);
   await expect(detail).toContainText("Melakarta 27");
   await page.getByRole("button", { name: "Reset filters", exact: true }).click();
-  await page.getByRole("combobox", { name: "Chakra", exact: true }).selectOption("Vasu");
+  await chooseOption(page, page.getByRole("combobox", { name: "Chakra", exact: true }), "11 · Vasu");
   await expect(results.getByRole("button")).toHaveCount(6);
   await page.getByRole("radio", { name: /M1 · 1–36/ }).click();
   await expect(chart.getByRole("heading", { name: "No matching melakartas" })).toBeVisible();
@@ -110,7 +111,7 @@ test("melakarta construction links to the selected corrected scale and filters c
 test("Katapayadi examples reverse digits and chakra links select the correct group", async ({ page }) => {
   await page.goto("/learn/katapayadi-and-chakras");
   const section = page.locator("#katapayadi");
-  await page.getByRole("combobox", { name: "Documented Katapayadi example", exact: true }).selectOption("2");
+  await chooseOption(page, page.getByRole("combobox", { name: "Documented Katapayadi example", exact: true }), "Mechakalyani");
   await expect(section.locator('[aria-live="polite"]').first()).toContainText("65");
   await expect(section.locator('[aria-live="polite"]').first()).toContainText("Mechakalyani");
   await expect(section.getByRole("button", { name: /Rudra/ })).toHaveAttribute("aria-pressed", "true");

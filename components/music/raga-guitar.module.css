@@ -6,7 +6,6 @@
 .intro p { margin-top: .375rem; }
 .badge { width: fit-content; padding: .25rem .5rem; border: 1px solid var(--border); border-radius: .5rem; background: var(--muted); color: var(--muted-foreground); font-family: var(--font-mono); font-size: .75rem; }
 .field { display: grid; gap: .375rem; flex: 1 1 10rem; min-width: 0; font-size: .75rem; color: var(--muted-foreground); }
-.field select { width: 100%; min-width: 0; min-height: 2.75rem; padding: .5rem .625rem; border: 1px solid var(--input); border-radius: .5rem; background: var(--input-background); color: var(--foreground); font-size: .875rem; }
 .note { border-radius: .625rem; padding: .75rem 1rem; background: var(--accent); color: var(--accent-foreground); font-size: .875rem; line-height: 1.7; }
 .neck { min-width: 0; overflow-x: auto; border: 1px solid var(--border); border-radius: .75rem; padding: .75rem; background: color-mix(in srgb, var(--muted) 40%, var(--card)); }
 .neck > div { overflow: visible; }

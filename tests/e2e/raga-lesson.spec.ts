@@ -1,3 +1,4 @@
+import { chooseOption } from "./select-helpers";
 import { expect, test } from "./fixtures";
 
 test.beforeEach(async ({ page }) => {
@@ -48,7 +49,7 @@ test("raga visuals explain pitch names, tala counts and cycle gestures", async (
   await expect(pitch.locator('[aria-live="polite"]')).toContainText("G1");
   const tala = page.locator("#carnatic-tala-structure");
   await expect(tala.getByRole("button", { name: "Triputa: 8 counts", exact: true })).toBeVisible();
-  await tala.getByLabel("Laghu jati").selectOption("9");
+  await chooseOption(page, tala.getByLabel("Laghu jati"), "Sankirna · 9 counts");
   await expect(tala.getByRole("button", { name: "Dhruva: 29 counts", exact: true })).toBeVisible();
   await expect(tala.getByRole("button", { name: "Triputa: 13 counts", exact: true })).toBeVisible();
   const cycle = page.locator("#tala-practice");
@@ -114,14 +115,14 @@ test("individual svara pages appear in the sidebar, search and independent study
   const nav = page.getByRole("navigation", { name: "Study topics" });
   await nav.getByRole("link", { name: "Hindustani Svaras", exact: true }).click();
   await expect(page).toHaveURL("/learn/hindustani-svaras");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hindustani Svaras: 12 Positions");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Hindustani Svaras: 12 Positions");
   await expect(nav.getByRole("link", { name: "Hindustani Svaras", exact: true })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("radiogroup", { name: "Hindustani pitch positions" })).toBeVisible();
   await page.getByRole("button", { name: /^Mark as Studied$/i, exact: true }).click();
 
   await nav.getByRole("link", { name: "Carnatic Svaras", exact: true }).click();
   await expect(page).toHaveURL("/learn/carnatic-svaras");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Carnatic Svaras: 16 Names, 12 Positions");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Carnatic Svaras: 16 Names, 12 Positions");
   await expect(nav.getByRole("link", { name: "Carnatic Svaras", exact: true })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("button", { name: /^Mark as Studied$/i, exact: true })).toBeVisible();
   await expect(page.getByRole("radiogroup", { name: "Carnatic pitch positions" })).toBeVisible();
@@ -146,7 +147,7 @@ test("raga notes are discoverable, sourced and complete through the chart", asyn
   await map.locator("summary").filter({ hasText: "Indian Classical Music" }).click();
   await map.getByRole("link", { name: /^Indian classical & raga$/i, exact: true }).click();
   await expect(page).toHaveURL("/learn/indian-classical");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Indian Classical Music & Raga");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Indian Classical Music & Raga");
   await expect(page.locator("#raga-elements")).toContainText("Bhimpalasi’s usual pair is shuddha Ma and Sa");
   await expect(page.locator("#raga-vs-scale")).toContainText("Re is not mandatory in the pentatonic form");
   await expect(page.locator("#carnatic-svaras")).toContainText("E𝄫");

@@ -34,7 +34,7 @@
 .matrix button { min-height: 2rem; width: 100%; text-align: left; cursor: pointer; color: var(--primary); border-radius: .25rem; }
 .controls { display: flex; flex-wrap: wrap; align-items: end; gap: .75rem; }
 .field { display: grid; gap: .375rem; min-width: 0; flex: 1 1 9rem; font-size: .75rem; color: var(--muted-foreground); }
-.field input, .field select { width: 100%; min-height: 2.75rem; min-width: 0; padding: .5rem .625rem; border: 1px solid var(--input); border-radius: .5rem; color: var(--foreground); font-size: .875rem; background: var(--input-background); }
+.field input { width: 100%; min-height: 2.75rem; min-width: 0; padding: .5rem .625rem; border: 1px solid var(--input); border-radius: .5rem; color: var(--foreground); font-size: .875rem; background: var(--input-background); }
 .choices { display: flex; flex-wrap: wrap; gap: .5rem; }
 .choice { flex: 1 1 8rem; padding: .75rem; border: 1px solid var(--border); border-radius: .625rem; text-align: left; font-size: .875rem; cursor: pointer; background: var(--card); }
 .choice[aria-pressed="true"] { border-color: var(--primary); background: var(--accent); color: var(--accent-foreground); }

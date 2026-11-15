@@ -4,6 +4,7 @@ import { startTransition, useOptimistic, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Guitar, MoveHorizontal } from "lucide-react";
+import { StudySelect } from "@/components/music/study-controls";
 import { Button } from "@/components/ui/button";
 import { Segmented } from "@/components/ui/segmented";
 import { GUITAR_STUDIES, guitarLessonDefault, guitarRoute, guitarStudy, guitarTab, playableRegions, playableStrings, practiceTones, soundingPitch } from "@/lib/music/raga-guitar";
@@ -68,13 +69,11 @@ export function RagaGuitar({ lesson = "raga-guitar" }: { lesson?: string }) {
   return <div className={styles.workbench}>
     <div className={styles.intro}><div><h3><Guitar size={18} aria-hidden /> From svara to string & fret</h3><p>Choose a tonic and material, then follow a playable route in standard tuning.</p></div><span className={styles.badge}>6 → 1 · E A D G B e</span></div>
     <RootPicker label="Guitar Sa" value={sa} onChange={(value) => setSa(String(value))} />
-    <label className={styles.field}>Practice material<select value={material.id} onChange={(event) => { setStudy(event.target.value); setStep(0); }}>
-      {["Pitch maps", "Raga outlines", "Ten thaats", "Melakartas"].map((kind) => <optgroup key={kind} label={kind}>{GUITAR_STUDIES.filter((item) => item.kind === kind).map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}</optgroup>)}
-    </select></label>
+    <StudySelect className={styles.field} formatLabels={false} label="Practice material" value={String(material.id)} onChange={(value) => { setStudy(value); setStep(0); }} options={GUITAR_STUDIES.map((item) => ({ value: item.id, label: item.title, group: item.kind }))} />
     <p className={styles.note}>{material.description}</p>
     <div className={styles.controls}><Segmented label="Guitar direction" value={direction} onChange={(value) => { setDirection(value); setStep(0); }} options={[{ value: "ascent", label: "Ascent" }, { value: "descent", label: "Descent" }, { value: "both", label: "Both" }]} /><Segmented label="Guitar route" value={mode} onChange={setMode} options={[{ value: "region", label: "Across strings" }, { value: "single", label: "One string" }]} /></div>
     <div className={styles.controls}>
-      {mode === "region" ? <label className={styles.field}>Neck region<select value={region} onChange={(event) => setRegion(Number(event.target.value))}>{regions.map((start) => <option key={start} value={start}>Frets {start}–{start + 4}{start === 0 ? " · includes open strings" : ""}</option>)}</select></label> : <label className={styles.field}>Melody string<select value={string} onChange={(event) => setString(Number(event.target.value))}>{strings.map((s) => <option key={s} value={s}>String {6 - s} · {STRING_NAMES[s]}</option>)}</select></label>}
+      {mode === "region" ? <StudySelect className={styles.field} formatLabels={false} label="Neck region" value={String(region)} onChange={(value) => setRegion(Number(value))} options={regions.map((start) => ({ value: String(start), label: `Frets ${start}–${start + 4}${start === 0 ? " · includes open strings" : ""}` }))} /> : <StudySelect className={styles.field} formatLabels={false} label="Melody string" value={String(string)} onChange={(value) => setString(Number(value))} options={strings.map((s) => ({ value: String(s), label: `String ${6 - s} · ${STRING_NAMES[s]}` }))} />}
       <Segmented label="Guitar note labels" value={labels} onChange={setLabels} options={[{ value: "svara", label: "Svaras" }, { value: "pitch", label: "Western" }]} />
     </div>
     {selected ? <>
@@ -87,7 +86,7 @@ export function RagaGuitar({ lesson = "raga-guitar" }: { lesson?: string }) {
         <div aria-live="polite" aria-atomic="true"><h4>Selected step {stepIndex + 1} of {route.length} · {selected.symbol}</h4><dl className={styles.facts}>{[["Sounding pitch", soundingPitch(selected.midi)], ["String", `${6 - selected.string} · ${STRING_NAMES[selected.string]}`], ["Fret", String(selected.fret)], ["Suggested finger", selected.finger === 0 ? "0 · open" : String(selected.finger)], ["Hand position", String(selected.position)]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>{selected.shift ? "Shift the hand here; the suggested route does not require a fixed stretch over the whole region." : "Pick this note clearly, sing its svara, then move to the next step."}</p></div>
       </div>
       <div className={styles.steps} aria-label="Select a guitar route step">{route.map((step, index) => <button type="button" key={index} aria-label={`Guitar step ${index + 1}: ${step.symbol}`} aria-pressed={stepIndex === index} onClick={() => setStep(index)}><small>{index + 1}</small><strong>{step.symbol}</strong><small>{6 - step.string}:{step.fret}</small></button>)}</div>
-      <div className={styles.controls}><label className={styles.field}>Practice tempo<select value={bpm} onChange={(event) => setBpm(Number(event.target.value))}>{[40, 50, 60, 72, 90].map((tempo) => <option key={tempo} value={tempo}>{tempo} BPM</option>)}</select></label><label className={styles.check}><input type="checkbox" checked={drone} onChange={(event) => setDrone(event.target.checked)} />Sa drone</label><ScorePlayer key={playbackKey} events={events} beats={route.length} bpm={bpm} label="Play guitar route" /></div>
+      <div className={styles.controls}><StudySelect className={styles.field} formatLabels={false} label="Practice tempo" value={String(bpm)} onChange={(value) => setBpm(Number(value))} options={[40, 50, 60, 72, 90].map((tempo) => ({ value: String(tempo), label: `${tempo} BPM` }))} /><label className={styles.check}><input type="checkbox" checked={drone} onChange={(event) => setDrone(event.target.checked)} />Sa drone</label><ScorePlayer key={playbackKey} events={events} beats={route.length} bpm={bpm} label="Play guitar route" /></div>
       <p className={styles.caption}>Even-beat synthesized pitches are a listening reference. The diagrams and TAB give fret locations; a rendition supplies phrase timing and ornament.</p>
       <div className={styles.tab} tabIndex={0} role="region" aria-label="Guitar tablature, scroll horizontally"><pre aria-label="Guitar tablature">{guitarTab(route)}</pre></div>
       <p className={styles.caption}>TAB reads left to right, high e on top. Numbers are frets, and 0 means an open string. Fingers: 1 index · 2 middle · 3 ring · 4 little finger.</p>

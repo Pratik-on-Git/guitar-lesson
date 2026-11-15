@@ -4,16 +4,22 @@ import { titleCase, titleCaseLabel } from "@/lib/title-case";
 
 import { useEffect, useId, useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export function StudySelect({ label, value, onChange, options }: { label: string; value: string; onChange: (value: string) => void; options: { value: string; label: string }[] }) {
+type StudyOption = { value: string; label: string; group?: string };
+
+export function StudySelect({ label, value, onChange, options, className = "", formatLabels = true }: { label: string; value: string; onChange: (value: string) => void; options: StudyOption[]; className?: string; formatLabels?: boolean }) {
   const id = useId();
-  const items = options.map(option => ({ ...option, label: titleCase(option.label) }));
-  return <div className="flex min-w-0 flex-1 flex-col gap-2 text-sm font-medium">
-    <label htmlFor={id}>{titleCaseLabel(<>{label}</>)}</label>
+  const items = options.map(option => ({ ...option, label: formatLabels ? titleCase(option.label) : option.label }));
+  const groups = [...new Set(items.map(option => option.group))];
+  return <div className={`flex min-w-0 flex-1 flex-col gap-2 text-sm font-medium ${className}`}>
+    <label htmlFor={id}>{formatLabels ? titleCase(label) : label}</label>
     <Select items={items} value={value} onValueChange={(next) => { if (next !== null) onChange(next); }}>
-      <SelectTrigger id={id} className="w-full min-w-0"><SelectValue /></SelectTrigger>
-      <SelectContent alignItemWithTrigger={false}><SelectGroup>{items.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectGroup></SelectContent>
+      <SelectTrigger id={id} className="w-full min-w-0 text-foreground"><SelectValue /></SelectTrigger>
+      <SelectContent align="start" alignItemWithTrigger={false}>{groups.map((group) => <SelectGroup key={group ?? "ungrouped"}>
+        {group && <SelectLabel>{group}</SelectLabel>}
+        {items.filter(option => option.group === group).map(option => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}
+      </SelectGroup>)}</SelectContent>
     </Select>
   </div>;
 }

@@ -3,6 +3,7 @@
 import { startTransition, useOptimistic, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowRightLeft, Search } from "lucide-react";
+import { StudySelect } from "@/components/music/study-controls";
 import { Button } from "@/components/ui/button";
 import { Segmented } from "@/components/ui/segmented";
 import { useQueryState } from "@/lib/use-query-state";
@@ -41,9 +42,9 @@ export function MelakartaBuilder() {
     <StudyIntro title="Build one of the 72" text="Choose Ma and two ordered pairs. Every allowed combination maps to exactly one melakarta in the modern sampurna scheme." />
     <div className={styles.flow}>{[["2", "Ma choices"], ["×", ""], ["6", "Ri–Ga pairs"], ["×", ""], ["6", "Dha–Ni pairs"], ["=", ""], ["72", "melakartas"]].map(([value, label], i) => label ? <div className={styles.factor} key={i}><strong>{value}</strong><small>{label}</small></div> : <span className={styles.arrow} key={i}>{value}</span>)}</div>
     <div className={styles.controls}>
-      <label className={styles.field}>Madhyama<select value={ma} onChange={(e) => setMela(String(Number(e.target.value) * 36 + riGa * 6 + dhaNi + 1))}><option value="0">M1 · numbers 1–36</option><option value="1">M2 · numbers 37–72</option></select></label>
-      <label className={styles.field}>Ri–Ga pair<select value={riGa} onChange={(e) => setMela(String(ma * 36 + Number(e.target.value) * 6 + dhaNi + 1))}>{RI_GA.map((pair, i) => <option key={i} value={i}>{pair.join(" ")}</option>)}</select></label>
-      <label className={styles.field}>Dha–Ni pair<select value={dhaNi} onChange={(e) => setMela(String(ma * 36 + riGa * 6 + Number(e.target.value) + 1))}>{DHA_NI.map((pair, i) => <option key={i} value={i}>{pair.join(" ")}</option>)}</select></label>
+      <StudySelect className={styles.field} formatLabels={false} label="Madhyama" value={String(ma)} onChange={(value) => setMela(String(Number(value) * 36 + riGa * 6 + dhaNi + 1))} options={[{ value: "0", label: "M1 · numbers 1–36" }, { value: "1", label: "M2 · numbers 37–72" }]} />
+      <StudySelect className={styles.field} formatLabels={false} label="Ri–Ga pair" value={String(riGa)} onChange={(value) => setMela(String(ma * 36 + Number(value) * 6 + dhaNi + 1))} options={RI_GA.map((pair, i) => ({ value: String(i), label: pair.join(" ") }))} />
+      <StudySelect className={styles.field} formatLabels={false} label="Dha–Ni pair" value={String(dhaNi)} onChange={(value) => setMela(String(ma * 36 + riGa * 6 + Number(value) + 1))} options={DHA_NI.map((pair, i) => ({ value: String(i), label: pair.join(" ") }))} />
     </div>
     <MelakartaDetail mela={mela} />
     <div className={styles.grid2}><div className={styles.card}><span className={styles.eyebrow}>Fixed anchors</span><h4>S and P stay in place</h4><p>All seven degrees appear in the same straight ascending and descending collection.</p></div><div className={styles.card}><span className={styles.eyebrow}>Matching half</span><h4>{ma === 0 ? mela.number + 36 : mela.number - 36} · {MELAKARTAS[ma === 0 ? mela.number + 35 : mela.number - 37].name}</h4><p>Change only Ma; the number moves by 36.</p></div></div>
@@ -60,11 +61,7 @@ export function KatapayadiChakras() {
   const scales = MELAKARTAS.slice(chakraIndex * 6, chakraIndex * 6 + 6);
   return <div className={styles.study}>
     <StudyIntro title="Decode a name, then locate its group" text="Follow the first two encoded consonant digits in these documented examples. Reverse their order to read the melakarta number." badge="12 chakras × 6 scales" />
-    <label className={styles.field}>Documented Katapayadi example<select value={exampleIndex} onChange={(e) => {
-      const index = Number(e.target.value);
-      setExampleIndex(index);
-      setChakraIndex(Math.floor((KATAPAYADI_EXAMPLES[index].number - 1) / 6));
-    }}>{KATAPAYADI_EXAMPLES.map((item, i) => <option key={item.name} value={i}>{item.name}</option>)}</select></label>
+    <StudySelect className={styles.field} formatLabels={false} label="Documented Katapayadi example" value={String(exampleIndex)} onChange={(value) => { const index = Number(value); setExampleIndex(index); setChakraIndex(Math.floor((KATAPAYADI_EXAMPLES[index].number - 1) / 6)); }} options={KATAPAYADI_EXAMPLES.map((item, i) => ({ value: String(i), label: item.name }))} />
     <div className={styles.surface} aria-live="polite"><div className={styles.flow}><div className={styles.factor}><small>{example.first}</small><strong>{example.firstDigit}</strong></div><div className={styles.factor}><small>{example.second}</small><strong>{example.secondDigit}</strong></div><ArrowRightLeft aria-label="Reverse the two digits" className={styles.arrow} size={22} /><div className={styles.factor}><small>Melakarta number</small><strong>{example.number}</strong></div></div><p className={`${styles.muted} mt-3 text-center`}>{example.name} · {MELAKARTAS[example.number - 1].chakra} chakra</p></div>
     <p className={styles.note}>Vowels have no value, and the exact consonants matter. Mechakalyani uses unaspirated ca, often written “cha” in English. This is a set of documented examples, not a decoder for arbitrary Roman spelling.</p>
     <div><h4 className="mb-3 text-sm font-semibold">The twelve chakras</h4><div className={styles.chakraGrid}>{CHAKRAS.map((item, i) => <button type="button" className={styles.choice} key={item.name} aria-pressed={chakraIndex === i} onClick={() => setChakraIndex(i)}><span className={styles.eyebrow}>{String(i + 1).padStart(2, "0")} · {i < 6 ? "M1" : "M2"}</span><strong className="mt-1 block">{item.name}</strong><small>{i * 6 + 1}–{i * 6 + 6}</small></button>)}</div></div>
@@ -90,7 +87,7 @@ export function MelakartaExplorer() {
     <StudyIntro title="Explore the complete corrected collection" text="Find a name or number, choose a chakra, or compare the two madhyama halves. Select a scale to read all seven degrees." badge="72 verified combinations" />
     <div className={styles.controls}>
       <label className={styles.field}><span className="inline-flex items-center gap-1.5"><Search size={13} aria-hidden />Find a melakarta</span><input type="search" placeholder="Name, number or svaras…" value={query} onChange={(e) => setQuery(e.target.value)} /></label>
-      <label className={styles.field}>Chakra<select value={chakra} onChange={(e) => setChakra(e.target.value)}><option value="all">All twelve chakras</option>{CHAKRAS.map((item, i) => <option key={item.name} value={item.name}>{i + 1} · {item.name}</option>)}</select></label>
+      <StudySelect className={styles.field} formatLabels={false} label="Chakra" value={String(chakra)} onChange={setChakra} options={[{ value: "all", label: "All twelve chakras" }, ...CHAKRAS.map((item, i) => ({ value: item.name, label: `${i + 1} · ${item.name}` }))]} />
     </div>
     <Segmented label="Melakarta madhyama half" value={half} onChange={setHalf} options={[{ value: "all", label: "Both halves" }, { value: "M1", label: "M1 · 1–36" }, { value: "M2", label: "M2 · 37–72" }]} />
     <div className="flex flex-wrap items-center justify-between gap-2"><p role="status" className={styles.muted}>{filtered.length} of 72 melakartas{chakra !== "all" ? ` · ${chakra}` : ""}</p><Button variant="ghost" size="sm" onClick={reset}>Reset filters</Button></div>

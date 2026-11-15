@@ -76,14 +76,17 @@ These are sources for particular claims, not endorsements of every statement in 
 
 ## Visual curriculum and dedicated lessons
 
-`lib/content/raga-curriculum.ts` supplies the reading order, sidebar part labels, course overview and previous/next links. The twelve dedicated lessons provide an interactive exploration, reviewed explanatory notes and practice prompts with course navigation. Each theory lesson also includes its own guitar workbench and contextual guitar tasks. The main `/learn/indian-classical` lesson retains its original section anchors and full source content.
+`lib/content/raga-curriculum.ts` supplies the reading order, sidebar part labels, course overview and previous/next links. The nineteen dedicated lessons provide an interactive exploration, reviewed explanatory notes and practice prompts with course navigation. Melodic lessons include guitar workbenches; rhythm lessons use cycle-based guitar tasks. Source symbolism is kept separate from performance. The main `/learn/indian-classical` lesson retains its original section anchors and full source content.
 
 | Part | Dedicated routes under `/learn/` |
 | --- | --- |
 | 1 · Pitch & svaras | `hindustani-svaras`, `carnatic-svaras`, `svara-comparison` |
-| 2 · Raga grammar & classification | `what-is-raga`, `raga-versus-scale`, `raga-elements`, `thaats` |
+| 2 · Raga grammar & classification | `what-is-raga`, `raga-versus-scale`, `raga-elements`, `gamaka`, `thaats` |
 | 3 · Carnatic ragas & melakarta | `janaka-and-janya`, `melakarta-construction`, `katapayadi-and-chakras`, `melakarta-chart` |
-| 4 · Guitar application | `raga-guitar` |
+| 4 · Rhythm & tala | `carnatic-talas`, `tala-practice` |
+| 5 · Guided listening | `yaman-listening`, `durga-listening`, `malkauns-listening` |
+| 6 · Guitar application | `raga-guitar` |
+| 7 · Source & cultural context | `svara-symbolism` |
 
 The sidebar, overview study map and dedicated pages share these parts. Each dedicated route has its own existing browser-local study-progress key. Relevant references follow each lesson; the full source list remains on the main lesson.
 
@@ -91,11 +94,11 @@ The new visuals compare three pitch-naming systems, illustrate independent ascen
 
 The 72-scale explorer combines name/number/svara search with chakra and Ma-half filters and includes an explicit empty state and reset. `?mela=28` selects a scale; `?chakra=Bana` filters a group. Builder, chakra and global search links open `/learn/melakarta-chart` with these parameters. Individual melakarta search entries now target that dedicated page. The complete corrected table remains available as a native disclosure.
 
-`scripts/audit-raga.mjs` additionally checks the twelve-page curriculum, retained source blocks, unique progress entries, references and course links, all three Kafi degree-count pairs and the documented Katapayadi results. `tests/e2e/raga-curriculum.spec.ts` covers grouped discovery, lesson sequence, controls, shared spellings, combined explorer filters, cross-page selected values and mobile widths, alongside the original raga, sidebar and overview suites.
+`scripts/audit-raga.mjs` additionally checks the nineteen-page curriculum, retained source blocks, unique progress entries, references and course links, all three Kafi degree-count pairs and the documented Katapayadi results. `tests/e2e/raga-curriculum.spec.ts` covers grouped discovery, lesson sequence, controls, shared spellings, combined explorer filters, cross-page selected values and mobile widths, alongside the original raga, sidebar and overview suites.
 
 ## Guitar application: research and implementation
 
-The guitar workbench retains standard tuning and uses a reference Sa in sounding octave 3. Its 87 materials comprise two chromatic naming maps, three documented Kafi-family outlines, ten thaat exercises and all 72 melakarta collections. It preserves registers and phrase order, rather than treating every example as an unordered pitch-class set. Choosing a different Sa recalculates exact MIDI pitches and string/fret locations.
+The guitar workbench retains standard tuning and uses a reference Sa in sounding octave 3. Its 93 materials comprise two chromatic naming maps, three documented Kafi-family outlines, six guided-listening drills and excerpts, ten thaat exercises and all 72 melakarta collections. It preserves registers and phrase order, rather than treating every example as an unordered pitch-class set. Choosing a different Sa recalculates exact MIDI pitches and string/fret locations.
 
 Source pages reviewed for this addition:
 
@@ -113,7 +116,19 @@ The workbench exposes ascent/descent/combined routes, a movable Sa, note labels,
 
 Melakarta builder selections now use a single `mela` value, shared with their guitar defaults. Optimistic selection updates preserve rapid changes to multiple builder controls. The guitar workbench also composes its material and Sa changes in one optimistic query snapshot so that changing both controls quickly retains both choices. Thaat, raga-outline and melakarta views link to `/learn/raga-guitar?study=...`; the guitar workbench carries its selected material and Sa into the full lesson. `sa=0` through `sa=11` select C3 through B3. References accompany all dedicated lessons.
 
-The data audit checks 41,467 complete routes over all materials, twelve tonic pitch classes and three directions. It checks exact registers, frets, string membership, finger bounds, hand shifts and six-line TAB. Independent landmarks include C-major notes on string 5 at frets 3, 5, 7, 8, 10, 12, 14 and 15. Browser coverage in `tests/e2e/raga-guitar.spec.ts` exercises transposition, lower ni, descending turns, carried selections, playback lifecycle and mobile scrolling.
+The data audit checks 44,443 complete routes over all materials, twelve tonic pitch classes and three directions. It checks exact registers, frets, string membership, finger bounds, hand shifts and six-line TAB. Independent landmarks include C-major notes on string 5 at frets 3, 5, 7, 8, 10, 12, 14 and 15. Browser coverage in `tests/e2e/raga-guitar.spec.ts` exercises transposition, lower ni, descending turns, carried selections, playback lifecycle and mobile scrolling.
+
+## Ornamentation, rhythm, listening and cultural context
+
+The seven additional pages share the curriculum registry, navigation, search, progress keys and previous/next links. The main companion is reordered into the same seven parts, keeping all 22 original section IDs. Stable part identifiers determine icons, sources and guitar capabilities so that adding a part does not silently change another lesson's treatment.
+
+`lib/music/raga-performance.ts` supplies seven tala patterns, five jatis, count gestures, the seven source-reported symbolic rows and three guided-listening datasets. All 35 tala totals are checked against an independent expected matrix. The interactive matrix and reference table use those same patterns. Finite click playback marks every count; neither khali nor a Carnatic wave is interpreted as silence. These clicks do not claim to reproduce a tabla theka or all rhythmic subdivisions.
+
+The ornament sketches are explicitly qualitative; their curves do not prescribe measured intervals, timing or universally interchangeable ornaments. Symbolic associations are reported only from the supplied PDF, with no guitar exercise or unrelated technique bibliography appended to that cultural-context page. Its source reference points to the companion's provenance and limitations rather than pretending the underlying texts are known.
+
+The Tanarang pages for [Yaman](https://tanarang.com/raag-yaman/), [Durga](https://tanarang.com/raag-durga/) and [Malkauns](https://tanarang.com/raag-malkauns/) were read for the new excerpts. Durga retains the local Pa–Dha return in descent. Yaman's straight ascent is labeled a pitch drill; its lower-Ni approach is a separate short excerpt. Malkauns uses a Sa-only reference drone. Synthetic examples show nominal pitch order and register, while links lead to teaching descriptions and renditions for actual articulation and timing. Six additional guitar materials carry the three drills/outlines and their short excerpts into the existing fretboard/TAB tool. Reversing an excerpt is labeled a technical exercise rather than a sourced avaroha.
+
+`tests/e2e/raga-performance.spec.ts` checks ornament controls, provenance and absence of a symbolism guitar section, all 35 tala selections, count gestures, cycle wraparound, playback reset, guided-listening comparisons, exact excerpt transfer to guitar and phone layouts. The full curriculum and guitar route audits now cover 19 lessons and 93 guitar materials.
 
 Automated checks validate arithmetic and app behaviour. They cannot establish a universal interpretation of raga performance, chronology or symbolism. The cited teaching forms and explicitly retained uncertainties remain part of the lesson.
 
