@@ -179,7 +179,7 @@ export function OverviewDashboard({ library }: { library: LibraryCounts }) {
   const practice = practiceSummary(sessions, days, new Date(minute * 60_000 + 59_999));
   const next = study.remaining[0];
   return <div className="flex flex-col gap-8">
-    <PageHeader title="Overview" description="A little theory. A little practice. A more musical you." actions={<><Link href="/practice" className={buttonVariants({ variant: "secondary" })}>{titleCaseLabel(<><Guitar aria-hidden />Practice studio</>)}</Link><Link href={next?.href ?? "/books/music-theory"} className={buttonVariants()}>{titleCaseLabel(<>{next ? study.done ? "Continue learning" : "Start learning" : "Revisit the course"}<ArrowRight aria-hidden /></>)}</Link></>} />
+    <PageHeader title="Overview" actions={<><Link href="/practice" className={buttonVariants({ variant: "secondary" })}>{titleCaseLabel(<><Guitar aria-hidden />Practice studio</>)}</Link><Link href={next?.href ?? "/books/music-theory"} className={buttonVariants()}>{titleCaseLabel(<>{next ? study.done ? "Continue learning" : "Start learning" : "Revisit the course"}<ArrowRight aria-hidden /></>)}</Link></>} />
     <section className="resonance-feature flex items-center justify-between gap-6" aria-label="Your daily inspiration">
       <div className="relative z-10 space-y-5">
         <p className="feature-eyebrow flex items-center gap-2"><span className="size-1.5 rounded-full bg-current" aria-hidden />Tune in. Find your flow.</p>
