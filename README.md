@@ -1,6 +1,6 @@
 # Guitar Notes
 
-A personal guitar study companion built from two supplied books, *Fretboard Concepts* (Papadopoulos, 2019) and *Music Theory: From Beginner to Expert* (Carter, 2018). It covers 30 lesson topics (157 sections), 18 scales, 26 modes, 76 chord formulas, an interactive circle of fifths, and labs for voicings, arpeggios, harmonization, progressions, rhythm, listening and composition. Every book illustration is drawn in code: the 63 Fretboard Concepts sheets come from an exact transcription (7,016 checked notes) and can be moved to any key, and the 61 Carter figures and the original notation examples are computed by the app's theory engine. `public/` ships no images. Chords appear as playable chord boxes as well as letter names.
+A personal guitar study companion built from two supplied books, *Fretboard Concepts* (Papadopoulos, 2019) and *Music Theory: From Beginner to Expert* (Carter, 2018), plus the supplied *Indian Classical Raga Theory* notes. It covers 31 lesson topics (173 sections), 18 scales, 26 modes, 76 chord formulas, an interactive circle of fifths, and labs for voicings, arpeggios, harmonization, progressions, rhythm, listening and composition. Every book illustration is drawn in code: the 63 Fretboard Concepts sheets come from an exact transcription (7,016 checked notes) and can be moved to any key, and the 61 Carter figures and the original notation examples are computed by the app's theory engine. The raga lesson includes all 72 melakartas in a corrected table. `public/` ships no images. Chords appear as playable chord boxes as well as letter names.
 
 Start at `/book` for the learning path and source atlas. Use `/voicings`, `/arpeggios`, `/harmonization` and `/improvisation` to apply the lessons in any key. `/practice` includes spelling-aware theory questions, fretboard training, metronome, searchable chapter assignments and a browser-local practice log. Generated fingerings are distinguished from the book's numbered source boxes.
 
@@ -31,11 +31,14 @@ Browser tests use Chromium against a production server started automatically on 
 
 - [Implemented corrections and verification](docs/data-corrections.md)
 - [Book review, chapter coverage and source corrections](docs/book-review.md)
+- [Raga PDF review, page coverage, references and variant decisions](docs/raga-review.md)
 - [Current data inventory](docs/data-inventory.md)
 - [Generated notes for all selectable roots](docs/data-audit-results.json)
 - [Original internet comparison, before corrections](docs/data-audit.md)
 
 Lessons and explorers link their teaching references in the app. Definitions live under `lib/content` and `lib/music`. The original comparison is retained as a dated snapshot; the generated inventory reflects the current corrected definitions. Existing chord bookmarks continue to resolve after entries are renamed or consolidated.
+
+Open `/learn/indian-classical` for the raga notes: Hindustani and Carnatic svaras, raga grammar, ten thaats, all 72 melakartas, ornamentation and tala. Pitch tables are comparisons with equal temperament, not performance tuning prescriptions. Documented teaching variants and the PDF's unattributed symbolic beliefs are labelled explicitly. `npm run test:data` also runs the raga audit; raw review PDFs and images are not required at runtime.
 
 The diagram data comes from the user-supplied PDFs for this personal study app. To regenerate it, keep the PDFs in the repository root and run the optional extraction tools (Python with `pymupdf`, `numpy` and `pillow`):
 

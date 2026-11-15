@@ -1,6 +1,7 @@
 import type { Topic } from "./types.ts";
 import { BOOK_TOPICS } from "./book-topics.ts";
 import { THEORY_TOPICS } from "./theory-topics.ts";
+import { RAGA_TOPICS } from "./raga-topics.ts";
 
 /*
  * The prose of Guitar.docx, reorganised into study topics. Order inside each
@@ -11,6 +12,7 @@ import { THEORY_TOPICS } from "./theory-topics.ts";
 export const TOPICS: Topic[] = [
   ...THEORY_TOPICS,
   ...BOOK_TOPICS,
+  ...RAGA_TOPICS,
   /* ---------------------------------------------------------------- 1 */
   {
     slug: "sound-and-pitch",

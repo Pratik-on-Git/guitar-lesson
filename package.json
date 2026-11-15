@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:data": "node scripts/audit-music-data.mjs && node scripts/audit-book.mjs",
+    "test:data": "node scripts/audit-music-data.mjs && node scripts/audit-book.mjs && node scripts/audit-raga.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {

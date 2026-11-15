@@ -34,6 +34,22 @@ export const TOPIC_REFERENCES: Record<string, Reference[]> = {
   harmony: [tonicization, chords, { title: "Music Theory Online · Tritone substitution", href: "https://www.mtosmt.org/issues/mto.08.14.2/mto.08.14.2.biamonte.html" }],
   keys: [tonicization, { title: "Open Music Theory · Modal mixture / borrowing", href: "https://viva.pressbooks.pub/openmusictheory/chapter/modal-mixture/" }, { title: "University of Puget Sound · Modulation approaches", href: "https://musictheory.pugetsound.edu/mt21c/ModulationsWithoutPivotChords.html" }],
   "key-characters": HISTORY_REFERENCES,
+  "indian-classical": [
+    { title: "NIOS · Carnatic music history (chapter 1)", href: "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch1.pdf" },
+    { title: "NIOS · Carnatic concepts: svara, shruti, gamaka, mela and raga (chapter 2)", href: "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch2.pdf" },
+    { title: "NIOS · Carnatic composer biographies (chapter 3)", href: "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch3.pdf" },
+    { title: "NIOS · Hindustani elements of raga (chapter 2)", href: "https://nios.ac.in/media/documents/Hindustani_Music_242/hindustanimusictheorybook1/HMB1Ch2.pdf" },
+    { title: "NIOS · Hindustani elements of tala (chapter 3)", href: "https://nios.ac.in/media/documents/Hindustani_Music_242/hindustanimusictheorybook1/HMB1Ch3.pdf" },
+    { title: "SPMVV · Musical Concepts I: melas, numbering and janya classification", href: "https://spmvv.ac.in/ddefiles/ugcproposals/2025/05/MAMUD1_2_Musical_Concepts_I.pdf" },
+    { title: "SPMVV · Origin and Evolution of Music I: historical tonal systems", href: "https://spmvv.ac.in/ddefiles/ugcproposals/2025/05/MAMUD1_1_Origin_and_Evolution_of_Music_I.pdf" },
+    { title: "Nathaniel School of Music · Complete numbered melakarta list", href: "https://melakarta.nathanielschool.com/learn" },
+    { title: "Rao & Rao · An Overview of Hindustani Music in the Context of Computational Musicology", href: "https://dspace.library.iitb.ac.in/jspui/handle/100/16817?mode=simple" },
+    { title: "Tanarang · Bhimpalasi teaching description and renditions", href: "https://tanarang.com/raag-bheempalasi/" },
+    { title: "Tanarang · Bageshree and alternative ascending forms", href: "https://tanarang.com/raag-bageshree/" },
+    { title: "Tanarang · Dhani and its occasional Re variant", href: "https://tanarang.com/raag-dhani/" },
+    { title: "Tanarang · Hindustani terms and notation", href: "https://tanarang.com/glossary-of-terms-in-hindustani-classical-music/" },
+    { title: "Metropolitan Museum of Art · Ragamala families (educator resource)", href: "https://resources.metmuseum.org/resources/metpublications/pdf/The_Art_of_South_and_Southeast_Asia_A_Resource_for_Educators.pdf" },
+  ],
 };
 
 export const SCALE_REFERENCES: Reference[] = [major, minor, modes, jazz, bebop];
