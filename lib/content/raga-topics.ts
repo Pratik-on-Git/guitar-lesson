@@ -74,6 +74,7 @@ export const RAGA_TOPICS: Topic[] = [
         id: "comparison",
         title: "Carnatic, Hindustani and Western names compared",
         blocks: [
+          { type: "visual", id: "raga-pitch-map" },
           table(
             ["Semitones", "Carnatic", "Hindustani", "Western (Sa = C)"],
             HINDUSTANI_POSITIONS.map((s, semitones) => [String(semitones), CARNATIC_SVARAS.filter((c) => c.semitones === semitones).map((c) => c.symbol).join(" / "), s.name + " (" + s.symbol + ")", s.western]),
@@ -240,6 +241,7 @@ export const RAGA_TOPICS: Topic[] = [
         id: "carnatic-tala-structure",
         title: "Carnatic rhythm: angas, jati and the 35 talas",
         blocks: [
+          { type: "visual", id: "raga-tala-chart" },
           p("In the suladi sapta-tala scheme, seven patterns combine three kinds of anga. A laghu (L) changes length with jati; a drutam (D) has two counts; an anudrutam (A) has one. The five laghu lengths are tisra 3, chaturasra 4, khanda 5, misra 7 and sankirna 9."),
           table(["Tala", "Angas", "Tisra (3)", "Chaturasra (4)", "Khanda (5)", "Misra (7)", "Sankirna (9)"], [
             ["Dhruva", "L D L L", "11", "14", "17", "23", "29"],
@@ -258,6 +260,7 @@ export const RAGA_TOPICS: Topic[] = [
         id: "yaman-listening",
         title: "Listening study: Yaman and the raised fourth",
         blocks: [
+          { type: "visual", id: "raga-comparison" },
           p("Tanarang’s Yaman description uses tivra Ma with the other degrees shuddha, assigns Ga and Ni as vadi and samvadi, and places the raga in the first night prahar. Treat these as this teaching source’s conventions. Its melodic examples frequently approach from lower Ni; a straight seven-note ascent alone misses that emphasis."),
           table(["Feature", "Listening task"], [
             ["Pitch material", "Sa Re Ga Ḿa Pa Dha Ni; hear the raised fourth against Sa."],
@@ -327,6 +330,7 @@ export const RAGA_TOPICS: Topic[] = [
         id: "tala-practice",
         title: "Tala and a practical listening path",
         blocks: [
+          { type: "visual", id: "raga-teental" },
           p("A tala is a recurring rhythmic cycle, not just tempo or beat count. In Hindustani music, matra is the time unit, vibhag a division, sam the first beat, and tali / khali mark clapped / waved divisions. Laya describes tempo."),
           p("Teental has sixteen matras in four divisions of four: clap on 1, clap on 5, wave on 9, clap on 13, then return to sam at 1. Carnatic tala reckoning uses its own angas and gestures; matching beat totals do not imply identical talas."),
           list(

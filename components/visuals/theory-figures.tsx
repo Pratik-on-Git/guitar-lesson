@@ -15,6 +15,7 @@ import { Notation } from "./notation";
 import { PianoDiagram, PianoRange, type PianoMark } from "./piano-diagram";
 import { RhythmCount } from "./rhythm-count";
 import { CHART_VISUALS } from "./chart-figures";
+import { RAGA_VISUALS } from "./raga-figures";
 import { FRET_SHEETS } from "@/lib/content/fretboard-sheets";
 import { FretSheetView, SheetHarmony } from "./fret-sheet";
 
@@ -371,7 +372,7 @@ export function TheoryVisual({ id, className }: { id: string; className?: string
     return s ? <div className={cn("min-w-0", className)}><SheetHarmony page={page} formula={s.groups[0].formula} rootPc={9} /></div> : null;
   }
   if (sheet) return <div className={cn("min-w-0", className)}><FretSheetView sheet={sheet} /></div>;
-  const render = THEORY_VISUALS[id] ?? NOTE_VISUALS[id] ?? CHART_VISUALS[id];
+  const render = THEORY_VISUALS[id] ?? NOTE_VISUALS[id] ?? CHART_VISUALS[id] ?? RAGA_VISUALS[id];
   if (!render) return null;
   return <div className={cn("min-w-0", className)}>{render()}</div>;
 }
