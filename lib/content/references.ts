@@ -35,6 +35,10 @@ export const TOPIC_REFERENCES: Record<string, Reference[]> = {
   keys: [tonicization, { title: "Open Music Theory · Modal mixture / borrowing", href: "https://viva.pressbooks.pub/openmusictheory/chapter/modal-mixture/" }, { title: "University of Puget Sound · Modulation approaches", href: "https://musictheory.pugetsound.edu/mt21c/ModulationsWithoutPivotChords.html" }],
   "key-characters": HISTORY_REFERENCES,
   "indian-classical": [
+    { title: "Kerala SCERT · Music Class XI: tala structure", href: "https://samagra.kite.kerala.gov.in/files/samagra-resource/uploads/tbookscmq/Class_XI/Music/Music.pdf" },
+    { title: "Tanarang · Yaman", href: "https://tanarang.com/raag-yaman/" },
+    { title: "Tanarang · Durga", href: "https://tanarang.com/raag-durga/" },
+    { title: "Tanarang · Malkauns", href: "https://tanarang.com/raag-malkauns/" },
     { title: "NIOS · Carnatic music history (chapter 1)", href: "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch1.pdf" },
     { title: "NIOS · Carnatic concepts: svara, shruti, gamaka, mela and raga (chapter 2)", href: "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch2.pdf" },
     { title: "NIOS · Carnatic composer biographies (chapter 3)", href: "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch3.pdf" },

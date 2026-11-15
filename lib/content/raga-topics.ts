@@ -15,7 +15,7 @@ export const RAGA_TOPICS: Topic[] = [
   {
     slug: "indian-classical",
     title: "Indian classical music & raga",
-    description: "Hindustani and Carnatic traditions, svaras, raga grammar, ten thaats, all 72 melakartas and gamakas.",
+    description: "Hindustani and Carnatic traditions, svaras, raga grammar, ten thaats, all 72 melakartas, 35 tala variants, gamakas and guided raga listening studies.",
     sections: [
       {
         id: "traditions",
@@ -234,6 +234,93 @@ export const RAGA_TOPICS: Topic[] = [
             ],
             "Reported only from the supplied PDF. These seven body-chakra associations differ from the twelve melakarta classification chakras.",
           ),
+        ],
+      },
+      {
+        id: "carnatic-tala-structure",
+        title: "Carnatic rhythm: angas, jati and the 35 talas",
+        blocks: [
+          p("In the suladi sapta-tala scheme, seven patterns combine three kinds of anga. A laghu (L) changes length with jati; a drutam (D) has two counts; an anudrutam (A) has one. The five laghu lengths are tisra 3, chaturasra 4, khanda 5, misra 7 and sankirna 9."),
+          table(["Tala", "Angas", "Tisra (3)", "Chaturasra (4)", "Khanda (5)", "Misra (7)", "Sankirna (9)"], [
+            ["Dhruva", "L D L L", "11", "14", "17", "23", "29"],
+            ["Matya", "L D L", "8", "10", "12", "16", "20"],
+            ["Rupaka", "D L", "5", "6", "7", "9", "11"],
+            ["Jhampa", "L A D", "6", "7", "8", "10", "12"],
+            ["Triputa", "L D D", "7", "8", "9", "11", "13"],
+            ["Ata", "L L D D", "10", "12", "14", "18", "22"],
+            ["Eka", "L", "3", "4", "5", "7", "9"],
+          ], "Counts calculated from the anga patterns: substitute the column’s value for each L, 2 for D, and 1 for A. This is the 35-tala scheme, not a list of every tala in use."),
+          tip("Work through the structure", "Chaturasra-jati Triputa gives 4 + 2 + 2 = 8 counts, the familiar Adi tala structure. Keep the groups audible: eight undifferentiated clicks conceal the organisation."),
+          links(["Kerala SCERT: Music, Class XI, chapter 4 (tala)", "https://samagra.kite.kerala.gov.in/files/samagra-resource/uploads/tbookscmq/Class_XI/Music/Music.pdf"]),
+        ],
+      },
+      {
+        id: "yaman-listening",
+        title: "Listening study: Yaman and the raised fourth",
+        blocks: [
+          p("Tanarang’s Yaman description uses tivra Ma with the other degrees shuddha, assigns Ga and Ni as vadi and samvadi, and places the raga in the first night prahar. Treat these as this teaching source’s conventions. Its melodic examples frequently approach from lower Ni; a straight seven-note ascent alone misses that emphasis."),
+          table(["Feature", "Listening task"], [
+            ["Pitch material", "Sa Re Ga Ḿa Pa Dha Ni; hear the raised fourth against Sa."],
+            ["Lower-register approach", "Notice how lower Ni leads into the middle register rather than treating every phrase as a fresh start on Sa."],
+            ["Resting and continuation", "Compare arrivals on Ga or Ni with notes passed through on the way."],
+            ["Composition and cycle", "The linked page includes slow Ektal and faster Trital compositions; compare how the melodic identity persists."],
+          ]),
+          tip("Guitar laboratory", "With Sa = C, the nominal pitch collection is C D E F♯ G A B. First locate F♯ and sing it against a C drone. This is a fretboard orientation exercise, not a complete Yaman phrase or a claim that Yaman is simply Lydian."),
+          links(["Tanarang: Yaman description and recorded compositions", "https://tanarang.com/raag-yaman/"]),
+        ],
+      },
+      {
+        id: "durga-listening",
+        title: "Listening study: Durga and omitted degrees",
+        blocks: [
+          p("Durga omits Ga and Ni. Tanarang classifies it as audav–audav, groups it under Bilawal, gives Ma / Sa as the principal pair, and associates it with the second night prahar. Its descending outline includes a return from Pa to Dha before moving to Ma: descending does not necessarily mean moving down at every step."),
+          table(["Feature", "What to notice"], [
+            ["Available degrees", "Sa Re Ma Pa Dha: all five are shuddha."],
+            ["Absent degrees", "Listen for the spaces where Ga and Ni would occur in a seven-note collection."],
+            ["Phrase direction", "A downward phrase can contain a local upward turn."],
+            ["Resting behaviour", "Tanarang advises against resting on Pa in descent; note how a permitted note can still have a restricted role."],
+          ]),
+          tip("Guitar laboratory", "With Sa = C, locate C D F G A. Sing a short passage from the linked recording before finding it on the instrument. Record whether you copied the direction and ending as well as the pitches."),
+          links(["Tanarang: Durga description and recorded compositions", "https://tanarang.com/raag-durga/"]),
+        ],
+      },
+      {
+        id: "malkauns-listening",
+        title: "Listening study: Malkauns without Re or Pa",
+        blocks: [
+          p("Malkauns uses Sa, komal ga, shuddha Ma, komal dha and komal ni. Re and Pa are omitted. Tanarang describes an audav–audav raga, with Ma / Sa as the principal pair and a third-night-prahar association. Its examples explore both the lower register and upper Sa."),
+          table(["Feature", "Listening task"], [
+            ["Pitch material", "Sa ga Ma dha ni; distinguish komal dha from shuddha Dha."],
+            ["Missing fifth", "Notice that the melody does not require Pa as a point of support."],
+            ["Phrase endings", "Listen for arrivals on Sa and Ma rather than assuming every note is equally stable."],
+            ["Register", "Compare the weight of lower dha and ni with the approach to upper Sa."],
+          ]),
+          tip("Guitar laboratory", "With Sa = C, use C E♭ F A♭ B♭ as a location map. A common C minor-pentatonic box contains G instead of A♭, so it is not this collection. Work slowly over a Sa-only drone and learn the ornament from a specific rendition."),
+          links(["Tanarang: Malkauns description and recorded compositions", "https://tanarang.com/raag-malkauns/"]),
+        ],
+      },
+      {
+        id: "raga-practice-journal",
+        title: "From listening to guitar: a repeatable study journal",
+        blocks: [
+          p("The following is an original practice workflow for this companion. It is not a traditional composition, a prescribed raga syllabus, or a substitute for learning a rendition with a teacher."),
+          list(
+            "Identify the recording: write down the performer, raga, composition, tala when stated, and the timestamp of a short phrase.",
+            "Establish Sa by listening before choosing a fret. Sing the tonic, then match it on the guitar. The same named raga can be performed at different absolute pitches.",
+            "Listen repeatedly without playing. Mark where the phrase begins, where it pauses, and whether its ending feels settled or continuing.",
+            "Sing the contour, then locate its main pitches on one string. Add slides or bends only after the arrival pitches and timing are dependable.",
+            "Record one imitation. Compare it with the source for approach, duration, ornament and release; matching a list of notes is only one part of the task.",
+            "For a metered passage, keep the cycle separately from the melody. Check whether the phrase begins on the first count or approaches it from elsewhere.",
+            "Compare a second rendition of the same raga. Record shared behaviour and differences without immediately treating either version as an error.",
+          ),
+          table(["Journal field", "Example prompt"], [
+            ["Pitch", "Which note was my reference, and did my bend arrive accurately?"],
+            ["Grammar", "Which note did the phrase settle on? Did I add an absent degree?"],
+            ["Rhythm", "Could I maintain the cycle while singing the phrase?"],
+            ["Evidence", "Which recording and timestamp support my observation?"],
+            ["Next session", "What one detail should I repeat before increasing speed?"],
+          ]),
+          links(["Practice studio", "/practice"], ["Listening lab", "/listening"], ["Tuning and cents", "/learn/tuning"]),
         ],
       },
       {

@@ -77,3 +77,17 @@ These are sources for particular claims, not endorsements of every statement in 
 Automated checks validate arithmetic and app behaviour. They cannot establish a universal interpretation of raga performance, chronology or symbolism. The cited teaching forms and explicitly retained uncertainties remain part of the lesson.
 
 Validation on 2026-11-15: the data audits, ESLint and production build passed. Both new browser tests passed, including mobile table scrolling, and desktop/mobile screenshots were visually reviewed. Both full browser runs passed 20 of 21 tests: the existing voicing-control test lost the preceding voicing-type update when inversion was changed immediately afterwards. Both isolated repeats passed without edits. The trace is consistent with separate query setters constructing URLs from an older query snapshot; this is an app-level timing concern, not evidence of a raga pitch error or a Next.js framework defect. No voicing or shared URL-state implementation was changed in this content review.
+
+
+## Web research expansion — 15 November 2026
+
+Added five sections: Carnatic tala structure, Yaman, Durga, Malkauns, and an original guitar/listening journal. Existing source-note corrections and the 72-melakarta chart remain intact.
+
+Evidence reviewed:
+
+- Kerala SCERT, *Music*, Class XI, chapter 4, section 4.5: the seven tala patterns, five laghu jatis and the 35-tala scheme. The web search index supplied the relevant textbook passage; direct PDF retrieval timed out. The displayed totals are independently calculated from the anga patterns, rather than copied as an image. Source: https://samagra.kite.kerala.gov.in/files/samagra-resource/uploads/tbookscmq/Class_XI/Music/Music.pdf
+- Tanarang, Yaman: note variants, Ga/Ni emphasis, night association, lower-Ni approaches, and compositions in different talas. Used the indexed teaching page; did not adopt its unsupported naming-history explanation. https://tanarang.com/raag-yaman/
+- Tanarang, Durga: omitted Ga/Ni, Ma/Sa emphasis, descending turns, and the instruction concerning Pa as a descending resting point. Direct page reviewed. https://tanarang.com/raag-durga/
+- Tanarang, Malkauns: omitted Re/Pa, komal ga/dha/ni, Ma/Sa emphasis and register examples. Direct page reviewed. https://tanarang.com/raag-malkauns/
+
+Editorial boundaries: raga descriptions are attributed to the named teaching source, not represented as agreement among all lineages. Guitar note maps use Sa = C only for orientation. Listening tasks are newly written exercises; no bandish lyrics, scores or recordings are reproduced. The study journal is explicitly identified as an original workflow. CCRT pages and a NIOS tala PDF could not be retrieved during this pass, so they did not support new claims. Audio is linked for the learner to explore; no claim is made that the recordings were auditioned during research.
