@@ -13,6 +13,8 @@ npm run dev
 
 Open `http://localhost:3000`. Before changing framework behavior, read the bundled Next.js documentation indicated in [AGENTS.md](AGENTS.md).
 
+Sign-up or sign-in is required to access the application. Individual accounts are available at `/sign-up`, `/sign-in`, and `/account`. See [authentication setup](docs/authentication.md) for MongoDB, environment variables, Google OAuth configuration, and account testing.
+
 ## Verify
 
 ```powershell

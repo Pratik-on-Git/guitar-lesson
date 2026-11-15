@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { STUDY_PAGES } from "../../lib/nav";
 import { practiceSummary, studySummary } from "../../lib/overview";
 import type { PracticeSession } from "../../lib/store";

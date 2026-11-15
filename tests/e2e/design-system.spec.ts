@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test("theme follows the system until explicitly selected, then persists across pages", async ({ page, context }) => {
   await page.emulateMedia({ colorScheme: "dark" });

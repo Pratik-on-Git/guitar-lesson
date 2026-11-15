@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { STUDY_PAGES } from "../../lib/nav";
 import { SEARCH_INDEX } from "../../lib/search";
 import { EXERCISE_TYPES, exerciseQuestion } from "../../lib/music/exercises";

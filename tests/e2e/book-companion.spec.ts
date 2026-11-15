@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { FRET_SHEETS } from "../../lib/content/fretboard-sheets";
 
 test.beforeEach(async ({ page }) => { page.on("pageerror", (error) => { throw error; }); });

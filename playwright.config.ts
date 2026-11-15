@@ -13,6 +13,7 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
+    env: { BETTER_AUTH_URL: "http://127.0.0.1:3173" },
     command: "npm run start -- --hostname 127.0.0.1 --port 3173",
     url: "http://127.0.0.1:3173",
     reuseExistingServer: false,

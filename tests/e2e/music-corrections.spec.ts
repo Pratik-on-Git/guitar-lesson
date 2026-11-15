@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { SCALES } from "../../lib/music/scales";
 import { MODE_FAMILIES } from "../../lib/music/modes";
 import { TOPICS } from "../../lib/content/topics";

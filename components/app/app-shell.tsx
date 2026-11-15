@@ -17,6 +17,8 @@ import { BrandMark } from "./brand";
 import { SearchDialog } from "./search-dialog";
 import { SidebarNav } from "./sidebar-nav";
 import { ThemeToggle } from "./theme-toggle";
+import { AccountMenu } from "@/components/auth/account-menu";
+import { SessionGuard } from "@/components/auth/session-guard";
 
 /* Responsive frame: floating neutral navigation, toolbar, content, and footer. */
 
@@ -27,6 +29,7 @@ const isApple = () => /Mac|iPhone|iPad/.test(navigator.platform || navigator.use
 const noop = () => () => {};
 
 export function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [collapsed, setCollapsed] = useSidebarCollapsed();
   const [sheet, setSheet] = useState(false);
   const apple = useSyncExternalStore(noop, isApple, () => false);
@@ -45,8 +48,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const sidebarAction = collapsed ? "Expand Sidebar" : "Collapse Sidebar";
 
+  if (pathname === "/sign-in" || pathname === "/sign-up") {
+    return <main id="content">{children}</main>;
+  }
+
   return (
-    <TooltipProvider>
+    <SessionGuard><TooltipProvider>
       <div className="flex min-h-svh">
         <a
           href="#content"
@@ -142,6 +149,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <div className="flex shrink-0 items-center gap-0.5 sm:gap-1.5">
                 <SearchDialog />
                 <ThemeToggle />
+                <AccountMenu />
               </div>
             </div>
           </header>
@@ -153,7 +161,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <Footer />
         </div>
       </div>
-    </TooltipProvider>
+    </TooltipProvider></SessionGuard>
   );
 }
 
