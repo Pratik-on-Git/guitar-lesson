@@ -65,8 +65,8 @@ function ProgressGauge({ study }: { study: Study }) {
     <div className="overview-gauge" role="img" aria-label={`${percent.toFixed(1)}% studied: ${study.done} of ${study.total} pages`}>
       <svg viewBox="0 0 320 166" aria-hidden>
         <defs><clipPath id="overview-progress-fill"><path d={arcPath(0, Math.max(0.001, percent * 1.8), 150, 80)} /></clipPath></defs>
-        {Array.from({ length: 15 }, (_, index) => <path key={index} d={arcPath(index * 12 + 1.8, (index + 1) * 12 - 1.8)} className="overview-gaugeTrack" strokeWidth="5" strokeLinejoin="round" />)}
-        <g clipPath="url(#overview-progress-fill)" className="text-primary" style={{ opacity: percent === 0 ? 0 : 1 }}>{Array.from({ length: 15 }, (_, index) => <path key={index} d={arcPath(index * 12 + 1.8, (index + 1) * 12 - 1.8)} fill="currentColor" stroke="currentColor" strokeWidth="5" strokeLinejoin="round" />)}</g>
+        {Array.from({ length: 15 }, (_, index) => <path key={index} d={arcPath(index * 12 + 2.8, (index + 1) * 12 - 2.8)} className="overview-gaugeTrack" strokeWidth="5" strokeLinejoin="round" />)}
+        <g clipPath="url(#overview-progress-fill)" className="text-primary" style={{ opacity: percent === 0 ? 0 : 1 }}>{Array.from({ length: 15 }, (_, index) => <path key={index} d={arcPath(index * 12 + 2.8, (index + 1) * 12 - 2.8)} fill="currentColor" stroke="currentColor" strokeWidth="5" strokeLinejoin="round" />)}</g>
       </svg>
       <div className="overview-gaugeValue"><span>{Number(percent.toFixed(1))}<span className="text-2xl">%</span></span><p>of your study map</p></div>
     </div>

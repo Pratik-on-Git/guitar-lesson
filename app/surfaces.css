@@ -38,7 +38,7 @@
 .hero-surface__orb, .hero-surface__dots, .hero-surface__glow { display: none; }
 .hero-meter-track { background: #253d2626; box-shadow: inset 0 1px 2px #00000015; }
 .hero-meter-fill { background: #375e34; }
-.hero-surface .button-sheen { background: #213323; color: #f5ffe9; border-color: #213323; box-shadow: inset 0 1px 0 #ffffff20; }
+.hero-surface .button-sheen { background: #213323; color: #f5ffe9; border-color: #213323; box-shadow: none; }
 
 /* Native controls used by lesson tools share the same material and focus. */
 @layer base {

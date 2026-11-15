@@ -8,7 +8,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // `button-sheen` (globals.css) is the hover sweep and glow.
+        // `button-sheen` (buttons.css) supplies the flat gradient and brightness states.
         default: "button-sheen bg-primary text-primary-foreground hover:bg-[var(--button-primary-hover)]",
         outline:
           "button-outline border-border text-foreground bg-card hover:bg-accent hover:border-input aria-expanded:bg-primary/10 aria-expanded:border-primary",

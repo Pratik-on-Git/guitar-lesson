@@ -168,10 +168,10 @@ Card defines the material, perimeter, radius, and spacing variable. Panel compos
 
 ### Button
 
-- Default: luminous cyan/lime surface, dark text, one upper highlight.
+- Default: flat cyan/lime gradient, dark text, and a thin border. Buttons have no bevel, inset highlight, or decorative shadow.
 - Tertiary: a subtle primary-tinted surface, visible tinted border, proper horizontal padding, and an optional trailing arrow. Hover strengthens the surface and border without underlining. Use for contextual next steps such as “Plan Your First Session”, reading related guidance, and opening matching material. Keep primary and secondary actions for stronger commitments.
 - Outline: neutral card fill and clear border; tint on hover.
-- Secondary: visible neutral fill, input-strength border, and subtle upper highlight. Use for supporting actions beside a primary action, navigation to related tools, playback, export, and previous/next controls. Hover strengthens the fill and boundary; disabled actions retain reduced opacity. Reserve ghost buttons for compact utilities such as theme, search, close, and sidebar toggles.
+- Secondary: flat neutral fill and input-strength border, without inset highlights or shadows. Use for supporting actions beside a primary action, navigation to related tools, playback, export, and previous/next controls. Hover strengthens the fill and boundary; disabled actions retain reduced opacity. Reserve ghost buttons for compact utilities such as theme, search, close, and sidebar toggles.
 - Soft: low-opacity primary fill, useful for related actions.
 - Ghost: minimal chrome for navigation and utility controls.
 - Success/destructive: semantic fill and text, always with a label.
@@ -232,4 +232,4 @@ The existing preference model remains: follow the operating system until the use
 
 ### Tertiary Button CSS
 
-`app/buttons.css` owns `.button-tertiary`: a complete inline-flex button with a subtle tinted fill and border, 14px medium type, an 8px icon gap, 14px horizontal padding, a 40px default height (32px compact, 48px large, at least 44px on touch), and the shared 5px radius. Hover strengthens its surface, keyboard focus adds an outline, and pressing it applies a recessed shadow. Text remains free of underlines in every state. It defines hover, keyboard focus, active, native disabled, and ARIA-disabled appearances, plus reduced-motion and forced-colour adaptations. Use `<Button variant="tertiary">` for actions or `buttonVariants({ variant: "tertiary" })` on navigation links. Standalone CSS usage is `<a class="button-tertiary" href="/practice">Plan Your First Session →</a>`. A disabled link must also have its href removed and activation prevented; ARIA and CSS alone do not disable keyboard activation.
+`app/buttons.css` owns `.button-tertiary`: a complete inline-flex button with a subtle tinted fill and border, 14px medium type, an 8px icon gap, 14px horizontal padding, a 40px default height (32px compact, 48px large, at least 44px on touch), and the shared 5px radius. Hover strengthens its surface, keyboard focus adds an outline, and pressing it strengthens the tint and border. Text remains free of underlines in every state. It defines hover, keyboard focus, active, native disabled, and ARIA-disabled appearances, plus reduced-motion and forced-colour adaptations. Use `<Button variant="tertiary">` for actions or `buttonVariants({ variant: "tertiary" })` on navigation links. Standalone CSS usage is `<a class="button-tertiary" href="/practice">Plan Your First Session →</a>`. A disabled link must also have its href removed and activation prevented; ARIA and CSS alone do not disable keyboard activation.
