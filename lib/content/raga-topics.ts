@@ -24,7 +24,7 @@ export const RAGA_TOPICS: Topic[] = [
           p("Hindustani music is associated with northern South Asia; Carnatic music with South India. Both have long, interconnected histories and are now practised worldwide. Raga supplies a melodic framework; tala organises recurring rhythmic cycles."),
           p("Their differentiation was gradual over the medieval and early modern periods. Persian and Central Asian influences and court patronage helped shape Hindustani practice. The shared theoretical heritage includes the Natyashastra and Sarngadeva’s 13th-century Sangita Ratnakara."),
           fix("History: a gradual development", "The source’s Mughal-period explanation is too narrow: the development of distinct northern and southern traditions began earlier and continued over centuries."),
-          tip("Reading this lesson", "Based on Indian Classical Raga Theory, supplied PDF pp. 1–11 (author and date unidentified). Pitch tables compare with 12-tone equal temperament, with Sa = C. They do not prescribe performance tuning or equate a raga with a Western scale."),
+          tip("Reading this lesson", "Pitch tables compare with 12-tone equal temperament, with Sa = C. They do not prescribe performance tuning or equate a raga with a Western scale."),
           links(["History: NIOS, chapter 1", "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch1.pdf"]),
         ],
       },

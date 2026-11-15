@@ -1,5 +1,5 @@
 export const THEORY_BOOK = {
-  title: "Music Theory: From Beginner to Expert", author: "Nicolas Carter", edition: "Third edition · 2018", pages: 220,
+  title: "Music theory guide", pages: 220,
   href: "/books/music-theory",
 };
 export type TheoryChapter = { id: string; title: string; pages: string; summary: string; lessons: { title: string; href: string; pages: string }[] };

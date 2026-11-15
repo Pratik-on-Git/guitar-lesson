@@ -145,7 +145,7 @@ Notes are spelled from C. Extensions show pitch-class names without octave numbe
 | Minor-major 9♭13 | Cm(maj9)♭13 | 1 b3 5 7 9 b13 | C E♭ G B D A♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | Suspended 4th | Csus4 | 1 4 5 | C F G | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | Suspended 2nd | Csus2 | 1 2 5 | C D G | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
-| Suspended 2nd flat fifth | Csus2(♭5) | 1 2 b5 | C D G♭ | Carter's altered-fifth suspended triad; no third is implied. |
+| Suspended 2nd flat fifth | Csus2(♭5) | 1 2 b5 | C D G♭ | Altered-fifth suspended triad; no third is implied. |
 | Suspended 4th flat fifth | Csus4(♭5) | 1 4 b5 | C F G♭ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | Suspended 2nd sharp fifth | Csus2(♯5) | 1 2 #5 | C D G♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |
 | Suspended 4th sharp fifth | Csus4(♯5) | 1 4 #5 | C F G♯ | Declared formula checked in all 12 roots; see correction log for naming and voicing conventions. |

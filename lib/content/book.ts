@@ -1,5 +1,5 @@
 /** Page numbers are both PDF and printed pages in the supplied 2019 edition. */
-export const BOOK_TITLE = "Yiannis Papadopoulos · Fretboard Concepts (2019)";
+export const BOOK_TITLE = "Fretboard guide";
 export type DiagramSheet = { page: number; title: string; chapter: "Scales & modes" | "Root-position chords" | "Drop 2" | "Drop 3" | "Arpeggios"; href: string };
 
 const majors = ["Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian"];

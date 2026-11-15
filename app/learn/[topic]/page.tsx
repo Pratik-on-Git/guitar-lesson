@@ -103,11 +103,11 @@ function visualBlocks(slug: string, section: string): Block[] {
     const figure = THEORY_FIGURES.find((f) => f.id === id);
     const sheet = id.startsWith("sheet-") ? BOOK_DIAGRAMS.find((d) => d.page === Number(id.slice(6))) : undefined;
     const caption = figure
-      ? `${figure.title} · Carter, PDF p. ${figure.page} (redrawn)`
+      ? `${figure.title} · Theory illustration ${figure.page}`
       : sheet
-        ? `${sheet.chapter} · ${sheet.title} · Fretboard Concepts p. ${sheet.page}. Move it to any key in the atlas.`
+        ? `${sheet.chapter} · ${sheet.title} · Diagram ${sheet.page}. Move it to any key in the atlas.`
         : id.startsWith("harmony-")
-          ? `Harmony of the Fretboard Concepts p. ${id.slice(8)} scale, in A`
+          ? `Harmony of the scale in diagram ${id.slice(8)}, in A`
           : CHART_TITLES[id];
     return { type: "visual", id, caption };
   });

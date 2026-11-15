@@ -1,5 +1,6 @@
 import { NAV, STUDY_PAGES } from "./nav";
 import type { PracticeSession } from "./store";
+import { practiceFocusLabel } from "./music/practice-labels";
 
 /** Progress keys and denominators come from the same map as the sidebar. */
 export function studySummary(studied: readonly string[]) {
@@ -46,7 +47,10 @@ export function practiceSummary(sessions: readonly PracticeSession[], days: numb
   });
   const minutes = selected.reduce((sum, session) => sum + session.minutes, 0);
   const byFocus = new Map<string, number>();
-  selected.forEach((session) => byFocus.set(session.focus, (byFocus.get(session.focus) ?? 0) + session.minutes));
+  selected.forEach((session) => {
+    const focus = practiceFocusLabel(session.focus);
+    byFocus.set(focus, (byFocus.get(focus) ?? 0) + session.minutes);
+  });
   const ranked = [...byFocus].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   const focus = ranked.slice(0, 3).map(([name, value]) => ({ name, minutes: value }));
   if (ranked.length > 3) focus.push({ name: "Other focuses", minutes: ranked.slice(3).reduce((sum, [, value]) => sum + value, 0) });

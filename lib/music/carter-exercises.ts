@@ -19,16 +19,16 @@ export function carterQuestion(kind: string, index: number): Question {
   if (kind === "carter-intervals") {
     const item = CARTER_INTERVALS[index % CARTER_INTERVALS.length]; const a = parseNote(item.from); const b = parseNote(item.to);
     const degree = item.direction === "ascending" ? degreeBetween(a, b) : degreeBetween(b, a); const answer = intervalShort(degree);
-    return { prompt: `Carter · ${noteName(a)} → ${noteName(b)} (${item.direction}). Name the interval.`, answer, accepted: [answer, intervalLong(degree)], caseSensitive: true, explanation: `${intervalLong(degree)}. ${item.corrected ? "This corrects the answer printed on PDF page 219. " : ""}Count the written letters and semitones in the specified direction; a sharp or flat does not determine direction.`, hint: "Source exercise, PDF pp. 24–25; corrected answers pp. 218–219. Use M3, m6, A5, etc. M/m are case-sensitive." };
+    return { prompt: `${noteName(a)} → ${noteName(b)} (${item.direction}). Name the interval.`, answer, accepted: [answer, intervalLong(degree)], caseSensitive: true, explanation: `${intervalLong(degree)}. ${item.corrected ? "This corrects the answer printed on PDF page 219. " : ""}Count the written letters and semitones in the specified direction; a sharp or flat does not determine direction.`, hint: "Source exercise, PDF pp. 24–25; corrected answers pp. 218–219. Use M3, m6, A5, etc. M/m are case-sensitive." };
   }
   if (kind === "carter-parents") {
     const item = CARTER_PARENTS[index % CARTER_PARENTS.length]; const root = parseNote(item.root); const parent = modeParentRoot(root, MAJOR, item.start); const answer = noteName(parent);
-    return { prompt: `Carter · Find the parent major scale of ${noteName(root)} ${item.name}.`, answer: `${answer} major`, accepted: [answer, `${answer} major`], explanation: `${item.name} is mode ${item.start + 1}. Reversing that parent degree gives ${answer} major. The spelling follows the actual parent interval.`, hint: "Source parent-major exercise, PDF pp. 67–69, answers p. 219. Enter the parent tonic, e.g. Eb major." };
+    return { prompt: `Find the parent major scale of ${noteName(root)} ${item.name}.`, answer: `${answer} major`, accepted: [answer, `${answer} major`], explanation: `${item.name} is mode ${item.start + 1}. Reversing that parent degree gives ${answer} major. The spelling follows the actual parent interval.`, hint: "Source parent-major exercise, PDF pp. 67–69, answers p. 219. Enter the parent tonic, e.g. Eb major." };
   }
   if (kind === "carter-scales") {
     const roots = ["C", "G", "D", "A", "E", "B", "F#", "F", "Bb", "Eb", "Ab", "Db", "C#", "Cb", "A#"];
     const root = parseNote(roots[index % roots.length]); const answer = buildScale(root, MAJOR).map((n) => n.name).join(" ");
-    return { prompt: `Carter · Spell ${noteName(root)} major in ascending order, without the closing octave.`, answer, accepted: [answer], explanation: `Use each letter once and apply W W H W W W H. ${answer}. Theoretical spellings can require double accidentals; a convenient enharmonic key is a different written answer.`, hint: "Major-scale exercise, PDF pp. 55–57, cheat sheet p. 218. Enter seven space-separated notes; #/b/##/bb are accepted." };
+    return { prompt: `Spell ${noteName(root)} major in ascending order, without the closing octave.`, answer, accepted: [answer], explanation: `Use each letter once and apply W W H W W W H. ${answer}. Theoretical spellings can require double accidentals; a convenient enharmonic key is a different written answer.`, hint: "Major-scale exercise, PDF pp. 55–57, cheat sheet p. 218. Enter seven space-separated notes; #/b/##/bb are accepted." };
   }
   const questions = [
     { prompt: "Classify 3/4: simple triple or compound triple?", answer: "simple triple", explanation: "Three quarter-note main beats, each normally dividing into two eighths. The source misclassifies it on PDF page 158." },

@@ -7,10 +7,10 @@ export const EXERCISE_TYPES = [
   { value: "intervals", label: "Identify an interval" }, { value: "missing-note", label: "Spell an interval's top note" },
   { value: "chord-notes", label: "Spell a chord" }, { value: "chord-name", label: "Identify a chord" },
   { value: "fretboard", label: "Name a fretboard note" }, { value: "signatures", label: "Read a key signature" },
-  { value: "carter-intervals", label: "Carter book · directional intervals" },
-  { value: "carter-parents", label: "Carter book · parent-major exercise" },
-  { value: "carter-scales", label: "Carter book · spell major scales" },
-  { value: "carter-review", label: "Carter book · tuning, rhythm & chord review" },
+  { value: "carter-intervals", label: "Directional intervals" },
+  { value: "carter-parents", label: "Parent-major exercise" },
+  { value: "carter-scales", label: "Spell major scales" },
+  { value: "carter-review", label: "Tuning, rhythm & chord review" },
 ];
 export type ExerciseKind = (typeof EXERCISE_TYPES)[number]["value"];
 export type Question = { prompt: string; answer: string; accepted: string[]; explanation: string; caseSensitive?: boolean; hint: string };

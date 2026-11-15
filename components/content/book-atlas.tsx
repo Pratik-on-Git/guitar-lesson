@@ -51,7 +51,7 @@ export function BookAtlas() {
         <div className="rounded-xl border p-3 sm:p-5" role="group" aria-label={`${selected.title} (${selected.chapter}), page ${selected.page}`}>
           <FretSheetView key={sheet.page} sheet={sheet} rootPc={rootPc} labels={labels === "note" ? "note" : "degree"} />
         </div>
-        <p className="text-muted-foreground text-xs">{selected.chapter} · {selected.title} · p. {selected.page} · Shapes © 2019 Yiannis Papadopoulos, transcribed from the supplied PDF and redrawn for study.</p>
+        <p className="text-muted-foreground text-xs">{selected.chapter} · {selected.title} · p. {selected.page} · Transpose these shapes to any key.</p>
       </div>
     </Panel>
   );

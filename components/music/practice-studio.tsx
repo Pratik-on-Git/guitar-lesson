@@ -6,6 +6,7 @@ import { checkExerciseAnswer, exerciseQuestion, EXERCISE_TYPES } from "@/lib/mus
 import { ROOT_SLUGS, ROOTS } from "@/lib/music/theory";
 import { useQueryState } from "@/lib/use-query-state";
 import { usePracticeSessions, usePracticeTasks } from "@/lib/store";
+import { practiceFocusLabel } from "@/lib/music/practice-labels";
 import { BookSource } from "@/components/content/book-source";
 import { TheoryBookSource } from "@/components/content/theory-book-source";
 import { References } from "@/components/content/references";
@@ -18,10 +19,10 @@ import { Metronome } from "./metronome";
 import { AssignmentBank } from "./assignment-bank";
 
 const FOCUSES = [
-  { id: "listening", name: "Carter · listening & tuning", pages: "Carter 18–27, 39–44, 69–71", href: "/listening", task: "Sing an interval before playback; compare two parallel modes over the same tonic and reproduce the colour by ear." },
-  { id: "rhythm", name: "Carter · rhythm & meter", pages: "Carter 149–168, 219–220", href: "/rhythm-lab", task: "Count, clap and play the 17 units. Reconstruct one source sequence; compare 3/4 and 6/8 accents." },
-  { id: "progressions", name: "Carter · progressions & reharmonization", pages: "Carter 131–148, 183–194", href: "/progressions", task: "Transpose a progression, compare one substitute, and sing a voice through every chord change." },
-  { id: "composition", name: "Carter · composition & expression", pages: "Carter 169–180", href: "/composition", task: "Create a four-bar motif, add space, change one detail and listen again against the harmony. Export the draft." },
+  { id: "listening", name: "Listening & tuning", pages: "18–27, 39–44, 69–71", href: "/listening", task: "Sing an interval before playback; compare two parallel modes over the same tonic and reproduce the colour by ear." },
+  { id: "rhythm", name: "Rhythm & meter", pages: "149–168, 219–220", href: "/rhythm-lab", task: "Count, clap and play the 17 units. Reconstruct one source sequence; compare 3/4 and 6/8 accents." },
+  { id: "progressions", name: "Progressions & reharmonization", pages: "131–148, 183–194", href: "/progressions", task: "Transpose a progression, compare one substitute, and sing a voice through every chord change." },
+  { id: "composition", name: "Composition & expression", pages: "169–180", href: "/composition", task: "Create a four-bar motif, add space, change one detail and listen again against the harmony. Export the draft." },
   { id: "pentatonics", name: "Pentatonic & blues scales", pages: "18–26", href: "/scales/minor-pentatonic", task: "Play the five source boxes; compare major/minor pentatonic, blues, Kumoi, Pelog and Hirajoshi." },
   { id: "major", name: "Major modes", pages: "27–34", href: "/modes/major", task: "Play seven source boxes. Sing each mode's characteristic note over the root." },
   { id: "harmonic-minor", name: "Harmonic-minor modes", pages: "35–42", href: "/modes/harmonic-minor", task: "Play seven source boxes. Compare each mode with its major-family neighbour and identify the alteration." },
@@ -69,7 +70,7 @@ export function PracticeStudio() {
   }
   const href = `${focus.href}${focus.href.includes("?") ? "&" : "?"}key=${ROOT_SLUGS[rootPc]}`;
   return <div className="flex flex-col gap-5">
-    <Panel title="Theory & fretboard exercises" description="Fretboard Concepts: all 80 appendix questions. Carter: directional intervals, parent scales, major-scale spelling and a foundations review. Source errors are corrected; chord drills continue with generated transpositions. Answers preserve letter spelling and double accidentals.">
+    <Panel title="Theory & fretboard exercises" description="Practice 80 theory questions, directional intervals, parent scales, major-scale spelling and a foundations review. Chord drills continue with generated transpositions. Answers preserve letter spelling and double accidentals.">
       <div className="mb-5"><StudySelect label="Exercise type" value={kind} onChange={setExercise} options={EXERCISE_TYPES} /></div><TheoryQuiz key={kind} kind={kind} />
     </Panel>
     <Metronome />
@@ -83,10 +84,10 @@ export function PracticeStudio() {
       {saved && <p role="status" className="mt-3 text-sm text-success">Saved locally with {selected.length} completed steps. You can review it below.</p>}
     </Panel>
     <Panel title="Recent practice" description="Your last 30 saved sessions. Minutes and tempo are your entered practice notes.">
-      {sessions.length ? <SimpleTable columns={["Date", "Root", "Focus", "Minutes", "BPM", "Steps"]} rows={sessions.map((s) => [new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" }).format(new Date(s.date)), s.root, s.focus, String(s.minutes), String(s.bpm), String(s.tasks.length)])} /> : <p className="text-sm text-muted-foreground">Complete a practice step and save your first session to start your log.</p>}
+      {sessions.length ? <SimpleTable columns={["Date", "Root", "Focus", "Minutes", "BPM", "Steps"]} rows={sessions.map((s) => [new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" }).format(new Date(s.date)), s.root, practiceFocusLabel(s.focus), String(s.minutes), String(s.bpm), String(s.tasks.length)])} /> : <p className="text-sm text-muted-foreground">Complete a practice step and save your first session to start your log.</p>}
     </Panel>
     <BookSource pages="19, 27, 35, 43, 53, 58, 66, 74, 82, 94–95, 108–111" />
     <TheoryBookSource pages="26–27, 50–53, 71, 162–168, 218–220" />
-    <References entries={[{ title: "Fretboard Concepts · exercises and answer key, pp. 108–111; chapter practice assignments", href: "/book" }]} />
+    <References entries={[{ title: "Fretboard guide · exercises, answers and practice assignments", href: "/book" }]} />
   </div>;
 }
