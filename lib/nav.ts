@@ -41,7 +41,6 @@ export const NAV: NavGroup[] = [
   {
     title: "Source library",
     items: [
-      { title: "Books & learning paths", href: "/books", icon: Library, description: "Two source books and raga notes organized into one course." },
       { title: "Music Theory book guide", href: "/books/music-theory", icon: BookOpen, description: "Seven parts, 61 redrawn figures, exercises and corrections." },
       { title: "Book guide & atlas", href: "/book", icon: BookOpen, description: "Chapter guide, corrections and all 63 diagram sheets in any key." },
       { title: "Fretboard system", href: "/learn/fretboard-system", icon: Guitar, description: "Tuning, notes, root anchors and Double Note construction." },

@@ -1,48 +1,6 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { PageHeader } from "@/components/app/page-header";
-import { Panel } from "@/components/app/panel";
-import { Fact, FactGrid } from "@/components/app/facts";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Source Library" };
-
+// Keep existing bookmarks useful without a separate library landing page.
 export default function Page() {
-  return (
-    <div className="flex flex-col gap-6">
-      <PageHeader title="Source Library" description="Two complementary books and Indian classical raga notes, organised into lessons with corrected terminology and practical workspaces." studyHref="/books" />
-      <div className="grid gap-5 lg:grid-cols-2">
-        <Panel title="Music Theory: From Beginner to Expert" description="Nicolas Carter · third edition · copyright 2018 · 220 PDF pages">
-          <p className="text-sm leading-6">Seven parts connect pitch, scales, chords and rhythm to expression, composition, reharmonization and advanced improvisation. Study all 61 figures, redrawn as live visuals, and follow the book&apos;s listening and written exercises.</p>
-          <Link href="/books/music-theory" className="mt-5 inline-block font-medium text-primary">Open theory book guide →</Link>
-        </Panel>
-        <Panel title="Fretboard Concepts" description="Yiannis Papadopoulos · 2019 · 112 PDF pages">
-          <p className="text-sm leading-6">Translate theory to the guitar: Double Note construction, scale positions, chord voicings, arpeggios, harmonization and improvisation. Explore all 63 diagram sheets, transcribed exactly and movable to any key, and 214 numbered assignments.</p>
-          <Link href="/book" className="mt-5 inline-block font-medium text-primary">Open fretboard book guide →</Link>
-        </Panel>
-        <Panel title="Indian Classical Raga Theory" description="Supplied notes · author and date unidentified · 11 PDF pages">
-          <p className="text-sm leading-6">Compare Hindustani and Carnatic note names, learn raga grammar and the ten thaats, and study all 72 melakartas in a corrected chart. The lesson identifies source errors, taught variants and symbolic beliefs, with links to teaching references and renditions.</p>
-          <Link href="/learn/indian-classical" className="mt-5 inline-block font-medium text-primary">Open raga lesson →</Link>
-        </Panel>
-      </div>
-      <Panel title="Both books at a glance" description="Everything below is drawn in code and linked to a lesson or tool.">
-        <div className="grid gap-5 lg:grid-cols-2">
-          <FactGrid>
-            <Fact label="Carter · PDF pages" value="220" />
-            <Fact label="Parts" value="7" />
-            <Fact label="Figures redrawn" value="61" />
-            <Fact label="Rhythm units" value="17" />
-          </FactGrid>
-          <FactGrid>
-            <Fact label="Fretboard Concepts · diagram sheets" value="63" />
-            <Fact label="Transcribed notes" value="7,016" />
-            <Fact label="Practical assignments" value="214" />
-            <Fact label="Appendix questions" value="80" />
-          </FactGrid>
-        </div>
-      </Panel>
-      <Panel title="Choose your starting point">
-        <p className="text-sm leading-6">Start with Foundations if note names and intervals are new. Add rhythm and listening early. Then connect scales to chords, work through progressions, and use the composition and improvisation tools to make short musical phrases. Use either book guide to follow its original chapter order. For the raga lesson, begin with the movable tonic and compare the linked renditions.</p>
-      </Panel>
-    </div>
-  );
+  redirect("/books/music-theory");
 }

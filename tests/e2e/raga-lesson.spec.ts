@@ -5,8 +5,10 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("raga notes are discoverable, sourced and complete through the chart", async ({ page }) => {
-  await page.goto("/books");
-  await page.getByRole("link", { name: "Open raga lesson", exact: false }).click();
+  await page.goto("/");
+  const map = page.locator("#study-map");
+  await map.locator("summary").filter({ hasText: "Scales" }).click();
+  await map.getByRole("link", { name: "Indian classical & raga", exact: true }).click();
   await expect(page).toHaveURL("/learn/indian-classical");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Indian classical music & raga");
   await expect(page.locator("#raga-elements")).toContainText("Bhimpalasi’s usual pair is shuddha Ma and Sa");
