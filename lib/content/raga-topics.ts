@@ -357,6 +357,11 @@ const INDIAN_CLASSICAL: Topic = {
     ],
 };
 
+// Reuse the same source sections, with the explorer first on a dedicated page.
+const svaraSections = (id: string) => [id, "shruti-svara"].flatMap((wanted) =>
+  INDIAN_CLASSICAL.sections.filter((section) => section.id === wanted),
+);
+
 export const RAGA_TOPICS: Topic[] = [
   INDIAN_CLASSICAL,
   {
@@ -364,7 +369,7 @@ export const RAGA_TOPICS: Topic[] = [
     title: "Hindustani svaras: 12 positions",
     description: "Explore the twelve Hindustani pitch positions, their shuddha, komal and tivra forms, and their relationships to a movable Sa.",
     sections: [
-      ...INDIAN_CLASSICAL.sections.filter((section) => ["shruti-svara", "hindustani-svaras"].includes(section.id)),
+      ...svaraSections("hindustani-svaras"),
       {
         id: "related-lessons",
         title: "Continue exploring",
@@ -377,7 +382,7 @@ export const RAGA_TOPICS: Topic[] = [
     title: "Carnatic svaras: 16 names, 12 positions",
     description: "Explore all sixteen Carnatic svara names across twelve pitch positions, including shared pairs, note roles and Western spellings.",
     sections: [
-      ...INDIAN_CLASSICAL.sections.filter((section) => ["shruti-svara", "carnatic-svaras"].includes(section.id)),
+      ...svaraSections("carnatic-svaras"),
       {
         id: "related-lessons",
         title: "Continue exploring",

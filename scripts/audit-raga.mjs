@@ -84,6 +84,16 @@ assert.ok(NAV.some((group) => group.items.some((item) => item.href === href)));
 assert.equal(STUDY_PAGES.filter((page) => page.href === href).length, 1);
 assert.ok(TOPIC_REFERENCES[topic.slug].length > 0);
 assert.equal(new Set(topic.sections.map((s) => s.id)).size, topic.sections.length);
+for (const slug of ["hindustani-svaras", "carnatic-svaras"]) {
+  const lesson = getTopic(slug);
+  assert.ok(lesson, `Missing dedicated lesson: ${slug}`);
+  assert.equal(lesson.sections[0], topic.sections.find((section) => section.id === slug));
+  assert.ok(lesson.sections[0].blocks.some((block) => block.type === "visual" && block.id.endsWith("svara-explorer")));
+  assert.equal(STUDY_PAGES.filter((page) => page.href === `/learn/${slug}`).length, 1);
+  assert.ok(NAV.find((group) => group.title === "Indian Classical Music").items.some((item) => item.href === `/learn/${slug}`));
+  assert.ok(TOPIC_REFERENCES[slug].length > 0);
+  assert.ok(search(slug.replaceAll("-", " ")).some((entry) => entry.kind === "Page" && entry.href === `/learn/${slug}`));
+}
 const chart = topic.sections.find((s) => s.id === "melakarta-chart").blocks.find((b) => b.type === "table");
 assert.equal(chart.rows.length, 72);
 assert.equal(chart.rows[26][1], "Sarasangi");

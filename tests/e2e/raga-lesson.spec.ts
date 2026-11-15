@@ -63,6 +63,83 @@ test("raga visuals explain pitch names, tala counts and cycle gestures", async (
   }
 });
 
+test("Carnatic pitch ladder explains all four shared pairs and preserves their spellings", async ({ page }) => {
+  await page.goto("/learn/carnatic-svaras");
+  const section = page.locator("#carnatic-svaras");
+  const pitches = section.getByRole("radiogroup", { name: "Carnatic pitch positions" });
+  const detail = section.locator('[aria-live="polite"]');
+  await expect(pitches.getByRole("radio")).toHaveCount(12);
+  await expect(detail).toContainText("Shadjam");
+
+  for (const [symbols, semitones, names, spellings] of [
+    ["R2 / G1", 2, ["Chatushruti Rishabham", "Shuddha Gandharam"], ["D", "E𝄫"]],
+    ["R3 / G2", 3, ["Shatshruti Rishabham", "Sadharana Gandharam"], ["D♯", "E♭"]],
+    ["D2 / N1", 9, ["Chatushruti Dhaivatam", "Shuddha Nishadam"], ["A", "B𝄫"]],
+    ["D3 / N2", 10, ["Shatshruti Dhaivatam", "Kaishiki Nishadam"], ["A♯", "B♭"]],
+  ] as const) {
+    const pair = pitches.getByRole("radio", { name: `${symbols}, ${semitones} semitones from Sa`, exact: true });
+    await pair.click();
+    await expect(pair).toBeChecked();
+    await expect(detail).toContainText("Two names · one position");
+    for (const name of names) await expect(detail.getByRole("heading", { name, exact: true })).toBeVisible();
+    for (const spelling of spellings) await expect(detail).toContainText(`Western spelling · ${spelling}`);
+  }
+
+  await page.keyboard.press("Home");
+  await expect(detail).toContainText("Shadjam");
+  await page.keyboard.press("ArrowLeft");
+  await expect(detail).toContainText("Kakali Nishadam");
+  await section.getByRole("button", { name: "Next Carnatic position", exact: true }).click();
+  await expect(detail).toContainText("Shadjam");
+  await section.getByRole("button", { name: "Previous Carnatic position", exact: true }).click();
+  await expect(detail).toContainText("Kakali Nishadam");
+
+  await expect(section.getByRole("table")).toBeHidden();
+  await section.locator("summary").click();
+  await expect(section.locator("tbody tr")).toHaveCount(12);
+  await expect(section.getByRole("table")).toContainText("E𝄫");
+  await expect(section.getByRole("table")).toContainText("B𝄫");
+  await section.locator("summary").click();
+
+  for (const width of [320, 390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await section.getByRole("button", { name: "Previous Carnatic position", exact: true }).click();
+    await expect(pitches.getByRole("radio", { checked: true })).toBeInViewport();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  }
+});
+
+test("individual svara pages appear in the sidebar, search and independent study progress", async ({ page }) => {
+  await page.goto("/learn/indian-classical");
+  const nav = page.getByRole("navigation", { name: "Study topics" });
+  await nav.getByRole("link", { name: "Hindustani Svaras", exact: true }).click();
+  await expect(page).toHaveURL("/learn/hindustani-svaras");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hindustani Svaras: 12 Positions");
+  await expect(nav.getByRole("link", { name: "Hindustani Svaras", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("radiogroup", { name: "Hindustani pitch positions" })).toBeVisible();
+  await page.getByRole("button", { name: /^Mark as Studied$/i, exact: true }).click();
+
+  await nav.getByRole("link", { name: "Carnatic Svaras", exact: true }).click();
+  await expect(page).toHaveURL("/learn/carnatic-svaras");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Carnatic Svaras: 16 Names, 12 Positions");
+  await expect(nav.getByRole("link", { name: "Carnatic Svaras", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("button", { name: /^Mark as Studied$/i, exact: true })).toBeVisible();
+  await expect(page.getByRole("radiogroup", { name: "Carnatic pitch positions" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^Sources & further reading$/i })).toBeVisible();
+
+  await page.keyboard.press("Control+k");
+  await page.getByRole("combobox", { name: /^Search$/i, exact: true }).fill("Carnatic svaras");
+  await expect(page.getByRole("group", { name: "Pages", exact: true }).getByRole("option").filter({ hasText: "Carnatic svaras" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("button", { name: /Open Menu/i }).click();
+  const sheet = page.getByRole("dialog");
+  await sheet.getByRole("link", { name: /^Hindustani Svaras/ }).click();
+  await expect(page).toHaveURL("/learn/hindustani-svaras");
+  await expect(sheet).toBeHidden();
+  await expect(page.getByRole("button", { name: /^Studied$/i, exact: true })).toHaveAttribute("aria-pressed", "true");
+});
+
 test("raga notes are discoverable, sourced and complete through the chart", async ({ page }) => {
   await page.goto("/");
   const map = page.locator("#study-map");
