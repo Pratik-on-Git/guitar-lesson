@@ -44,11 +44,15 @@ export const RAGA_TOPICS: Topic[] = [
         id: "hindustani-svaras",
         title: "Hindustani svaras: 12 positions",
         blocks: [
-          table(
-            ["Semitones from Sa", "Name", "Notation here", "Western (Sa = C)"],
-            HINDUSTANI_POSITIONS.map((s, semitones) => [String(semitones), s.name, s.symbol, s.western]),
-            "Equal-tempered pitch-class comparisons; Sa is movable in performance.",
-          ),
+          { type: "visual", id: "hindustani-svara-explorer" },
+          {
+            type: "table",
+            summary: "View all 12 positions as a reference table",
+            columns: ["Semitones from Sa", "Name", "Notation here", "Western (Sa = C)"],
+            rows: HINDUSTANI_POSITIONS.map((s, semitones) => [String(semitones), s.name, s.symbol, s.western]),
+            caption: "Equal-tempered pitch-class comparisons; Sa is movable in performance.",
+            firstColumnHeader: true,
+          },
           p("Re, Ga, Dha and Ni each have shuddha and komal forms; Ma has shuddha and tivra forms. There is no komal Ma in this system. Komal is the lower form; tivra Ma is the raised fourth. Sa and Pa have no altered forms in this naming scheme."),
           tip("Notation used throughout", "Lowercase re, ga, dha and ni mean komal. Ma means shuddha Ma; Ḿa means tivra Ma. Sa′ means upper Sa, and a leading comma marks a lower-register note, as in ,ni. Other books use different symbols."),
           links(["Hindustani notation and terms: Tanarang", "https://tanarang.com/glossary-of-terms-in-hindustani-classical-music/"]),

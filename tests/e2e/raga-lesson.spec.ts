@@ -4,6 +4,42 @@ test.beforeEach(async ({ page }) => {
   page.on("pageerror", (error) => { throw error; });
 });
 
+test("Hindustani pitch ladder supports selection, keyboard navigation and the full reference", async ({ page }) => {
+  await page.goto("/learn/indian-classical#hindustani-svaras");
+  const section = page.locator("#hindustani-svaras");
+  const pitches = section.getByRole("radiogroup", { name: "Hindustani pitch positions" });
+  const detail = section.locator('[aria-live="polite"]');
+  await expect(pitches.getByRole("radio")).toHaveCount(12);
+  await expect(detail).toContainText("Shadja");
+
+  const tivra = pitches.getByRole("radio", { name: "Ḿa, Tivra Madhyam, 6 semitones from Sa, F♯", exact: true });
+  await tivra.click();
+  await expect(tivra).toBeChecked();
+  await expect(detail).toContainText("Tivra Madhyam");
+  await expect(detail).toContainText("F♯");
+  await expect(detail).toContainText("only svara with a tivra");
+  await page.keyboard.press("ArrowRight");
+  await expect(detail).toContainText("Pancham");
+  await page.keyboard.press("Home");
+  await expect(detail).toContainText("Shadja");
+  await section.getByRole("button", { name: "Previous svara", exact: true }).click();
+  await expect(detail).toContainText("Shuddha Nishad");
+  await section.getByRole("button", { name: "Next svara", exact: true }).click();
+  await expect(detail).toContainText("Shadja");
+
+  await expect(section.getByRole("table")).toBeHidden();
+  await section.locator("summary").click();
+  await expect(section.locator("tbody tr")).toHaveCount(12);
+  await expect(section.getByRole("table")).toBeVisible();
+  await section.locator("summary").click();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await section.getByRole("button", { name: "Previous svara", exact: true }).click();
+  await expect(pitches.getByRole("radio", { checked: true })).toBeInViewport();
+  await expect(detail).toContainText("Shuddha Nishad");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
 test("raga visuals explain pitch names, tala counts and cycle gestures", async ({ page }) => {
   await page.goto("/learn/indian-classical");
   const pitch = page.locator("#comparison");

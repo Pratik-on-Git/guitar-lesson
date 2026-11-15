@@ -62,8 +62,15 @@ function BlockView({ block }: { block: Block }) {
         </FactGrid>
       );
 
-    case "table":
-      return <SimpleTable columns={block.columns} rows={block.rows} caption={block.caption} firstColumnHeader={block.firstColumnHeader} />;
+    case "table": {
+      const table = <SimpleTable columns={block.columns} rows={block.rows} caption={block.caption} firstColumnHeader={block.firstColumnHeader} />;
+      return block.summary ? (
+        <details className="group rounded-xl border bg-muted/20">
+          <summary className="cursor-pointer rounded-xl px-4 py-3 text-sm font-medium text-primary hover:bg-primary/5">{block.summary}</summary>
+          <div className="border-t p-2 sm:p-3">{table}</div>
+        </details>
+      ) : table;
+    }
 
     case "callout":
       return <Callout tone={block.tone} title={block.title} text={block.text} />;

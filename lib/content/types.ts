@@ -28,7 +28,7 @@ export type Block =
   | { type: "term"; term: string; text: string }
   | { type: "list"; ordered?: boolean; items: string[] }
   | { type: "facts"; items: { label: string; value: string }[] }
-  | { type: "table"; columns: string[]; rows: string[][]; caption?: string; firstColumnHeader?: boolean }
+  | { type: "table"; columns: string[]; rows: string[][]; caption?: string; firstColumnHeader?: boolean; summary?: string }
   | { type: "callout"; tone: "tip" | "fix" | "todo"; title?: string; text: string }
   | { type: "visual"; id: string; caption?: string }
   | { type: "audio"; href: string; label: string }

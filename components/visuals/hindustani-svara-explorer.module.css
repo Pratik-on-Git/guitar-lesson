@@ -1,0 +1,66 @@
+.explorer { display: grid; gap: 1.25rem; container-type: inline-size; }
+.header, .intro, .legend, .chartHeading, .axis, .noteIdentity, .navigation { display: flex; align-items: center; }
+.header { justify-content: space-between; gap: 1rem; }
+.intro { gap: .75rem; }
+.icon { display: grid; place-items: center; flex-shrink: 0; width: 2.75rem; height: 2.75rem; border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent); border-radius: .75rem; color: var(--primary); background: var(--accent); }
+.intro h3 { font-size: 1rem; font-weight: 650; }
+.intro p, .footnote { color: var(--muted-foreground); font-size: .75rem; line-height: 1.6; }
+.intro p { margin-top: .125rem; }
+.tonic { flex-shrink: 0; padding: .375rem .625rem; border: 1px solid var(--border); border-radius: .5rem; font-family: var(--font-mono); font-size: .75rem; background: var(--muted); }
+.legend { flex-wrap: wrap; gap: .5rem; list-style: none; }
+.form { --svara-color: var(--chart-1); }
+.form[data-form="shuddha"] { --svara-color: var(--chart-2); }
+.form[data-form="komal"] { --svara-color: var(--chart-4); }
+.form[data-form="tivra"] { --svara-color: var(--chart-3); }
+.legend li { display: inline-flex; align-items: center; gap: .375rem; padding: .25rem .5rem; border: 1px solid var(--border); border-radius: .5rem; font-size: .75rem; }
+.dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--svara-color); }
+.count { padding-left: .25rem; border-left: 1px solid var(--border); color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+.chartSurface { min-width: 0; padding: 1rem .75rem .75rem; border: 1px solid var(--border); border-radius: .75rem; background: color-mix(in srgb, var(--muted) 35%, var(--card)); }
+.chartHeading { justify-content: space-between; flex-wrap: wrap; gap: .375rem 1rem; margin: 0 .25rem .75rem; color: var(--muted-foreground); font-size: .75rem; }
+.chartHeading > :first-child { color: var(--foreground); font-weight: 500; }
+.scroll { overflow-x: auto; padding: .25rem; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.chart { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: .25rem; min-width: 540px; background: repeating-linear-gradient(to top, transparent 0, transparent 43px, color-mix(in srgb, var(--border) 45%, transparent) 43px, color-mix(in srgb, var(--border) 45%, transparent) 44px); background-size: 100% 148px; background-repeat: no-repeat; }
+.pitch { position: relative; display: flex; flex-direction: column; align-items: center; min-width: 0; padding: 0 .125rem .5rem; border: 1px solid transparent; border-radius: .5rem; cursor: pointer; transition: background var(--motion-fast), border-color var(--motion-fast); }
+.pitch:hover { background: color-mix(in srgb, var(--svara-color) 7%, transparent); }
+.pitch[aria-checked="true"] { border-color: color-mix(in srgb, var(--svara-color) 60%, var(--border)); background: color-mix(in srgb, var(--svara-color) 10%, var(--card)); }
+.pitch:focus-visible { z-index: 1; outline: 2px solid var(--ring); outline-offset: 1px; }
+.plot { position: relative; display: block; width: 100%; height: 148px; margin-bottom: .5rem; }
+.stem { position: absolute; bottom: 8px; left: calc(50% - 1px); width: 2px; height: var(--pitch-height); background: linear-gradient(to top, color-mix(in srgb, var(--svara-color) 10%, transparent), var(--svara-color)); }
+.marker { position: absolute; bottom: calc(var(--pitch-height) + 3px); left: calc(50% - 5px); width: 10px; height: 10px; border: 2px solid var(--svara-color); border-radius: 50%; background: var(--card); }
+.pitch[aria-checked="true"] .marker { background: var(--svara-color); box-shadow: 0 0 0 4px color-mix(in srgb, var(--svara-color) 15%, transparent); }
+.symbol { font-size: .875rem; line-height: 1.5rem; color: var(--svara-color); }
+.western { color: var(--muted-foreground); font-size: .75rem; }
+.position { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; margin-top: .5rem; border-radius: .375rem; color: var(--muted-foreground); font-family: var(--font-mono); font-size: .75rem; }
+.pitch[aria-checked="true"] .position { background: var(--svara-color); color: var(--card); }
+.axis { justify-content: space-between; flex-wrap: wrap; gap: .5rem 1rem; margin: .75rem .25rem 0; color: var(--muted-foreground); font-size: .75rem; }
+.axis span { display: inline-flex; align-items: center; gap: .375rem; }
+.detail { position: relative; padding: 1.25rem; border: 1px solid color-mix(in srgb, var(--svara-color) 25%, var(--border)); border-left: 3px solid var(--svara-color); border-radius: .75rem; background: color-mix(in srgb, var(--svara-color) 4%, var(--card)); }
+.noteDetail { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem 1.5rem; }
+.noteIdentity { gap: .875rem; }
+.selectedSymbol { display: grid; place-items: center; flex-shrink: 0; width: 3.5rem; height: 3.5rem; border-radius: .75rem; color: var(--svara-color); background: color-mix(in srgb, var(--svara-color) 12%, var(--card)); font-size: 1.5rem; font-weight: 650; }
+.eyebrow { display: block; margin-bottom: .125rem; color: var(--muted-foreground); font-size: .75rem; }
+.noteIdentity h4 { font-size: .875rem; font-weight: 650; }
+.formLabel { color: var(--svara-color); font-size: .75rem; }
+.facts { display: flex; align-items: center; gap: 1.25rem; padding-right: 5.5rem; }
+.facts dt { color: var(--muted-foreground); font-size: .75rem; }
+.facts dd { margin-top: .25rem; font-family: var(--font-mono); font-size: 1.125rem; font-weight: 600; }
+.description { grid-column: 1 / -1; max-width: 68ch; min-height: 3rem; font-size: .875rem; line-height: 1.5rem; color: var(--muted-foreground); }
+.navigation { position: absolute; top: 1.25rem; right: 1rem; gap: .375rem; }
+@container (max-width: 640px) {
+  .noteDetail { grid-template-columns: minmax(0, 1fr); }
+  .noteIdentity { padding-right: 5rem; }
+  .facts { padding-right: 0; }
+}
+@media (max-width: 480px) {
+  .header { align-items: flex-start; gap: .5rem; }
+  .icon { display: none; }
+  .intro h3 { font-size: .875rem; }
+  .tonic { padding: .25rem .375rem; }
+  .detail { padding: 1rem; }
+  .navigation { top: 1rem; right: .75rem; }
+  .selectedSymbol { width: 2.5rem; height: 2.5rem; font-size: 1.125rem; }
+  .noteIdentity { gap: .625rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pitch { transition: none; }
+}
