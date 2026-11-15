@@ -34,6 +34,13 @@ export const TOPIC_REFERENCES: Record<string, Reference[]> = {
   harmony: [tonicization, chords, { title: "Music Theory Online · Tritone substitution", href: "https://www.mtosmt.org/issues/mto.08.14.2/mto.08.14.2.biamonte.html" }],
   keys: [tonicization, { title: "Open Music Theory · Modal mixture / borrowing", href: "https://viva.pressbooks.pub/openmusictheory/chapter/modal-mixture/" }, { title: "University of Puget Sound · Modulation approaches", href: "https://musictheory.pugetsound.edu/mt21c/ModulationsWithoutPivotChords.html" }],
   "key-characters": HISTORY_REFERENCES,
+  "hindustani-svaras": [
+    { title: "Tanarang · Hindustani notation and terms", href: "https://tanarang.com/glossary-of-terms-in-hindustani-classical-music/" },
+    { title: "Rao & Rao · Pitch and intonation in Hindustani music", href: "https://dspace.library.iitb.ac.in/jspui/handle/100/16817?mode=simple" },
+  ],
+  "carnatic-svaras": [
+    { title: "NIOS · Carnatic concepts: svara, shruti, gamaka, mela and raga (chapter 2)", href: "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch2.pdf" },
+  ],
   "indian-classical": [
     { title: "Kerala SCERT · Music Class XI: tala structure", href: "https://samagra.kite.kerala.gov.in/files/samagra-resource/uploads/tbookscmq/Class_XI/Music/Music.pdf" },
     { title: "Tanarang · Yaman", href: "https://tanarang.com/raag-yaman/" },

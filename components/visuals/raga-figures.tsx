@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CARNATIC_SVARAS, HINDUSTANI_POSITIONS } from "@/lib/music/raga";
 import { BarChart } from "./charts";
 import { HindustaniSvaraExplorer } from "./hindustani-svara-explorer";
+import { CarnaticSvaraExplorer } from "./carnatic-svara-explorer";
 
 const RAGAS = [
   { name: "Yaman", pitches: [0, 2, 4, 6, 7, 9, 11] },
@@ -56,6 +57,7 @@ function TeentalCycle() {
 
 export const RAGA_VISUALS: Record<string, () => React.ReactNode> = {
   "hindustani-svara-explorer": () => <HindustaniSvaraExplorer />,
+  "carnatic-svara-explorer": () => <CarnaticSvaraExplorer />,
   "raga-pitch-map": () => <PitchMap />,
   "raga-comparison": () => <RagaComparison />,
   "raga-tala-chart": () => <TalaChart />,

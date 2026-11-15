@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, ChartNoAxesColumnIncreasing, MoveHorizontal } fr
 import { Button } from "@/components/ui/button";
 import { onRadioGroupKeyDown } from "@/components/ui/segmented";
 import { HINDUSTANI_POSITIONS } from "@/lib/music/raga";
-import styles from "./hindustani-svara-explorer.module.css";
+import styles from "./svara-explorer.module.css";
 
 const FORMS = {
   fixed: { label: "Fixed", count: 2 },

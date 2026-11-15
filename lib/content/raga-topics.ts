@@ -11,8 +11,7 @@ const links = (...items: [string, string][]): Block => ({ type: "links", items: 
 
 // Page-by-page evidence: docs/raga-review.md. The supplied PDF has no identified
 // author/date. Correction notes distinguish factual errors from taught variants.
-export const RAGA_TOPICS: Topic[] = [
-  {
+const INDIAN_CLASSICAL: Topic = {
     slug: "indian-classical",
     title: "Indian classical music & raga",
     description: "Hindustani and Carnatic traditions, svaras, raga grammar, ten thaats, all 72 melakartas, 35 tala variants, gamakas and guided raga listening studies.",
@@ -25,6 +24,7 @@ export const RAGA_TOPICS: Topic[] = [
           p("Their differentiation was gradual over the medieval and early modern periods. Persian and Central Asian influences and court patronage helped shape Hindustani practice. The shared theoretical heritage includes the Natyashastra and Sarngadeva’s 13th-century Sangita Ratnakara."),
           fix("History: a gradual development", "The source’s Mughal-period explanation is too narrow: the development of distinct northern and southern traditions began earlier and continued over centuries."),
           tip("Reading this lesson", "Pitch tables compare with 12-tone equal temperament, with Sa = C. They do not prescribe performance tuning or equate a raga with a Western scale."),
+          links(["Hindustani svaras: dedicated lesson", "/learn/hindustani-svaras"], ["Carnatic svaras: dedicated lesson", "/learn/carnatic-svaras"]),
           links(["History: NIOS, chapter 1", "https://nios.ac.in/media/documents/Carnatic_Music_243/carnaticmusicbook1/ch1.pdf"]),
         ],
       },
@@ -63,14 +63,18 @@ export const RAGA_TOPICS: Topic[] = [
         title: "Carnatic svaras: 16 names, 12 positions",
         blocks: [
           p("In the 16-name melakarta convention, Ri, Ga, Dha and Ni each have three names, Ma has two, and Sa and Pa one each. Four pairs share nominal positions: R2/G1, R3/G2, D2/N1 and D3/N2."),
-          table(
-            ["Semitones from Sa", "Name(s)", "Symbol(s)", "Western (Sa = C)"],
-            HINDUSTANI_POSITIONS.map((_, semitones) => {
+          { type: "visual", id: "carnatic-svara-explorer" },
+          {
+            type: "table",
+            summary: "View all 16 names in the 12-position reference table",
+            columns: ["Semitones from Sa", "Name(s)", "Symbol(s)", "Western (Sa = C)"],
+            rows: HINDUSTANI_POSITIONS.map((_, semitones) => {
               const svaras = CARNATIC_SVARAS.filter((s) => s.semitones === semitones);
               return [String(semitones), svaras.map((s) => s.name).join(" / "), svaras.map((s) => s.symbol).join(" / "), svaras.map((s) => s.western).join(" / ")];
             }),
-            "Enharmonic spellings show note roles: G1 = E𝄫 and N1 = B𝄫. Shared nominal positions do not imply identical gamaka treatments.",
-          ),
+            caption: "Enharmonic spellings show note roles: G1 = E𝄫 and N1 = B𝄫. Shared nominal positions do not imply identical gamaka treatments.",
+            firstColumnHeader: true,
+          },
           tip("Reading the PDF accurately", "The source’s pp. 3–4 list some variants out of pitch order, but print the double flats for shuddha Ga and Ni correctly. Its merged cells on pp. 7–8 also correctly group shared positions. Text extraction can lose these symbols and cell relationships."),
         ],
       },
@@ -349,6 +353,35 @@ export const RAGA_TOPICS: Topic[] = [
             ["Tuning and cents", "/learn/tuning"],
           ),
         ],
+      },
+    ],
+};
+
+export const RAGA_TOPICS: Topic[] = [
+  INDIAN_CLASSICAL,
+  {
+    slug: "hindustani-svaras",
+    title: "Hindustani svaras: 12 positions",
+    description: "Explore the twelve Hindustani pitch positions, their shuddha, komal and tivra forms, and their relationships to a movable Sa.",
+    sections: [
+      ...INDIAN_CLASSICAL.sections.filter((section) => ["shruti-svara", "hindustani-svaras"].includes(section.id)),
+      {
+        id: "related-lessons",
+        title: "Continue exploring",
+        blocks: [links(["Carnatic svaras: 16 names, 12 positions", "/learn/carnatic-svaras"], ["Indian classical music & raga", "/learn/indian-classical"], ["Tuning and cents", "/learn/tuning"])],
+      },
+    ],
+  },
+  {
+    slug: "carnatic-svaras",
+    title: "Carnatic svaras: 16 names, 12 positions",
+    description: "Explore all sixteen Carnatic svara names across twelve pitch positions, including shared pairs, note roles and Western spellings.",
+    sections: [
+      ...INDIAN_CLASSICAL.sections.filter((section) => ["shruti-svara", "carnatic-svaras"].includes(section.id)),
+      {
+        id: "related-lessons",
+        title: "Continue exploring",
+        blocks: [links(["Hindustani svaras: 12 positions", "/learn/hindustani-svaras"], ["Indian classical music & raga", "/learn/indian-classical"], ["Tuning and cents", "/learn/tuning"])],
       },
     ],
   },

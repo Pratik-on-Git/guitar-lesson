@@ -12,6 +12,8 @@
 .form[data-form="shuddha"] { --svara-color: var(--chart-2); }
 .form[data-form="komal"] { --svara-color: var(--chart-4); }
 .form[data-form="tivra"] { --svara-color: var(--chart-3); }
+.form[data-form="shared"] { --svara-color: var(--chart-2); }
+.form[data-form="variant"] { --svara-color: var(--chart-4); }
 .legend li { display: inline-flex; align-items: center; gap: .375rem; padding: .25rem .5rem; border: 1px solid var(--border); border-radius: .5rem; font-size: .75rem; }
 .dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--svara-color); }
 .count { padding-left: .25rem; border-left: 1px solid var(--border); color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
@@ -29,6 +31,7 @@
 .marker { position: absolute; bottom: calc(var(--pitch-height) + 3px); left: calc(50% - 5px); width: 10px; height: 10px; border: 2px solid var(--svara-color); border-radius: 50%; background: var(--card); }
 .pitch[aria-checked="true"] .marker { background: var(--svara-color); box-shadow: 0 0 0 4px color-mix(in srgb, var(--svara-color) 15%, transparent); }
 .symbol { font-size: .875rem; line-height: 1.5rem; color: var(--svara-color); }
+.pairedSymbols { display: flex; min-height: 2.75rem; flex-direction: column; justify-content: center; line-height: 1.25rem; }
 .western { color: var(--muted-foreground); font-size: .75rem; }
 .position { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; margin-top: .5rem; border-radius: .375rem; color: var(--muted-foreground); font-family: var(--font-mono); font-size: .75rem; }
 .pitch[aria-checked="true"] .position { background: var(--svara-color); color: var(--card); }
@@ -46,6 +49,12 @@
 .facts dd { margin-top: .25rem; font-family: var(--font-mono); font-size: 1.125rem; font-weight: 600; }
 .description { grid-column: 1 / -1; max-width: 68ch; min-height: 3rem; font-size: .875rem; line-height: 1.5rem; color: var(--muted-foreground); }
 .navigation { position: absolute; top: 1.25rem; right: 1rem; gap: .375rem; }
+.nameCards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: .75rem; }
+.nameCard { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .75rem; padding: .875rem; border: 1px solid var(--border); border-radius: .625rem; background: var(--card); }
+.nameCard > strong { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: .5rem; background: color-mix(in srgb, var(--svara-color) 10%, var(--card)); color: var(--svara-color); font-family: var(--font-mono); font-size: 1rem; }
+.nameCard h5 { font-size: .875rem; font-weight: 600; overflow-wrap: anywhere; }
+.nameCard p { margin-top: .125rem; color: var(--muted-foreground); font-size: .75rem; }
+.pairHint { padding: .75rem 1rem; border-radius: .625rem; background: var(--accent); color: var(--accent-foreground); font-size: .75rem; line-height: 1.6; }
 @container (max-width: 640px) {
   .noteDetail { grid-template-columns: minmax(0, 1fr); }
   .noteIdentity { padding-right: 5rem; }

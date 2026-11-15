@@ -1,6 +1,7 @@
 import {
   AudioWaveform,
   BookOpen,
+  ChartNoAxesColumnIncreasing,
   Circle,
   Drum,
   Guitar,
@@ -91,6 +92,8 @@ export const NAV: NavGroup[] = [
     title: "Indian Classical Music",
     items: [
       { title: "Indian classical & raga", href: "/learn/indian-classical", icon: Music2, description: "Hindustani and Carnatic svaras, raga grammar, thaats, 72 melakartas, gamakas and tala." },
+      { title: "Hindustani svaras", href: "/learn/hindustani-svaras", icon: ChartNoAxesColumnIncreasing, description: "Twelve pitch positions, shuddha, komal and tivra forms, with an interactive pitch ladder." },
+      { title: "Carnatic svaras", href: "/learn/carnatic-svaras", icon: ChartNoAxesColumnIncreasing, description: "Sixteen names across twelve pitch positions, with shared pairs and Western spellings." },
     ],
   },
   {
