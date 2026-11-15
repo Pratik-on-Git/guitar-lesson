@@ -20,7 +20,7 @@ test("every study route renders and exposes its sources", async ({ page }) => {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
     await expect(page.locator("main h1"), route).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Sources & further reading", exact: true }), route).toBeVisible();
+    await expect(page.getByRole("heading", { name: /^Sources & further reading$/i, exact: true }), route).toBeVisible();
   }
 });
 
@@ -35,9 +35,9 @@ test("compound meter and borrowing have distinct explanations", async ({ page })
 test("interval membership identifies the selected major scale", async ({ page }) => {
   await page.goto("/learn/intervals");
   const section = page.locator("#intervals-from-root");
-  await expect(section.getByRole("columnheader", { name: "In C major", exact: true })).toBeVisible();
-  await section.getByRole("radio", { name: "D", exact: true }).click();
-  await expect(section.getByRole("columnheader", { name: "In D major", exact: true })).toBeVisible();
+  await expect(section.getByRole("columnheader", { name: /^In C major$/i, exact: true })).toBeVisible();
+  await section.getByRole("radio", { name: /^D$/i, exact: true }).click();
+  await expect(section.getByRole("columnheader", { name: /^In D major$/i, exact: true })).toBeVisible();
   const tritone = section.getByRole("row").filter({ hasText: "Augmented 4th (tritone)" });
   await expect(tritone).toContainText("G♯ / A♭");
   await expect(tritone).toContainText("Diminished 5th");
@@ -46,8 +46,8 @@ test("interval membership identifies the selected major scale", async ({ page })
 test("substitute table includes iii even with a diatonic root", async ({ page }) => {
   await page.goto("/learn/harmony");
   const section = page.locator("#substitute-dominants");
-  await section.getByRole("radio", { name: "C", exact: true }).click();
-  await expect(section.getByRole("columnheader", { name: "Em", exact: true })).toBeVisible();
+  await section.getByRole("radio", { name: /^C$/i, exact: true }).click();
+  await expect(section.getByRole("columnheader", { name: /^Em$/i, exact: true })).toBeVisible();
   const row = section.getByRole("row").filter({ hasText: "Tritone substitute" });
   await expect(row.getByRole("cell").nth(2)).toHaveText("F7");
   await expect(section).toContainText("subV7/iii");
@@ -56,45 +56,45 @@ test("substitute table includes iii even with a diatonic root", async ({ page })
 
 test("altered dominant application transposes and survives reload", async ({ page }) => {
   await page.goto("/modes/melodic-minor?mode=altered&key=c");
-  const panel = page.locator("section").filter({ has: page.getByRole("heading", { name: "C7alt · dominant application", exact: true }) });
+  const panel = page.locator("section").filter({ has: page.getByRole("heading", { name: /^C7alt · dominant application$/i, exact: true }) });
   await expect(panel).toContainText("C D♭ D♯ E F♯ A♭ B♭");
   await expect(panel).toContainText("C E B♭");
-  await expect(page.getByRole("heading", { name: "Theoretical harmony from stacked thirds", exact: true })).toBeVisible();
-  await page.getByRole("radiogroup", { name: "Key", exact: true }).getByRole("radio", { name: "D", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /^Theoretical harmony from stacked thirds$/i, exact: true })).toBeVisible();
+  await page.getByRole("radiogroup", { name: /^Key$/i, exact: true }).getByRole("radio", { name: /^D$/i, exact: true }).click();
   await expect(page).toHaveURL(/key=d/);
-  await expect(page.getByRole("heading", { name: "D7alt · dominant application", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^D7alt · dominant application$/i, exact: true })).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("heading", { name: "D7alt · dominant application", exact: true })).toBeVisible();
-  const matrix = page.locator("section").filter({ has: page.getByRole("heading", { name: /^All melodic minor modes from/ }) });
+  await expect(page.getByRole("heading", { name: /^D7alt · dominant application$/i, exact: true })).toBeVisible();
+  const matrix = page.locator("section").filter({ has: page.getByRole("heading", { name: /^All melodic minor modes from/i }) });
   await expect(matrix.getByRole("columnheader").nth(4)).toHaveText("3");
 });
 
 test("classical descending minor follows the selected root", async ({ page }) => {
   await page.goto("/scales/melodic-minor?key=c");
-  const panel = page.locator("section").filter({ has: page.getByRole("heading", { name: "Classical descending melodic minor", exact: true }) });
+  const panel = page.locator("section").filter({ has: page.getByRole("heading", { name: /^Classical descending melodic minor$/i, exact: true }) });
   await expect(panel).toContainText("C → B♭ → A♭ → G → F → E♭ → D → C");
-  await page.getByRole("radiogroup", { name: "Key", exact: true }).getByRole("radio", { name: "A", exact: true }).click();
+  await page.getByRole("radiogroup", { name: /^Key$/i, exact: true }).getByRole("radio", { name: /^A$/i, exact: true }).click();
   await expect(panel).toContainText("A → G → F → E → D → C → B → A");
 });
 
 test("circle uses correct enharmonic neighbours and exact historical lookup", async ({ page }) => {
   await page.goto("/circle-of-fifths");
-  await page.getByRole("button", { name: "F♯ major, relative minor D♯ minor", exact: true }).click();
+  await page.getByRole("button", { name: /^F♯ major, relative minor D♯ minor$/i, exact: true }).click();
   await expect(page.locator("dl")).toContainText("IV B · V C♯");
-  await page.getByRole("radiogroup", { name: "Spelling", exact: true }).getByRole("radio", { name: "G♭", exact: true }).click();
+  await page.getByRole("radiogroup", { name: /^Spelling$/i, exact: true }).getByRole("radio", { name: /^G♭$/i, exact: true }).click();
   await expect(page.locator("dl")).toContainText("IV C♭ · V D♭");
   await expect(page.getByText("No historical description has been transcribed for this exact key spelling.", { exact: true })).toHaveCount(2);
-  await page.getByRole("button", { name: "B major, relative minor G♯ minor", exact: true }).click();
+  await page.getByRole("button", { name: /^B major, relative minor G♯ minor$/i, exact: true }).click();
   await expect(page.locator("dl")).toContainText("IV E · V F♯");
   await expect(page.getByText("No historical description has been transcribed for this exact key spelling.", { exact: true })).toHaveCount(1);
 });
 
 test("chords are shown as playable chord boxes", async ({ page }) => {
   await page.goto("/chords?chord=7th-dominant&key=g");
-  await expect(page.getByRole("img", { name: /^G7 chord diagram, low to high strings: 3 2 0 0 0 1$/ })).toBeVisible();
-  await expect(page.getByRole("list", { name: "Chords with a playable shape" }).getByRole("img").first()).toBeVisible();
+  await expect(page.getByRole("img", { name: /^G7 chord diagram, low to high strings: 3 2 0 0 0 1$/i })).toBeVisible();
+  await expect(page.getByRole("list", { name: /Chords with a playable shape/i }).getByRole("img").first()).toBeVisible();
   await page.goto("/progressions?key=c");
-  await expect(page.getByRole("list", { name: "Chord shapes for this progression" }).getByRole("img")).toHaveCount(4);
+  await expect(page.getByRole("list", { name: /Chord shapes for this progression/i }).getByRole("img")).toHaveCount(4);
 });
 
 test("renamed and merged chord bookmarks resolve and remain selectable", async ({ page }) => {
@@ -108,19 +108,19 @@ test("renamed and merged chord bookmarks resolve and remain selectable", async (
     await expect(page.getByRole("heading", { name: symbol, exact: true })).toBeVisible();
     await expect(page.getByRole("row", { selected: true })).toHaveCount(1);
   }
-  await page.getByRole("textbox", { name: "Filter chords", exact: true }).fill("minor-major 7");
-  await expect(page.getByRole("button", { name: "Minor-major 7th", exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Minor-major 7th", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Cm(maj7)", exact: true })).toBeVisible();
+  await page.getByRole("textbox", { name: /^Filter chords$/i, exact: true }).fill("minor-major 7");
+  await expect(page.getByRole("button", { name: /^Minor-major 7th$/i, exact: true })).toBeVisible();
+  await page.getByRole("button", { name: /^Minor-major 7th$/i, exact: true }).click();
+  await expect(page.getByRole("heading", { name: /^Cm\(maj7\)$/i, exact: true })).toBeVisible();
 });
 
 test("completed pentatonic modes have study notes and no TODO callouts", async ({ page }) => {
   await page.goto("/modes/minor-pentatonic?mode=mode-4&key=e");
   await expect(page.locator("main")).toContainText("E G A C D");
-  const parent = page.locator("dt").filter({ hasText: /^Parent scale$/ }).locator("..");
+  const parent = page.locator("dt").filter({ hasText: /^Parent scale$/i }).locator("..");
   await expect(parent).toContainText("A minor pentatonic · mode 4");
   await expect(page.getByText("Not in your notes yet", { exact: true })).toHaveCount(0);
-  await page.getByRole("tab", { name: /Mode 5/, exact: false }).click();
+  await page.getByRole("tab", { name: /Mode 5/i, exact: false }).click();
   await expect(page).toHaveURL(/mode=mode-5/);
   await expect(page.locator("main")).toContainText("no third or seventh");
 });
@@ -130,7 +130,7 @@ test("new data and source links fit a mobile viewport", async ({ page }) => {
   for (const route of ["/scales/minor-blues", "/scales/diminished-half-whole", "/modes/melodic-minor?mode=altered&key=c", "/circle-of-fifths", "/chords?chord=minor-major-7th"]) {
     await page.goto(route);
     await expect(page.locator("main h1")).toBeVisible();
-    const sources = page.locator("section").filter({ has: page.getByRole("heading", { name: "Sources & further reading", exact: true }) });
+    const sources = page.locator("section").filter({ has: page.getByRole("heading", { name: /^Sources & further reading$/i, exact: true }) });
     await expect(sources.getByRole("link").first()).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
     expect(overflow, route).toBe(false);

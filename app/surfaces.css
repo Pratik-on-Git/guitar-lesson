@@ -111,7 +111,7 @@
 }
 .resonance-feature h2 { max-width: 15ch; font-size: clamp(2rem, 4.3cqi, 3.75rem); font-weight: 300; line-height: 1.05; letter-spacing: -.06em; }
 .resonance-feature p { color: #bdc6d2; }
-.resonance-feature .feature-eyebrow { color: #c3e6bc; font-size: .75rem; letter-spacing: .13em; text-transform: uppercase; }
+.resonance-feature .feature-eyebrow { color: #c3e6bc; font-size: .75rem; letter-spacing: .13em; text-transform: none; }
 .feature-orb {
   position: relative;
   display: grid;

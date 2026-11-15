@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import {
@@ -83,7 +85,7 @@ export function SearchDialog() {
         aria-keyshortcuts={mod === "⌘" ? "Meta+K" : "Control+K"}
         aria-label={`Search notes (${mod} K)`}
         className="text-muted-foreground border-border hover:text-foreground mr-1 hidden h-9 w-56 justify-between px-3 font-normal @3xl/header:inline-flex"
-      >
+      >{titleCaseLabel(<>
         <span className="flex items-center gap-2">
           <Search aria-hidden />
           Jump to…
@@ -92,11 +94,11 @@ export function SearchDialog() {
           <Kbd>{mod}</Kbd>
           <Kbd>K</Kbd>
         </span>
-      </Button>
+      </>)}</Button>
       <Tooltip content="Jump to…" side="bottom">
-        <Button variant="ghost" size="icon" aria-label="Search notes" onClick={() => setOpen(true)} className="@3xl/header:hidden">
+        <Button variant="ghost" size="icon" aria-label="Search notes" onClick={() => setOpen(true)} className="@3xl/header:hidden">{titleCaseLabel(<>
           <Search />
-        </Button>
+        </>)}</Button>
       </Tooltip>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -104,7 +106,7 @@ export function SearchDialog() {
           showCloseButton={false}
           className="top-[12vh] translate-y-0 gap-0 overflow-hidden p-0 sm:max-w-xl sm:p-0"
         >
-          <DialogTitle className="sr-only">Search notes</DialogTitle>
+          <DialogTitle className="sr-only">{titleCaseLabel(<>Search notes</>)}</DialogTitle>
           <DialogDescription className="sr-only">Find a page, section, scale, mode or chord.</DialogDescription>
           {open ? <SearchBody onDone={() => setOpen(false)} /> : null}
         </DialogContent>
@@ -189,9 +191,9 @@ function SearchBody({ onDone }: { onDone: () => void }) {
                 type="button"
                 onClick={() => setQuery(s)}
                 className="border-border text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary rounded-md border px-2.5 py-1 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-              >
+              >{titleCaseLabel(<>
                 {s}
-              </button>
+              </>)}</button>
             ))}
           </div>
         ) : null}

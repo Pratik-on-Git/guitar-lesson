@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { useState } from "react";
 import type { WidgetName } from "@/lib/content/types";
 import { CIRCLE, KEY_CHARACTERS, KEY_CHARACTER_SOURCE, keySignature, relativeMinor } from "@/lib/music/keys";
@@ -141,11 +143,11 @@ function NoteDurations() {
       <table className={tableCls}>
         <thead>
           <tr>
-            <th className={thCls}>Note</th>
-            <th className={thCls}>Rest</th>
-            <th className={thCls}>Name</th>
-            <th className={thCls}>Beats in 4/4</th>
-            <th className={cn(thCls, "w-[40%]")}>Share of a 4/4 bar</th>
+            <th className={thCls}>{titleCaseLabel(<>Note</>)}</th>
+            <th className={thCls}>{titleCaseLabel(<>Rest</>)}</th>
+            <th className={thCls}>{titleCaseLabel(<>Name</>)}</th>
+            <th className={thCls}>{titleCaseLabel(<>Beats in 4/4</>)}</th>
+            <th className={cn(thCls, "w-[40%]")}>{titleCaseLabel(<>Share of a 4/4 bar</>)}</th>
           </tr>
         </thead>
         <tbody>
@@ -244,11 +246,11 @@ function IntervalTable() {
         <table className={tableCls}>
           <thead>
             <tr>
-              <th className={thCls}>Semitones</th>
-              <th className={thCls}>Interval above {noteName(root)}</th>
-              <th className={thCls}>Note</th>
-              <th className={thCls}>Below (inversion)</th>
-              <th className={thCls}>In {noteName(root)} major</th>
+              <th className={thCls}>{titleCaseLabel(<>Semitones</>)}</th>
+              <th className={thCls}>{titleCaseLabel(<>Interval above {noteName(root)}</>)}</th>
+              <th className={thCls}>{titleCaseLabel(<>Note</>)}</th>
+              <th className={thCls}>{titleCaseLabel(<>Below (inversion)</>)}</th>
+              <th className={thCls}>{titleCaseLabel(<>In {noteName(root)} major</>)}</th>
             </tr>
           </thead>
           <tbody>

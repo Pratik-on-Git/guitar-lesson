@@ -41,12 +41,12 @@ test("previously saved practice labels stay anonymous and group with new session
   expect(practiceSummary(sessions, 28, new Date()).focus).toEqual([{ name: "Listening & tuning", minutes: 35 }]);
   await page.addInitScript((saved) => localStorage.setItem("gl-practice-sessions", JSON.stringify(saved)), sessions);
   await page.goto("/");
-  const activity = page.getByRole("region", { name: "Practice activity" });
+  const activity = page.getByRole("region", { name: /Practice activity/i });
   await expect(activity).toContainText("Listening & tuning");
   await expect(activity).toContainText("35 min");
   expect(await page.locator("body").innerText()).not.toMatch(sourceNames);
   await page.goto("/practice");
-  const history = page.locator("section").filter({ has: page.getByRole("heading", { name: "Recent practice", exact: true }) });
-  await expect(history.getByRole("cell", { name: "Listening & tuning", exact: true })).toHaveCount(2);
+  const history = page.locator("section").filter({ has: page.getByRole("heading", { name: /^Recent practice$/i, exact: true }) });
+  await expect(history.getByRole("cell", { name: /^Listening & tuning$/i, exact: true })).toHaveCount(2);
   expect(await page.locator("body").innerText()).not.toMatch(sourceNames);
 });

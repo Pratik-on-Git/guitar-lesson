@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import Link from "next/link";
 import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, AudioWaveform, BookOpen, CalendarDays, Check, ChevronDown, ChevronRight, CircleCheck, Clock3, Drum, Guitar, Info, Layers, Library, ListMusic, Music2, Sparkles, Target, type LucideIcon } from "lucide-react";
@@ -31,18 +33,18 @@ const serverMinute = () => 0;
 
 function CardHeading({ eyebrow, title, href, label, children }: { eyebrow: string; title: string; href?: string; label?: string; children?: ReactNode }) {
   return <div className="flex items-start justify-between gap-3">
-    <div className="min-w-0"><p className="text-muted-foreground text-xs leading-5">{eyebrow}</p><h2 className="mt-1 text-lg font-semibold tracking-tight">{title}</h2></div>
-    {href && <Link href={href} aria-label={label ?? `Open ${title.toLowerCase()}`} className="overview-arrowLink"><ArrowUpRight className="size-4" aria-hidden /></Link>}
+    <div className="min-w-0"><p className="text-muted-foreground text-xs leading-5">{eyebrow}</p><h2 className="mt-1 text-lg font-semibold tracking-tight">{titleCaseLabel(<>{title}</>)}</h2></div>
+    {href && <Link href={href} aria-label={label ?? `Open ${title.toLowerCase()}`} className="overview-arrowLink">{titleCaseLabel(<><ArrowUpRight className="size-4" aria-hidden /></>)}</Link>}
     {children}
   </div>;
 }
 
 function Metric({ label, value, detail, icon: Icon, href, suffix, tone }: { label: string; value: number; detail: string; icon: LucideIcon; href: string; suffix?: string; tone: "cyan" | "orange" | "violet" }) {
-  return <Link href={href} className="overview-metric" data-tone={tone}>
+  return <Link href={href} className="overview-metric" data-tone={tone}>{titleCaseLabel(<>
     <div className="flex items-start justify-between gap-2"><span className="text-muted-foreground text-xs font-medium">{label}</span><IconTile icon={<Icon />} tone="brand" /></div>
     <p className="overview-metricValue">{value.toLocaleString("en-GB")}<span className="ml-2 text-sm font-normal tracking-normal">{suffix}</span></p>
     <p className="text-muted-foreground mt-1 text-xs">{detail}</p>
-  </Link>;
+  </>)}</Link>;
 }
 
 // Annular sectors preserve the reference's tapered, separated gauge segments.
@@ -72,7 +74,7 @@ function ProgressGauge({ study }: { study: Study }) {
       <div className="overview-insetMetric"><span><CircleCheck className="text-primary size-3.5" aria-hidden />Studied</span><p>{study.done}<small> pages</small></p></div>
       <div className="overview-insetMetric"><span><BookOpen className="size-3.5" aria-hidden />To explore</span><p>{study.total - study.done}<small> pages</small></p></div>
     </div>
-    <Link href={next?.href ?? "/practice"} className={cn(buttonVariants(), "w-full justify-between")}><span>{next ? study.done ? "Continue learning" : "Start learning" : "Put it into practice"}</span><ArrowRight aria-hidden /></Link>
+    <Link href={next?.href ?? "/practice"} className={cn(buttonVariants(), "w-full justify-between")}>{titleCaseLabel(<><span>{next ? study.done ? "Continue learning" : "Start learning" : "Put it into practice"}</span><ArrowRight aria-hidden /></>)}</Link>
     <p className="text-muted-foreground text-center text-xs leading-relaxed">Marked as studied, at your own pace.</p>
   </Card>;
 }
@@ -85,13 +87,13 @@ function PartChart({ study }: { study: Study }) {
     <div className="flex items-center gap-2 text-xs text-muted-foreground"><span className="size-2 rounded-full bg-primary" /><span>Pages studied</span><span className="ml-auto">0–100%</span></div>
     <div className="overview-barChart">
       {study.groups.map((part, index) => <Tooltip key={part.title} content={`${part.title}: ${part.done} of ${part.total} pages studied`}>
-        <button type="button" aria-label={`${part.title}: ${part.done} of ${part.total} pages studied`} aria-pressed={selected === index} onClick={() => setSelected(index)} className={cn("overview-barButton", selected === index && "overview-barSelected")}>
+        <button type="button" aria-label={`${part.title}: ${part.done} of ${part.total} pages studied`} aria-pressed={selected === index} onClick={() => setSelected(index)} className={cn("overview-barButton", selected === index && "overview-barSelected")}>{titleCaseLabel(<>
           <span className="overview-barTrack"><span className="overview-barFill" style={{ height: `${part.done / part.total * 100}%` }} /></span>
           <span className="text-xs font-medium tabular-nums">{String(index + 1).padStart(2, "0")}</span>
-        </button>
+        </>)}</button>
       </Tooltip>)}
     </div>
-    <div className="overview-partDetail" aria-live="polite"><div><p className="text-muted-foreground text-xs">Part {String(selected + 1).padStart(2, "0")}</p><h3 className="mt-1 text-sm font-semibold">{group.title}</h3><p className="text-muted-foreground mt-1 text-xs">{group.done} of {group.total} pages studied</p></div><Link href={group.next?.href ?? group.pages[0].href} className="overview-arrowLink" aria-label={`Study ${group.title}`}><ArrowRight className="size-4" aria-hidden /></Link></div>
+    <div className="overview-partDetail" aria-live="polite"><div><p className="text-muted-foreground text-xs">Part {String(selected + 1).padStart(2, "0")}</p><h3 className="mt-1 text-sm font-semibold">{titleCaseLabel(<>{group.title}</>)}</h3><p className="text-muted-foreground mt-1 text-xs">{group.done} of {group.total} pages studied</p></div><Link href={group.next?.href ?? group.pages[0].href} className="overview-arrowLink" aria-label={`Study ${group.title}`}>{titleCaseLabel(<><ArrowRight className="size-4" aria-hidden /></>)}</Link></div>
   </Card>;
 }
 
@@ -122,7 +124,7 @@ function NextLessons({ study }: { study: Study }) {
   const pages = (complete ? STUDY_PAGES : study.remaining).slice(0, 5);
   return <Card as="section" aria-label={complete ? "Revisit your foundations" : "Up next"} className="overview-card">
     <CardHeading eyebrow={complete ? "Keep it fresh" : "A little direction"} title={complete ? "Revisit your foundations" : "Up next for you"} href="#study-map" label="Browse the full study map" />
-    <ol className="-mx-2">{pages.map((page, index) => <li key={page.href}><Link href={page.href} className="overview-lessonLink"><span className={cn("overview-lessonNumber", index === 0 && "overview-lessonNumberActive")}>{complete ? <Check className="size-4" aria-hidden /> : String(index + 1).padStart(2, "0")}</span><span className="min-w-0 flex-1"><span className="block text-sm font-medium leading-snug">{page.title}</span><span className="text-muted-foreground mt-1 block text-xs">{page.group}</span></span><ChevronRight className="text-muted-foreground size-3.5 shrink-0" aria-hidden /></Link></li>)}</ol>
+    <ol className="-mx-2">{pages.map((page, index) => <li key={page.href}><Link href={page.href} className="overview-lessonLink">{titleCaseLabel(<><span className={cn("overview-lessonNumber", index === 0 && "overview-lessonNumberActive")}>{complete ? <Check className="size-4" aria-hidden /> : String(index + 1).padStart(2, "0")}</span><span className="min-w-0 flex-1"><span className="block text-sm font-medium leading-snug">{page.title}</span><span className="text-muted-foreground mt-1 block text-xs">{page.group}</span></span><ChevronRight className="text-muted-foreground size-3.5 shrink-0" aria-hidden /></>)}</Link></li>)}</ol>
     <p className="text-muted-foreground border-t pt-3 text-xs leading-relaxed">{complete ? "You’ve covered the map. Revisit a lesson or try a new practice focus." : "The next unstudied pages, in your course’s reading order."}</p>
   </Card>;
 }
@@ -140,7 +142,7 @@ function PracticeActivity({ practice, days, ready }: { practice: Practice; days:
         <div className="overview-focusMeter" role="img" aria-label={practice.count ? practice.focus.map((focus) => `${focus.name}: ${focus.minutes} minutes`).join(", ") : "No saved practice in this period"}>
           {practice.focus.map((focus, index) => <span key={focus.name} style={{ flex: focus.minutes, background: focusColors[index] }} />)}
         </div>
-        {practice.focus.length ? <ul className="space-y-2">{practice.focus.map((focus, index) => <li key={focus.name} className="flex items-start gap-2 text-xs"><span className="mt-1 size-2 shrink-0 rounded-full" style={{ background: focusColors[index] }} /><span className="text-muted-foreground flex-1">{focus.name}</span><span className="shrink-0 font-medium tabular-nums">{focus.minutes} min</span></li>)}</ul> : <Link href="/practice" className="text-primary mt-1 inline-flex items-center gap-1 text-xs font-medium underline-offset-4 hover:underline">Plan your first session <ArrowRight className="size-3" aria-hidden /></Link>}
+        {practice.focus.length ? <ul className="space-y-2">{practice.focus.map((focus, index) => <li key={focus.name} className="flex items-start gap-2 text-xs"><span className="mt-1 size-2 shrink-0 rounded-full" style={{ background: focusColors[index] }} /><span className="text-muted-foreground flex-1">{focus.name}</span><span className="shrink-0 font-medium tabular-nums">{focus.minutes} min</span></li>)}</ul> : <Link href="/practice" className="text-primary mt-1 inline-flex items-center gap-1 text-xs font-medium underline-offset-4 hover:underline">{titleCaseLabel(<>Plan your first session <ArrowRight className="size-3" aria-hidden /></>)}</Link>}
       </div>
       <div className="min-w-0">
         <div className="text-muted-foreground mb-3 flex items-center justify-between gap-2 text-xs"><span>{ready && practice.activity.length ? `${calendarLabel(practice.activity[0].date, { day: "numeric", month: "short" })} – ${calendarLabel(practice.activity[practice.activity.length - 1].date, { day: "numeric", month: "short" })}` : "Loading your calendar…"}</span><span>IST</span></div>
@@ -161,8 +163,8 @@ function StudyMap({ study }: { study: Study }) {
     <div className="grid items-start gap-3 md:grid-cols-2 xl:grid-cols-3">{study.groups.map((group, index) => {
       const Icon = group.items[0].icon;
       return <details key={group.title} className="overview-mapPart">
-        <summary className="overview-mapSummary"><IconTile icon={<Icon />} tone={group.done === group.total ? "success" : "primary"} /><span className="min-w-0 flex-1"><span className="text-muted-foreground block text-xs uppercase tracking-wider">Part {String(index + 1).padStart(2, "0")}</span><span className="mt-0.5 block text-sm font-medium">{group.title}</span></span><span className="text-muted-foreground text-xs tabular-nums">{group.done}/{group.total}</span><ChevronDown className={cn("overview-mapChevron", "size-3.5 shrink-0 text-muted-foreground")} aria-hidden /></summary>
-        <ul className="mx-4 mb-3 border-t pt-2">{group.pages.map((page) => <li key={page.href}><Link href={page.href} className="overview-mapLink"><span>{page.title}</span>{study.remaining.some((remaining) => remaining.href === page.href) ? <ChevronRight className="size-3 shrink-0 text-muted-foreground" aria-hidden /> : <CircleCheck className="size-3.5 shrink-0 text-success" aria-label="Studied" />}</Link></li>)}</ul>
+        <summary className="overview-mapSummary">{titleCaseLabel(<><IconTile icon={<Icon />} tone={group.done === group.total ? "success" : "primary"} /><span className="min-w-0 flex-1"><span className="text-muted-foreground block text-xs tracking-wider">Part {String(index + 1).padStart(2, "0")}</span><span className="mt-0.5 block text-sm font-medium">{group.title}</span></span><span className="text-muted-foreground text-xs tabular-nums">{group.done}/{group.total}</span><ChevronDown className={cn("overview-mapChevron", "size-3.5 shrink-0 text-muted-foreground")} aria-hidden /></>)}</summary>
+        <ul className="mx-4 mb-3 border-t pt-2">{group.pages.map((page) => <li key={page.href}><Link href={page.href} className="overview-mapLink">{titleCaseLabel(<><span>{page.title}</span>{study.remaining.some((remaining) => remaining.href === page.href) ? <ChevronRight className="size-3 shrink-0 text-muted-foreground" aria-hidden /> : <CircleCheck className="size-3.5 shrink-0 text-success" aria-label="Studied" />}</>)}</Link></li>)}</ul>
       </details>;
     })}</div>
   </Section>;
@@ -177,17 +179,17 @@ export function OverviewDashboard({ library }: { library: LibraryCounts }) {
   const practice = practiceSummary(sessions, days, new Date(minute * 60_000 + 59_999));
   const next = study.remaining[0];
   return <div className="flex flex-col gap-8">
-    <PageHeader title="Overview" description="A little theory. A little practice. A more musical you." actions={<><Link href="/practice" className={buttonVariants({ variant: "outline" })}><Guitar aria-hidden />Practice studio</Link><Link href={next?.href ?? "/books/music-theory"} className={buttonVariants()}>{next ? study.done ? "Continue learning" : "Start learning" : "Revisit the course"}<ArrowRight aria-hidden /></Link></>} />
+    <PageHeader title="Overview" description="A little theory. A little practice. A more musical you." actions={<><Link href="/practice" className={buttonVariants({ variant: "outline" })}>{titleCaseLabel(<><Guitar aria-hidden />Practice studio</>)}</Link><Link href={next?.href ?? "/books/music-theory"} className={buttonVariants()}>{titleCaseLabel(<>{next ? study.done ? "Continue learning" : "Start learning" : "Revisit the course"}<ArrowRight aria-hidden /></>)}</Link></>} />
     <section className="resonance-feature flex items-center justify-between gap-6" aria-label="Your daily inspiration">
       <div className="relative z-10 space-y-5">
         <p className="feature-eyebrow flex items-center gap-2"><span className="size-1.5 rounded-full bg-current" aria-hidden />Tune in. Find your flow.</p>
-        <h2>Small steps.<br />Better music.</h2>
+        <h2>{titleCaseLabel(<>Small steps.<br />Better music.</>)}</h2>
         <p className="max-w-sm text-sm leading-relaxed">Explore a sound. Understand a little more.<br className="max-sm:hidden" /> Make today’s practice your own.</p>
-        <Link href="/practice" className={buttonVariants({ size: "lg" })}>Find your rhythm<ArrowUpRight aria-hidden /></Link>
+        <Link href="/practice" className={buttonVariants({ size: "lg" })}>{titleCaseLabel(<>Find your rhythm<ArrowUpRight aria-hidden /></>)}</Link>
       </div>
       <div className="mr-6 hidden shrink-0 flex-col items-center gap-7 sm:flex" aria-hidden>
         <div className="feature-orb"><div className="feature-wave">{Array.from({ length: 7 }, (_, i) => <span key={i} />)}</div></div>
-        <span className="text-xs tracking-[.18em] text-[#bdc6d2] uppercase">Listen. Learn. Play.</span>
+        <span className="text-xs tracking-[.18em] text-[#bdc6d2]">Listen. Learn. Play.</span>
       </div>
     </section>
     <div className="flex flex-wrap items-center justify-between gap-3"><div className="flex items-center gap-2"><span className="bg-primary size-1.5 rounded-full" aria-hidden /><p className="text-muted-foreground text-xs">Your personal learning dashboard</p></div><div className="flex items-center gap-2"><span className="text-muted-foreground text-xs">Practice window</span><Segmented label="Practice period" size="sm" value={days} onChange={setDays} options={[{ value: 7, label: "7 days" }, { value: 28, label: "28 days" }]} /></div></div>
@@ -199,7 +201,7 @@ export function OverviewDashboard({ library }: { library: LibraryCounts }) {
           <Metric label="Saved sessions" value={practice.count} detail={`Across ${practice.activeDays} active ${practice.activeDays === 1 ? "day" : "days"}`} icon={CalendarDays} href="/practice" tone="violet" />
         </div>
         <div className="overview-chartsRow"><PartChart study={study} /><StudyStatus study={study} /></div>
-        <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-sm font-semibold">Time with your instrument</h2><span className="text-muted-foreground text-xs">Last {days} days</span></div>
+        <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-sm font-semibold">{titleCaseLabel(<>Time with your instrument</>)}</h2><span className="text-muted-foreground text-xs">Last {days} days</span></div>
         <PracticeActivity practice={practice} days={days} ready={minute !== 0} />
       </div>
       <div className="overview-sideColumn"><ProgressGauge study={study} /><NextLessons study={study} /></div>
@@ -210,10 +212,10 @@ export function OverviewDashboard({ library }: { library: LibraryCounts }) {
         { title: "Find a new colour", detail: `${library.modes} modes · ${library.families} families`, icon: Layers, href: "/modes/major" },
         { title: "Build your harmony", detail: `${library.chords} chord formulas`, icon: Library, href: "/chords" },
         { title: "Train your ears", detail: "Intervals, drones & fine tuning", icon: AudioWaveform, href: "/listening" },
-      ].map((item) => <Link key={item.href} href={item.href} className="overview-toolLink"><IconTile icon={<item.icon />} tone="brand" size="lg" /><span className="min-w-0 flex-1"><span className="block text-sm font-medium">{item.title}</span><span className="text-muted-foreground mt-1 block text-xs">{item.detail}</span></span><ArrowUpRight className="text-muted-foreground size-4 shrink-0" aria-hidden /></Link>)}</div>
+      ].map((item) => <Link key={item.href} href={item.href} className="overview-toolLink">{titleCaseLabel(<><IconTile icon={<item.icon />} tone="brand" size="lg" /><span className="min-w-0 flex-1"><span className="block text-sm font-medium">{item.title}</span><span className="text-muted-foreground mt-1 block text-xs">{item.detail}</span></span><ArrowUpRight className="text-muted-foreground size-4 shrink-0" aria-hidden /></>)}</Link>)}</div>
     </Section>
     <StudyMap study={study} />
-    <div className="overview-footerStrip"><div className="flex items-center gap-3"><IconTile icon={<Music2 />} tone="primary" /><div><p className="text-sm font-medium">Make something of what you know.</p><p className="text-muted-foreground mt-0.5 text-xs">Find your pulse, write a phrase, or return to the source.</p></div></div><div className="flex flex-wrap gap-2"><Link href="/rhythm-lab" className={buttonVariants({ variant: "outline", size: "sm" })}><Drum aria-hidden />Rhythm lab</Link><Link href="/composition" className={buttonVariants({ variant: "outline", size: "sm" })}><Music2 aria-hidden />Compose</Link><Link href="/books/music-theory" className={buttonVariants({ variant: "outline", size: "sm" })}><BookOpen aria-hidden />Theory book</Link><Link href="/book" className={buttonVariants({ variant: "outline", size: "sm" })}><Guitar aria-hidden />Fretboard book</Link></div></div>
+    <div className="overview-footerStrip"><div className="flex items-center gap-3"><IconTile icon={<Music2 />} tone="primary" /><div><p className="text-sm font-medium">Make something of what you know.</p><p className="text-muted-foreground mt-0.5 text-xs">Find your pulse, write a phrase, or return to the source.</p></div></div><div className="flex flex-wrap gap-2"><Link href="/rhythm-lab" className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<><Drum aria-hidden />Rhythm lab</>)}</Link><Link href="/composition" className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<><Music2 aria-hidden />Compose</>)}</Link><Link href="/books/music-theory" className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<><BookOpen aria-hidden />Theory book</>)}</Link><Link href="/book" className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<><Guitar aria-hidden />Fretboard book</>)}</Link></div></div>
     <p className="text-muted-foreground flex items-center justify-center gap-1.5 text-center text-xs"><Target className="size-3 shrink-0" aria-hidden />Progress and practice are saved in this browser.</p>
   </div>;
 }

@@ -1,3 +1,5 @@
+
+import { titleCaseLabel } from "@/lib/title-case";
 import { cn } from "@/lib/utils";
 import { StudyToggle } from "./study-toggle";
 
@@ -25,7 +27,7 @@ export function PageHeader({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
         {/* `min-w-48`: the title keeps real room, so a wide action cluster wraps instead of crushing it. */}
         <div className="min-w-48 flex-1 space-y-3">
-          <h1 className="text-display text-foreground font-medium tracking-tight text-balance">{title}</h1>
+          <h1 className="text-display text-foreground font-medium tracking-tight text-balance">{titleCaseLabel(<>{title}</>)}</h1>
           {description ? <p className="text-body text-muted-foreground max-w-3xl">{description}</p> : null}
         </div>
         {hasActions ? (
@@ -61,9 +63,9 @@ export function Section({
     <section id={id} aria-labelledby={headingId} className={cn("min-w-0 scroll-mt-24 space-y-4", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="min-w-0 space-y-0.5">
-          <h2 id={headingId} className="text-heading text-foreground font-semibold">
+          <h2 id={headingId} className="text-heading text-foreground font-semibold">{titleCaseLabel(<>
             {title}
-          </h2>
+          </>)}</h2>
           {description ? <p className="text-body text-muted-foreground">{description}</p> : null}
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}

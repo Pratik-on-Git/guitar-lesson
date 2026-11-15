@@ -1,4 +1,6 @@
 "use client";
+
+import { titleCaseLabel } from "@/lib/title-case";
 import { useQueryState } from "@/lib/use-query-state";
 import { buildScale, modeDegrees, parseDegree, prettyDegree, spellRoot } from "@/lib/music/theory";
 import { MODE_FAMILIES } from "@/lib/music/modes";
@@ -50,7 +52,7 @@ export function ListeningLab() {
       <p className="mt-4 text-sm text-muted-foreground">Practice: sing the tonic, then the third and seventh (when present). Compare parallel modes and resolve a short phrase to the held tonic. This supplies the app&apos;s own example rather than reproducing the book&apos;s recordings.</p>
     </Panel>}
     {tab === "tuning" && <Panel title="Frequency ratios and cents" description="A semitone is exactly 100 cents in twelve-tone equal temperament. Frequency changes exponentially: f₂ = f₁ × 2^(cents/1200).">
-      <div className="grid gap-4 sm:grid-cols-3"><label className="text-sm font-medium">Reference A4 (Hz)<input aria-label="Reference A4 frequency" className="mt-2 block w-full rounded-md border p-2" type="number" min={400} max={480} value={reference} onChange={(e) => setReference(e.target.value)} /></label><label className="text-sm font-medium">Displacement (cents)<input aria-label="Tuning cents" className="mt-2 block w-full rounded-md border p-2" type="number" min={-1200} max={1200} value={cents} onChange={(e) => setCents(e.target.value)} /></label><StudySelect label="A octave" value={String(octave)} onChange={setOctave} options={[2, 3, 4, 5, 6].map((n) => ({ value: String(n), label: `A${n}` }))} /></div>
+      <div className="grid gap-4 sm:grid-cols-3"><label className="text-sm font-medium">{titleCaseLabel(<>Reference A4 (Hz)<input aria-label="Reference A4 frequency" className="mt-2 block w-full rounded-md border p-2" type="number" min={400} max={480} value={reference} onChange={(e) => setReference(e.target.value)} /></>)}</label><label className="text-sm font-medium">{titleCaseLabel(<>Displacement (cents)<input aria-label="Tuning cents" className="mt-2 block w-full rounded-md border p-2" type="number" min={-1200} max={1200} value={cents} onChange={(e) => setCents(e.target.value)} /></>)}</label><StudySelect label="A octave" value={String(octave)} onChange={setOctave} options={[2, 3, 4, 5, 6].map((n) => ({ value: String(n), label: `A${n}` }))} /></div>
       <div className="my-5"><FactGrid><Fact label="Comparison frequency" value={`${comparison.toFixed(3)} Hz`} /><Fact label="Measured distance" value={`${centsBetween(reference, comparison).toFixed(1)} cents`} /><Fact label={`A${octave} at this reference`} value={`${tunedA.toFixed(3)} Hz`} /><Fact label="Octave ratio" value="2 : 1 · 1,200 cents" /></FactGrid></div>
       <ScorePlayer key={`${reference}-${cents}`} events={tuningEvents} beats={6} label="Compare tuning pitches" /><p className="mt-4 text-sm text-muted-foreground">You hear the reference, the shifted pitch, then both together. Small differences produce beating. The octave readout is a separate calculation; changing it does not change this comparison.</p>
     </Panel>}

@@ -57,7 +57,7 @@ export function StatusBadge({
       className={cn(
         "inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full border whitespace-nowrap [&_svg]:size-3",
         size === "xs"
-          ? "text-overline px-2 py-0.5 font-semibold uppercase"
+          ? "text-overline px-2 py-0.5 font-semibold"
           : size === "sm"
             ? "text-caption px-2 py-0.5 font-medium"
             : "text-body px-2.5 py-1 font-medium",

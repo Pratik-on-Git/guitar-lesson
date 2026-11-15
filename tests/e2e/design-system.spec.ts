@@ -4,10 +4,10 @@ test("theme follows the system until explicitly selected, then persists across p
   await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/design-system");
   await expect(page.locator("html")).toHaveClass(/dark/);
-  await expect(page.getByRole("button", { name: "Switch to Light Theme" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /Switch to Light Theme/i })).toBeVisible();
   await page.emulateMedia({ colorScheme: "light" });
   await expect(page.locator("html")).not.toHaveClass(/dark/);
-  await page.getByRole("button", { name: "Switch to Dark Theme" }).click();
+  await page.getByRole("button", { name: /Switch to Dark Theme/i }).click();
   await page.goto("/scales/major");
   await expect(page.locator("html")).toHaveClass(/dark/);
   await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute("content", "#09090c");
@@ -15,7 +15,7 @@ test("theme follows the system until explicitly selected, then persists across p
   await expect(page.locator("html")).toHaveClass(/dark/);
   const other = await context.newPage();
   await other.goto("/");
-  await other.getByRole("button", { name: "Switch to Light Theme" }).click();
+  await other.getByRole("button", { name: /Switch to Light Theme/i }).click();
   await expect(page.locator("html")).not.toHaveClass(/dark/);
   await other.close();
 });
@@ -24,18 +24,18 @@ test("design specimens are interactive and fit small screens in both themes", as
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/design-system");
-  await page.getByRole("button", { name: "Add to practice", exact: true }).click();
+  await page.getByRole("button", { name: /^Add to practice$/i, exact: true }).click();
   await expect(page.getByRole("status")).toContainText("Example added");
-  await page.getByRole("radio", { name: "Explore", exact: true }).focus();
+  await page.getByRole("radio", { name: /^Explore$/i, exact: true }).focus();
   await page.keyboard.press("ArrowRight");
-  await expect(page.getByRole("radio", { name: "Listen", exact: true })).toBeChecked();
-  await page.getByRole("button", { name: "Open dialog" }).click();
+  await expect(page.getByRole("radio", { name: /^Listen$/i, exact: true })).toBeChecked();
+  await page.getByRole("button", { name: /Open dialog/i }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toBeHidden();
-  await expect(page.getByRole("button", { name: "Open dialog" })).toBeFocused();
+  await expect(page.getByRole("button", { name: /Open dialog/i })).toBeFocused();
   for (const theme of ["light", "dark"]) {
-    if (theme === "dark") await page.getByRole("button", { name: "Switch to Dark Theme" }).click();
+    if (theme === "dark") await page.getByRole("button", { name: /Switch to Dark Theme/i }).click();
     for (const width of [320, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${theme} at ${width}`).toBe(true);
@@ -93,7 +93,7 @@ test("lesson and tool families fit desktop and mobile in both themes", async ({ 
       }
       if (route === "/scales/major") await page.screenshot({ path: `.local/scale-${colorScheme}.png` });
       if (route === "/practice") {
-        await page.getByRole("heading", { name: "Practice metronome" }).locator("xpath=ancestor::section").screenshot({ path: `.local/metronome-${colorScheme}.png` });
+        await page.getByRole("heading", { name: /Practice metronome/i }).locator("xpath=ancestor::section").screenshot({ path: `.local/metronome-${colorScheme}.png` });
       }
     }
   }
@@ -101,7 +101,7 @@ test("lesson and tool families fit desktop and mobile in both themes", async ({ 
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Open Menu" }).click();
+  await page.getByRole("button", { name: /Open Menu/i }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   expect(errors).toEqual([]);

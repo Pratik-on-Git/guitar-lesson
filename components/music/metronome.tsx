@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { useEffect, useRef, useState } from "react";
 import { Panel } from "@/components/app/panel";
 import { buttonVariants } from "@/components/ui/button";
@@ -32,10 +34,10 @@ export function Metronome() {
     <div className="metronome-console">
       <div className="metronome-readout"><strong>{bpm}</strong><span>beats / minute</span></div>
       <div className="space-y-6">
-        <label className="block text-sm font-medium">Find your tempo<input aria-label="Metronome tempo" type="range" min={30} max={240} value={bpm} onChange={(e) => setBpm(Number(e.target.value))} className="mt-4 block w-full" /></label>
+        <label className="block text-sm font-medium">{titleCaseLabel(<>Find your tempo<input aria-label="Metronome tempo" type="range" min={30} max={240} value={bpm} onChange={(e) => setBpm(Number(e.target.value))} className="mt-4 block w-full" /></>)}</label>
         <div className="flex items-center gap-2" aria-label={`Beat ${beat + 1} of 4`}>{[0, 1, 2, 3].map((i) => <span key={i} className="metronome-beat" data-active={running && beat === i}>{i + 1}</span>)}<span className="ml-2 text-xs text-muted-foreground">4/4 time</span></div>
       </div>
-      <button type="button" className={buttonVariants({ variant: running ? "secondary" : "default", size: "lg" })} onClick={toggle}>{running ? "Stop metronome" : "Start metronome"}</button>
+      <button type="button" className={buttonVariants({ variant: running ? "secondary" : "default", size: "lg" })} onClick={toggle}>{titleCaseLabel(<>{running ? "Stop metronome" : "Start metronome"}</>)}</button>
     </div>
     {error && <p role="status" className="mt-3 text-sm">{error}</p>}
   </Panel>;

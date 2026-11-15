@@ -1,4 +1,6 @@
 "use client";
+
+import { titleCaseLabel } from "@/lib/title-case";
 import { useEffect, useRef, useState } from "react";
 import { midiFrequency, type SoundEvent } from "@/lib/music/sound";
 import { buttonVariants } from "@/components/ui/button";
@@ -26,5 +28,5 @@ export function ScorePlayer({ events, beats, bpm = 72, label = "Play example" }:
       timer.current = setInterval(() => { const elapsed = context.currentTime - start; setProgress(Math.max(0, Math.min(1, elapsed / length))); if (elapsed > length + 0.12) stop(); }, 80);
     } catch { setError("Audio is unavailable in this browser. Use the visible timing and note tables to study the example."); stop(); }
   }
-  return <div className="flex flex-wrap items-center gap-3"><button type="button" className={buttonVariants({ variant: playing ? "secondary" : "outline" })} disabled={!events.length} onClick={playing ? stop : play}>{playing ? "Stop example" : label}</button>{playing && <progress aria-label="Playback progress" max={1} value={progress} className="h-2 w-32 accent-primary" />}{error && <p role="status" className="w-full text-sm text-muted-foreground">{error}</p>}</div>;
+  return <div className="flex flex-wrap items-center gap-3"><button type="button" className={buttonVariants({ variant: playing ? "secondary" : "outline" })} disabled={!events.length} onClick={playing ? stop : play}>{titleCaseLabel(<>{playing ? "Stop example" : label}</>)}</button>{playing && <progress aria-label="Playback progress" max={1} value={progress} className="h-2 w-32 accent-primary" />}{error && <p role="status" className="w-full text-sm text-muted-foreground">{error}</p>}</div>;
 }

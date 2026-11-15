@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import Link from "next/link";
 import { BOOK_CHORD_TYPES } from "@/lib/content/book";
 import { COLLECTIONS, PENTATONIC_RECIPES, SCALE_CHOICES } from "@/lib/music/applications";
@@ -53,7 +55,7 @@ export function ApplicationExplorer() {
         <div className="mt-4 flex flex-wrap gap-3"><PlayNotes key={`${chord.id}-${rootPc}`} midis={chordTones.map((n) => 48 + rootPc + n.semis)} label="Hear chord" simultaneous /><PlayNotes key={`${collection.id}-${rootPc}`} midis={[...scale.map((n) => 60 + rootPc + n.semis), 72 + rootPc]} label="Hear scale" /></div>
       </Panel>
       <Panel title="All choices for this chord" description="The source's page-99 table, with computed chord-tone containment; use the selected scale for a detailed view.">
-        <SimpleTable columns={["Scale", "Chord tones outside collection", "Explore"]} rows={choices.map((c) => { const tones = buildScale(root, c.formula.map(parseDegree)); const absent = chordTones.filter((t) => !tones.some((n) => pc(n.note) === pc(t.note))); return [<button key="choice" className="text-primary text-left hover:underline" onClick={() => setCollection(c.id)}>{c.name}</button>, absent.map((n) => n.name).join(" ") || "All chord tones present", <Link key="link" className="text-primary hover:underline" href={`${c.href}${c.href.includes("?") ? "&" : "?"}key=${["c", "c-sharp", "d", "d-sharp", "e", "f", "f-sharp", "g", "g-sharp", "a", "a-sharp", "b"][rootPc]}`}>Notes & positions →</Link>]; })} />
+        <SimpleTable columns={["Scale", "Chord tones outside collection", "Explore"]} rows={choices.map((c) => { const tones = buildScale(root, c.formula.map(parseDegree)); const absent = chordTones.filter((t) => !tones.some((n) => pc(n.note) === pc(t.note))); return [<button key="choice" className="text-primary text-left hover:underline" onClick={() => setCollection(c.id)}>{titleCaseLabel(<>{c.name}</>)}</button>, absent.map((n) => n.name).join(" ") || "All chord tones present", <Link key="link" className="text-primary hover:underline" href={`${c.href}${c.href.includes("?") ? "&" : "?"}key=${["c", "c-sharp", "d", "d-sharp", "e", "f", "f-sharp", "g", "g-sharp", "a", "a-sharp", "b"][rootPc]}`}>{titleCaseLabel(<>Notes & positions →</>)}</Link>]; })} />
       </Panel>
     </> : <>
       <Panel title="Create a modal colour with minor pentatonic"><StudySelect label="Desired sound" value={recipe.id} onChange={setRecipe} options={PENTATONIC_RECIPES.map((r) => ({ value: r.id, label: r.name }))} /><p className="mt-4 text-sm leading-6">{recipe.explanation}</p></Panel>

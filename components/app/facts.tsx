@@ -1,3 +1,4 @@
+import { titleCaseLabel } from "@/lib/title-case";
 import { cn } from "@/lib/utils";
 
 /*
@@ -41,7 +42,7 @@ export function Fact({
 }) {
   return (
     <div className={cn("bg-card px-4 py-3", wide && "sm:col-span-full", className)}>
-      <dt className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{label}</dt>
+      <dt className="text-muted-foreground text-xs font-medium tracking-wide">{titleCaseLabel(label)}</dt>
       <dd className="text-foreground mt-1 text-sm font-medium">{value}</dd>
     </div>
   );

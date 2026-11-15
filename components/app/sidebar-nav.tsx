@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useState } from "react";
@@ -97,7 +99,7 @@ function NavList({ pathname, collapsed, onNavigate }: { pathname: string; collap
               )}
               aria-hidden={collapsed || undefined}
             >
-              {group.title}
+              {titleCaseLabel(group.title)}
             </p>
           ) : null}
           <ul className="flex flex-col gap-1">
@@ -150,13 +152,13 @@ function NavEntry({
             aria-current={selfActive ? "page" : undefined}
             aria-label={collapsed ? item.title : undefined}
             className={cn(ITEM, ACTIVE_BAR)}
-          >
+          >{titleCaseLabel(<>
             <Icon aria-hidden />
             <span className={cn("min-w-0 flex-1 truncate", LABEL_FADE)}>{item.title}</span>
             {studied ? (
               <CircleCheck className={cn("text-success size-3.5! shrink-0", LABEL_FADE)} aria-label="Studied" />
             ) : null}
-          </Link>
+          </>)}</Link>
         </Tooltip>
       </li>
     );
@@ -177,7 +179,7 @@ function NavEntry({
         aria-controls={listId}
         onClick={() => setOpen(!expanded)}
         className={cn(ITEM, childActive && !expanded && "bg-sidebar-primary/10 text-sidebar-primary", childActive && "text-sidebar-primary")}
-      >
+      >{titleCaseLabel(<>
         <Icon aria-hidden />
         <span className="min-w-0 flex-1 truncate text-left">{item.title}</span>
         <span
@@ -193,7 +195,7 @@ function NavEntry({
           aria-hidden
           className={cn("size-3.5! shrink-0 transition-transform duration-200 motion-reduce:transition-none", expanded && "rotate-90")}
         />
-      </button>
+      </>)}</button>
 
       {/* Grid rows animate the height without measuring; `inert` keeps folded links out of the tab order. */}
       <div
@@ -215,10 +217,10 @@ function NavEntry({
                   data-active={active}
                   aria-current={active ? "page" : undefined}
                   className={SUB_ITEM}
-                >
+                >{titleCaseLabel(<>
                   <span className="min-w-0 flex-1 truncate">{child.title}</span>
                   {isStudied(child.href) ? <CircleCheck className="text-success size-3.5 shrink-0" aria-label="Studied" /> : null}
-                </Link>
+                </>)}</Link>
               </li>
             );
           })}

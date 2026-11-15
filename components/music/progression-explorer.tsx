@@ -1,4 +1,6 @@
 "use client";
+
+import { titleCaseLabel } from "@/lib/title-case";
 import { useQueryState } from "@/lib/use-query-state";
 import { leadVoices, PROGRESSIONS, realizeProgression, TRANSFORMATIONS, transformProgression } from "@/lib/music/progressions";
 import { noteWithOctave, pc } from "@/lib/music/theory";
@@ -30,7 +32,7 @@ export function ProgressionExplorer() {
       <Segmented label="Progression view" value={tab} onChange={setTab} options={[{ value: "progression", label: "Progression & transposition" }, { value: "reharmonize", label: "Reharmonize" }, { value: "voices", label: "Voice leading" }]} className="mb-5" />
       <RootPicker value={rootPc} onChange={setRootPc} className="mb-5" />
       <div className="grid gap-4 sm:grid-cols-2"><StudySelect label="Progression preset" value={preset.id} onChange={setId} options={PROGRESSIONS.map((p) => ({ value: p.id, label: p.name }))} />{tab === "reharmonize" && <StudySelect label="Reharmonization method" value={kind} onChange={setKind} options={TRANSFORMATIONS.map((t) => ({ value: t.id, label: t.name }))} />}</div>
-      <label className="mt-4 block text-sm font-medium">Tempo · {bpm} BPM<input aria-label="Progression tempo" type="range" min={35} max={180} value={bpm} onChange={(e) => setBpm(e.target.value)} className="mt-2 block w-64 max-w-full accent-primary" /></label>
+      <label className="mt-4 block text-sm font-medium">{titleCaseLabel(<>Tempo · {bpm} BPM<input aria-label="Progression tempo" type="range" min={35} max={180} value={bpm} onChange={(e) => setBpm(e.target.value)} className="mt-2 block w-64 max-w-full accent-primary" /></>)}</label>
     </Panel>
     <Panel title={chords.map((c) => c.name).join(" – ")} description={preset.source}>
       {tab === "reharmonize" && <p className="mb-4 text-sm text-muted-foreground">Original: {original.map((c) => c.name).join(" – ")}. The original and new version both span {total} quarter-note beats. If the chosen progression has no applicable target chord, that operation leaves it unchanged.</p>}

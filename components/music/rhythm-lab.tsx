@@ -1,4 +1,6 @@
 "use client";
+
+import { titleCaseLabel } from "@/lib/title-case";
 import { useQueryState } from "@/lib/use-query-state";
 import { compileRhythm, crossRhythm, METERS, meterPulses, RHYTHM_EXERCISES, RHYTHM_UNITS, unitCells } from "@/lib/music/rhythm";
 import type { SoundEvent } from "@/lib/music/sound";
@@ -32,18 +34,18 @@ export function RhythmLab() {
   return <div className="flex flex-col gap-5">
     <Panel title="Keep the pulse, change the pattern" description="Tempo here is measured in quarter-note units per minute. Sound durations, attacks and rests are generated from exact subdivision values.">
       <Segmented label="Rhythm lab view" value={tab} onChange={setTab} options={[{ value: "builder", label: "17 units & four-bar builder" }, { value: "meter", label: "Meter comparison" }, { value: "cross-rhythms", label: "Cross-rhythms" }]} />
-      <label className="mt-5 block text-sm font-medium">Tempo · {bpm} quarter notes/min<input aria-label="Rhythm tempo" type="range" min={30} max={200} value={bpm} onChange={(e) => setTempo(e.target.value)} className="mt-3 block w-full max-w-xs accent-primary" /></label>
+      <label className="mt-5 block text-sm font-medium">{titleCaseLabel(<>Tempo · {bpm} quarter notes/min<input aria-label="Rhythm tempo" type="range" min={30} max={200} value={bpm} onChange={(e) => setTempo(e.target.value)} className="mt-3 block w-full max-w-xs accent-primary" /></>)}</label>
     </Panel>
     {tab === "builder" ? <>
       <Panel title="Four-bar rhythm builder" description="Each cell is one quarter-note beat in 4/4. Replace units, load a source exercise, then play the complete sixteen-beat phrase. Your arrangement stays in the URL.">
-        <div className="mb-5 flex flex-wrap gap-2">{RHYTHM_EXERCISES.map((e) => <button key={e.id} type="button" onClick={() => setPattern(e.bars.flat().join(","))} className={buttonVariants({ variant: "outline", size: "sm" })}>{e.name}</button>)}</div>
-        <div className="space-y-5">{bars.map((bar, row) => <div key={row}><h3 className="mb-2 text-sm font-semibold">Bar {row + 1}</h3><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{bar.map((id, beat) => <div key={beat} className="min-w-0 space-y-3 rounded-xl border p-3"><StudySelect label={`Bar ${row + 1}, beat ${beat + 1}`} value={String(id)} onChange={(value) => setPattern(cells.map((n, i) => i === row * 4 + beat ? Number(value) : n).join(","))} options={RHYTHM_UNITS.map((u) => ({ value: String(u.id), label: `${u.id}. ${u.name}` }))} /><UnitStrip id={id} /><p className="text-xs text-muted-foreground">{RHYTHM_UNITS[id - 1].count.replace("1", String(beat + 1))}</p></div>)}</div></div>)}</div>
+        <div className="mb-5 flex flex-wrap gap-2">{RHYTHM_EXERCISES.map((e) => <button key={e.id} type="button" onClick={() => setPattern(e.bars.flat().join(","))} className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<>{e.name}</>)}</button>)}</div>
+        <div className="space-y-5">{bars.map((bar, row) => <div key={row}><h3 className="mb-2 text-sm font-semibold">{titleCaseLabel(<>Bar {row + 1}</>)}</h3><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{bar.map((id, beat) => <div key={beat} className="min-w-0 space-y-3 rounded-xl border p-3"><StudySelect label={`Bar ${row + 1}, beat ${beat + 1}`} value={String(id)} onChange={(value) => setPattern(cells.map((n, i) => i === row * 4 + beat ? Number(value) : n).join(","))} options={RHYTHM_UNITS.map((u) => ({ value: String(u.id), label: `${u.id}. ${u.name}` }))} /><UnitStrip id={id} /><p className="text-xs text-muted-foreground">{RHYTHM_UNITS[id - 1].count.replace("1", String(beat + 1))}</p></div>)}</div></div>)}</div>
         <p className="my-4 text-sm text-muted-foreground">● Attack · — Hold · · Rest. The twelve-cell strip represents one beat; sixteenths begin at cells 1/4/7/10, triplets at 1/5/9.</p>
         <ScorePlayer key={`${pattern}-${bpm}`} events={events} beats={16} bpm={bpm} label="Play four bars" />
         <p className="mt-4 text-xs text-muted-foreground">Source sequence 2, final beat: a sixteenth rest plus dotted eighth, correcting the missing dot in PDF p. 220&apos;s summary.</p>
       </Panel>
       <Panel title="All 17 source rhythm units" description="Choose a unit to practice it on every beat of all four bars. Every unit totals one quarter-note beat; sounding time and silence remain distinct.">
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{RHYTHM_UNITS.map((unit) => <button type="button" key={unit.id} onClick={() => setPattern(Array(16).fill(unit.id).join(","))} className="space-y-3 rounded-xl border p-4 text-left transition-colors hover:border-primary hover:bg-primary/5"><p className="text-sm font-semibold">{unit.id}. {unit.name}</p><UnitStrip id={unit.id} /><p className="text-xs text-muted-foreground">{unit.count} · PDF p. {unit.page}</p></button>)}</div>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{RHYTHM_UNITS.map((unit) => <button type="button" key={unit.id} onClick={() => setPattern(Array(16).fill(unit.id).join(","))} className="space-y-3 rounded-xl border p-4 text-left transition-colors hover:border-primary hover:bg-primary/5">{titleCaseLabel(<><p className="text-sm font-semibold">{unit.id}. {unit.name}</p><UnitStrip id={unit.id} /><p className="text-xs text-muted-foreground">{unit.count} · PDF p. {unit.page}</p></>)}</button>)}</div>
       </Panel>
     </> : tab === "meter" ? <Panel title="Hear the grouping" description="3/4 and 6/8 both contain six eighths. Keep their total duration fixed here and listen to three groups of two versus two groups of three.">
       <StudySelect label="Meter" value={meter.meter.id} onChange={setMeter} options={METERS.map((m) => ({ value: m.id, label: m.name }))} />

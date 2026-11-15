@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { useState } from "react";
 import { ScorePlayer } from "@/components/music/score-player";
 import { midiFrequency } from "@/lib/music/sound";
@@ -147,10 +149,10 @@ export function TuningPanel() {
   const shifted = reference * 2 ** (oct + semi / 12 + cents / 1200);
   const total = oct * 1200 + semi * 100 + cents;
   const slider = (label: string, value: number, set: (n: number) => void, min: number, max: number, unit: string) => (
-    <label className="flex flex-col gap-2 rounded-xl border p-3 text-sm font-medium">
+    <label className="flex flex-col gap-2 rounded-xl border p-3 text-sm font-medium">{titleCaseLabel(<>
       <span className="flex justify-between">{label}<span className="font-mono">{value > 0 ? "+" : ""}{value} {unit}</span></span>
       <input type="range" min={min} max={max} value={value} onChange={(e) => set(Number(e.target.value))} className="accent-primary" aria-label={`${label} (${unit})`} />
-    </label>
+    </>)}</label>
   );
   return (
     <div className="space-y-4">

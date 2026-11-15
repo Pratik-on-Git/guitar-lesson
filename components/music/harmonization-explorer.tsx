@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { getScale } from "@/lib/music/scales";
 import { buildScale, harmonize, neckNotes, parseDegree, spellRoot } from "@/lib/music/theory";
 import { useQueryState } from "@/lib/use-query-state";
@@ -33,7 +35,7 @@ export function HarmonizationExplorer() {
       {!horizontal && <StudySelect label="Fret region" value={String(fret)} onChange={setFret} options={[0, 3, 5, 7, 9, 12, 15, 19].map((n) => ({ value: String(n), label: `Frets ${n}–${n + 4}` }))} />}
     </div></Panel>
     <Panel title="Diatonic chords" description={`${scale.map((n) => n.name).join(" ")} · select a degree to isolate its tones.`}>
-      <SimpleTable columns={["Degree", "Chord", "Quality", "Notes"]} rows={chords.map((c, i) => [<button key="select" aria-pressed={degree === i} className="text-primary rounded border px-3 py-1 font-medium hover:bg-primary/10 aria-pressed:bg-primary/15" onClick={() => setDegree(String(i))}>{c.roman}</button>, triads ? c.triad : c.seventh, triads ? c.triadQuality : c.seventhQuality, c.notes.slice(0, triads ? 3 : 4).join(" ")])} />
+      <SimpleTable columns={["Degree", "Chord", "Quality", "Notes"]} rows={chords.map((c, i) => [<button key="select" aria-pressed={degree === i} className="text-primary rounded border px-3 py-1 font-medium hover:bg-primary/10 aria-pressed:bg-primary/15" onClick={() => setDegree(String(i))}>{titleCaseLabel(<>{c.roman}</>)}</button>, triads ? c.triad : c.seventh, triads ? c.triadQuality : c.seventhQuality, c.notes.slice(0, triads ? 3 : 4).join(" ")])} />
     </Panel>
     <Panel title={`${triads ? selectedChord.triad : selectedChord.seventh} · ${horizontal ? "horizontal" : "vertical"} practice`} description={horizontal ? "Find each highlighted chord tone along its string, then move to the next degree. Use the atlas's reference root strings when practicing a particular source shape." : "Only chord tones in the selected five-fret region are emphasized. Keep your hand here as you change scale degrees; the region is not a numbered source box."}>
       <Fretboard notes={notes} highlight={highlight} rootIndex={degree} startFret={horizontal ? 0 : fret} frets={horizontal ? 24 : fret + 4} label={(i) => scale[i].name} title={`${selectedChord.seventh} tones within ${horizontal ? "the whole neck" : `frets ${fret} to ${fret + 4}`}`} />

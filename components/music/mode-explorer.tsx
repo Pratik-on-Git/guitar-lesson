@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { useState } from "react";
 import { getFamily } from "@/lib/music/modes";
 import { BookSource } from "@/components/content/book-source";
@@ -101,10 +103,10 @@ export function ModeExplorer({ familyId, modeNotes }: { familyId: string; modeNo
                   "min-w-32 flex-1 flex-col items-start gap-0 px-3 py-2 text-left",
                   selected && SEGMENTED_ITEM_ACTIVE,
                 )}
-              >
+              >{titleCaseLabel(<>
                 <span className={cn("text-xs font-normal", selected ? "text-primary/80" : "text-muted-foreground")}>Mode {m.start + 1}</span>
                 <span className="text-sm">{m.name.replace(/^Mode \d · /, "")}</span>
-              </button>
+              </>)}</button>
             );
           })}
         </div>
@@ -208,11 +210,11 @@ function FamilyMatrix({ familyId, parentRoot, activeStart }: { familyId: string;
         <table className={cn(tableCls, "min-w-[760px]")}>
           <thead>
             <tr>
-              <th className={thCls}>Mode</th>
+              <th className={thCls}>{titleCaseLabel(<>Mode</>)}</th>
               {columns.map((c) => (
-                <th key={c} className={cn(thCls, "px-0! text-center!")}>
+                <th key={c} className={cn(thCls, "px-0! text-center!")}>{titleCaseLabel(<>
                   {c}
-                </th>
+                </>)}</th>
               ))}
             </tr>
           </thead>
@@ -224,9 +226,9 @@ function FamilyMatrix({ familyId, parentRoot, activeStart }: { familyId: string;
               const active = m.start === activeStart;
               return (
                 <tr key={m.id} aria-current={active || undefined} className={cn(active && "bg-primary/5 hover:bg-primary/10!")}>
-                  <th scope="row" className={cn(tdCls, "font-medium whitespace-nowrap!", active && "text-primary!")}>
+                  <th scope="row" className={cn(tdCls, "font-medium whitespace-nowrap!", active && "text-primary!")}>{titleCaseLabel(<>
                     <span className="text-muted-foreground tabular-nums">{m.start + 1}.</span> {m.name.replace(/^Mode \d · /, "")}
-                  </th>
+                  </>)}</th>
                   {columns.map((_, semi) => {
                     const s = semi === 12 ? scale[0] : bySemi.get(semi);
                     return (

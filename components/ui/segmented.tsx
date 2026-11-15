@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { cn } from "@/lib/utils";
 
 /* Recessed track with raised selection; exported styles also serve music pickers. */
@@ -73,7 +75,7 @@ export function Segmented<T extends string | number>({
               size === "sm" ? "px-2.5 py-1 text-caption" : "px-3 py-1.5 text-body",
               selected && SEGMENTED_ITEM_ACTIVE,
             )}
-          >
+          >{titleCaseLabel(<>
             {option.label}
             {option.count !== undefined ? (
               <span
@@ -85,7 +87,7 @@ export function Segmented<T extends string | number>({
                 {option.count}
               </span>
             ) : null}
-          </button>
+          </>)}</button>
         );
       })}
     </div>

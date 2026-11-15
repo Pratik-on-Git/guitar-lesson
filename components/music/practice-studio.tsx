@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import Link from "next/link";
 import { useState } from "react";
 import { checkExerciseAnswer, exerciseQuestion, EXERCISE_TYPES } from "@/lib/music/exercises";
@@ -47,14 +49,14 @@ function TheoryQuiz({ kind }: { kind: string }) {
   function next() { setIndex((i) => i + 1); setInput(""); setResult(null); setRevealed(false); }
   return <div className="space-y-4">
     <p className="text-sm text-muted-foreground">Question {index + 1} · {score.correct}/{score.attempted} correct in this drill</p>
-    <h3 className="text-lg font-semibold">{question.prompt}</h3>
+    <h3 className="text-lg font-semibold">{titleCaseLabel(<>{question.prompt}</>)}</h3>
     <p className="text-sm text-muted-foreground">{question.hint}</p>
     <form onSubmit={check} className="flex flex-col gap-3 sm:flex-row">
-      <label className="min-w-0 flex-1"><span className="sr-only">Your answer</span><input aria-label="Your answer" autoComplete="off" spellCheck={false} value={input} disabled={result !== null || revealed} onChange={(e) => setInput(e.target.value)} className="w-full rounded-lg border bg-background px-3 py-2 text-sm" /></label>
-      <button type="submit" disabled={!input.trim() || result !== null || revealed} className={buttonVariants()}>Check answer</button>
+      <label className="min-w-0 flex-1">{titleCaseLabel(<><span className="sr-only">Your answer</span><input aria-label="Your answer" autoComplete="off" spellCheck={false} value={input} disabled={result !== null || revealed} onChange={(e) => setInput(e.target.value)} className="w-full rounded-lg border bg-background px-3 py-2 text-sm" /></>)}</label>
+      <button type="submit" disabled={!input.trim() || result !== null || revealed} className={buttonVariants()}>{titleCaseLabel(<>Check answer</>)}</button>
     </form>
     {(result !== null || revealed) && <div role="status" className={`rounded-xl border p-4 text-sm leading-6 ${result === true ? "border-success/40 bg-success/5" : "border-primary/30 bg-primary/5"}`}><p className="font-semibold">{revealed ? "Answer" : result ? "Correct" : "Review the spelling"}: {question.answer}</p><p>{question.explanation}</p>{revealed && <p className="text-muted-foreground">Revealed answers do not count toward your score.</p>}</div>}
-    <div className="flex flex-wrap gap-3"><button type="button" className={buttonVariants({ variant: "outline" })} disabled={result !== null || revealed} onClick={() => setRevealed(true)}>Reveal answer</button><button type="button" className={buttonVariants({ variant: "soft" })} onClick={next}>Next question →</button></div>
+    <div className="flex flex-wrap gap-3"><button type="button" className={buttonVariants({ variant: "outline" })} disabled={result !== null || revealed} onClick={() => setRevealed(true)}>{titleCaseLabel(<>Reveal answer</>)}</button><button type="button" className={buttonVariants({ variant: "soft" })} onClick={next}>{titleCaseLabel(<>Next question →</>)}</button></div>
   </div>;
 }
 
@@ -77,10 +79,10 @@ export function PracticeStudio() {
     <AssignmentBank />
     <Panel title="Build a practice session" description="A progressive routine for every practical chapter. Checked steps are saved per root and focus in this browser.">
       <RootPicker value={rootPc} onChange={(value) => { setRootPc(value); setSaved(false); }} label="Practice root" className="mb-5" />
-      <div className="grid gap-4 sm:grid-cols-3"><StudySelect label="Practice focus" value={focus.id} onChange={(value) => { setFocus(value); setSaved(false); }} options={FOCUSES.map((f) => ({ value: f.id, label: f.name }))} /><label className="text-sm font-medium">Minutes<input aria-label="Session minutes" type="number" min={1} max={240} value={minutes} onChange={(e) => { setMinutes(Math.max(1, Math.min(240, Number(e.target.value) || 1))); setSaved(false); }} className="mt-2 w-full rounded-lg border bg-background p-3" /></label><label className="text-sm font-medium">Working tempo<input aria-label="Session tempo" type="number" min={30} max={240} value={bpm} onChange={(e) => { setBpm(Math.max(30, Math.min(240, Number(e.target.value) || 30))); setSaved(false); }} className="mt-2 w-full rounded-lg border bg-background p-3" /></label></div>
+      <div className="grid gap-4 sm:grid-cols-3"><StudySelect label="Practice focus" value={focus.id} onChange={(value) => { setFocus(value); setSaved(false); }} options={FOCUSES.map((f) => ({ value: f.id, label: f.name }))} /><label className="text-sm font-medium">{titleCaseLabel(<>Minutes<input aria-label="Session minutes" type="number" min={1} max={240} value={minutes} onChange={(e) => { setMinutes(Math.max(1, Math.min(240, Number(e.target.value) || 1))); setSaved(false); }} className="mt-2 w-full rounded-lg border bg-background p-3" /></>)}</label><label className="text-sm font-medium">{titleCaseLabel(<>Working tempo<input aria-label="Session tempo" type="number" min={30} max={240} value={bpm} onChange={(e) => { setBpm(Math.max(30, Math.min(240, Number(e.target.value) || 30))); setSaved(false); }} className="mt-2 w-full rounded-lg border bg-background p-3" /></>)}</label></div>
       <p className="my-4 text-sm text-muted-foreground">{ROOTS[rootPc].label} · {focus.name} · source pp. {focus.pages} · {selected.length}/{routine.length} steps checked</p>
-      <ol className="space-y-3">{routine.map((text, i) => <li key={i}><label className="flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm leading-6"><input type="checkbox" className="mt-1 size-4 shrink-0 accent-primary" checked={tasks.includes(`${prefix}${i}`)} onChange={() => { const id = `${prefix}${i}`; setTasks(tasks.includes(id) ? tasks.filter((t) => t !== id) : [...tasks, id]); setSaved(false); }} /><span>{i + 1}. {text}</span></label></li>)}</ol>
-      <div className="mt-5 flex flex-wrap items-center gap-3"><Link href={href} className={buttonVariants({ variant: "outline" })}>Open practice material →</Link><button type="button" disabled={saved || !selected.length} className={buttonVariants()} onClick={save}>{saved ? "Session saved" : "Save session"}</button></div>
+      <ol className="space-y-3">{routine.map((text, i) => <li key={i}><label className="flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm leading-6">{titleCaseLabel(<><input type="checkbox" className="mt-1 size-4 shrink-0 accent-primary" checked={tasks.includes(`${prefix}${i}`)} onChange={() => { const id = `${prefix}${i}`; setTasks(tasks.includes(id) ? tasks.filter((t) => t !== id) : [...tasks, id]); setSaved(false); }} /><span>{i + 1}. {text}</span></>)}</label></li>)}</ol>
+      <div className="mt-5 flex flex-wrap items-center gap-3"><Link href={href} className={buttonVariants({ variant: "outline" })}>{titleCaseLabel(<>Open practice material →</>)}</Link><button type="button" disabled={saved || !selected.length} className={buttonVariants()} onClick={save}>{titleCaseLabel(<>{saved ? "Session saved" : "Save session"}</>)}</button></div>
       {saved && <p role="status" className="mt-3 text-sm text-success">Saved locally with {selected.length} completed steps. You can review it below.</p>}
     </Panel>
     <Panel title="Recent practice" description="Your last 30 saved sessions. Minutes and tempo are your entered practice notes.">

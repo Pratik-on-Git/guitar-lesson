@@ -1,3 +1,5 @@
+
+import { titleCaseLabel } from "@/lib/title-case";
 import { BOOK_CHORD_TYPES } from "@/lib/content/book";
 import { degreeSemitones, mod, noteName, parseDegree, spellDegree, spellRoot } from "@/lib/music/theory";
 
@@ -23,7 +25,7 @@ export function ParentHarmony({ scale, rootPc = 9 }: { scale: "major-pentatonic"
     <div className="overflow-x-auto rounded-xl border">
       <table className="w-full min-w-[520px] border-collapse text-sm">
         <caption className="sr-only">Seventh chords available on each pentatonic degree, by parent mode</caption>
-        <thead className="bg-muted/70 text-left text-xs"><tr><th className="px-3 py-2">Degree</th>{parents.map(([name]) => <th key={name} className="border-l px-2">{name}</th>)}<th className="border-l px-2">Choices</th></tr></thead>
+        <thead className="bg-muted/70 text-left text-xs"><tr><th className="px-3 py-2">{titleCaseLabel(<>Degree</>)}</th>{parents.map(([name]) => <th key={name} className="border-l px-2">{titleCaseLabel(<>{name}</>)}</th>)}<th className="border-l px-2">{titleCaseLabel(<>Choices</>)}</th></tr></thead>
         <tbody>
           {formula.map((degree) => {
             const per = parents.map(([, f]) => {
@@ -37,7 +39,7 @@ export function ParentHarmony({ scale, rootPc = 9 }: { scale: "major-pentatonic"
             const name = noteName(spellDegree(root, parseDegree(degree)));
             return (
               <tr key={degree} className="border-t">
-                <th scope="row" className="px-3 py-1.5 text-left font-semibold">{name} <span className="text-muted-foreground text-xs font-normal">({degree === "1" ? "I" : ["I", "II", "III", "IV", "V", "VI", "VII"][parseDegree(degree).num - 1]})</span></th>
+                <th scope="row" className="px-3 py-1.5 text-left font-semibold">{titleCaseLabel(<>{name} <span className="text-muted-foreground text-xs font-normal">({degree === "1" ? "I" : ["I", "II", "III", "IV", "V", "VI", "VII"][parseDegree(degree).num - 1]})</span></>)}</th>
                 {per.map((q, i) => <td key={i} className="border-l px-2 font-mono text-xs">{name}{q}</td>)}
                 <td className="border-l px-2"><span className="flex flex-wrap gap-1">{unique.map((q) => <span key={q} className="bg-seq-1 rounded-md px-1.5 py-0.5 font-mono text-xs font-semibold">{name}{q}</span>)}</span></td>
               </tr>
@@ -57,13 +59,13 @@ export function ContainedChords({ formula, rootPc = 9 }: { formula: string[]; ro
     <div className="overflow-x-auto rounded-xl border">
       <table className="w-full min-w-[640px] border-collapse text-center text-xs">
         <caption className="sr-only">Chord types whose tones all lie inside the scale, on each degree</caption>
-        <thead className="bg-muted/70"><tr><th className="px-3 py-2 text-left">Root</th>{BOOK_CHORD_TYPES.map((c) => <th key={c.id} className="border-l px-1 py-1.5 font-semibold">{c.symbol || "maj"}</th>)}</tr></thead>
+        <thead className="bg-muted/70"><tr><th className="px-3 py-2 text-left">{titleCaseLabel(<>Root</>)}</th>{BOOK_CHORD_TYPES.map((c) => <th key={c.id} className="border-l px-1 py-1.5 font-semibold">{titleCaseLabel(<>{c.symbol || "maj"}</>)}</th>)}</tr></thead>
         <tbody>
           {formula.map((degree) => {
             const base = mod(degreeSemitones(parseDegree(degree)), 12);
             return (
               <tr key={degree} className="border-t">
-                <th scope="row" className="px-3 py-1 text-left font-semibold whitespace-nowrap">{noteName(spellDegree(root, parseDegree(degree)))}</th>
+                <th scope="row" className="px-3 py-1 text-left font-semibold whitespace-nowrap">{titleCaseLabel(<>{noteName(spellDegree(root, parseDegree(degree)))}</>)}</th>
                 {BOOK_CHORD_TYPES.map((c) => {
                   const ok = semisOf(c.formula).every((s) => set.has(mod(base + s, 12)));
                   return <td key={c.id} className="border-l p-0.5">{ok ? <span className="bg-series-1 mx-auto block size-5 rounded-full" title={`${c.name} on this degree`}><span className="sr-only">contained</span></span> : <span className="text-muted-foreground/40">·</span>}</td>;

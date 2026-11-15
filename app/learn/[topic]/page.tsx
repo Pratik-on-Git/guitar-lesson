@@ -1,3 +1,5 @@
+
+import { titleCaseLabel } from "@/lib/title-case";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -70,14 +72,14 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
           {BOOK_TOPIC_PAGES[topic.slug] && <BookSource pages={BOOK_TOPIC_PAGES[topic.slug]} />}
           {THEORY_TOPIC_PAGES[topic.slug] && <TheoryBookSource pages={THEORY_TOPIC_PAGES[topic.slug]} />}
           <nav aria-label="Continue studying" className="flex flex-wrap justify-between gap-4 text-sm font-medium text-primary">
-            <Link href="/">← Study map</Link>
-            <Link href="/practice">Put this into practice →</Link>
+            <Link href="/">{titleCaseLabel(<>← Study map</>)}</Link>
+            <Link href="/practice">{titleCaseLabel(<>Put this into practice →</>)}</Link>
           </nav>
         </div>
         {topic.sections.length > 2 && (
           <nav aria-label="On this page" className="hidden xl:block">
             <div className="sticky top-24">
-              <p className="text-muted-foreground mb-3 text-xs font-medium tracking-wide uppercase">On This Page</p>
+              <p className="text-muted-foreground mb-3 text-xs font-medium tracking-wide">On This Page</p>
               <ol className="border-border flex flex-col gap-0.5 border-l">
                 {topic.sections.map((s) => (
                   <li key={s.id}>

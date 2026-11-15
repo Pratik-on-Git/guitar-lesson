@@ -1,16 +1,19 @@
 "use client";
 
+import { titleCase, titleCaseLabel } from "@/lib/title-case";
+
 import { useEffect, useId, useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function StudySelect({ label, value, onChange, options }: { label: string; value: string; onChange: (value: string) => void; options: { value: string; label: string }[] }) {
   const id = useId();
+  const items = options.map(option => ({ ...option, label: titleCase(option.label) }));
   return <div className="flex min-w-0 flex-1 flex-col gap-2 text-sm font-medium">
-    <label htmlFor={id}>{label}</label>
-    <Select items={options} value={value} onValueChange={(next) => { if (next !== null) onChange(next); }}>
+    <label htmlFor={id}>{titleCaseLabel(<>{label}</>)}</label>
+    <Select items={items} value={value} onValueChange={(next) => { if (next !== null) onChange(next); }}>
       <SelectTrigger id={id} className="w-full min-w-0"><SelectValue /></SelectTrigger>
-      <SelectContent alignItemWithTrigger={false}><SelectGroup>{options.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectGroup></SelectContent>
+      <SelectContent alignItemWithTrigger={false}><SelectGroup>{items.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectGroup></SelectContent>
     </Select>
   </div>;
 }
@@ -41,5 +44,5 @@ export function PlayNotes({ midis, label = "Play notes", simultaneous = false }:
       timer.current = setTimeout(stop, (simultaneous ? 1.8 : midis.length * 0.32 + 0.2) * 1000);
     } catch { setError("Audio is unavailable in this browser. The note sequence is shown below."); stop(); }
   }
-  return <div className="space-y-2"><button type="button" onClick={playing ? stop : play} className={buttonVariants({ variant: "outline", size: "sm" })}>{playing ? "Stop playback" : label}</button>{error && <p role="status" className="text-sm text-muted-foreground">{error}</p>}</div>;
+  return <div className="space-y-2"><button type="button" onClick={playing ? stop : play} className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<>{playing ? "Stop playback" : label}</>)}</button>{error && <p role="status" className="text-sm text-muted-foreground">{error}</p>}</div>;
 }

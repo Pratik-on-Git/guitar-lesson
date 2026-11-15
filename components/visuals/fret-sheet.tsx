@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { degreeSemitones, mod, noteName, parseDegree, prettyDegree, spellDegree, spellRoot, TUNING } from "@/lib/music/theory";
 import { parseMarks, type FretSheet, type SheetDiagram } from "@/lib/content/fretboard-sheet-types";
 import { cn } from "@/lib/utils";
@@ -74,8 +76,8 @@ export function FretSheetView({ sheet, rootPc = 9, labels = "degree" }: { sheet:
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-primary text-xs font-semibold tracking-wide uppercase">{sheet.section} · p. {sheet.page}</p>
-          <h3 className="text-heading font-semibold">{rootName} {sheet.title.replace(/ shapes$/, "")}{sheet.kind === "shapes" ? " shapes" : ""}</h3>
+          <p className="text-primary text-xs font-semibold tracking-wide">{sheet.section} · p. {sheet.page}</p>
+          <h3 className="text-heading font-semibold">{titleCaseLabel(<>{rootName} {sheet.title.replace(/ shapes$/, "")}{sheet.kind === "shapes" ? " shapes" : ""}</>)}</h3>
         </div>
         <SheetLegend doubles={doubles} />
       </div>
@@ -93,10 +95,10 @@ export function FretSheetView({ sheet, rootPc = 9, labels = "degree" }: { sheet:
         {sheet.groups.map((group) => (
           <section key={group.title || "positions"} className="min-w-0">
             {group.title && (
-              <h4 className="mb-3 flex flex-wrap items-baseline gap-x-3 font-semibold">
+              <h4 className="mb-3 flex flex-wrap items-baseline gap-x-3 font-semibold">{titleCaseLabel(<>
                 {group.title}
                 <span className="text-muted-foreground text-xs font-normal">{group.formula.map((d) => (d === "1" ? "R" : prettyDegree(d))).join(" · ")}</span>
-              </h4>
+              </>)}</h4>
             )}
             <div className={cn("grid gap-x-6 gap-y-5", twoColumns ? "" : "sm:grid-cols-2", sheet.kind.startsWith("drop") && "lg:grid-cols-4 sm:grid-cols-2")}>
               {group.diagrams.map((d) => (
@@ -116,17 +118,17 @@ function SheetTable({ sheet }: { sheet: FretSheet }) {
   return (
     <div className="grid gap-3 lg:grid-cols-[1.4fr_1fr]">
       <div className="rounded-xl border p-4">
-        <p className="text-muted-foreground mb-3 text-xs font-medium tracking-wide uppercase">Intervallic & melodic formula</p>
+        <p className="text-muted-foreground mb-3 text-xs font-medium tracking-wide">Intervallic & melodic formula</p>
         <IntervalRuler formula={formula} />
         <p className="mt-3 font-mono text-sm">{t.melodic.split(" ").join(" · ")}</p>
       </div>
       <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
         <div className="rounded-xl border p-4">
-          <dt className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Harmonic formula</dt>
+          <dt className="text-muted-foreground text-xs font-medium tracking-wide">Harmonic formula</dt>
           <dd className="mt-2 flex flex-wrap gap-1.5">{t.harmonic.startsWith("See") ? <span className="text-sm">Shown below ({t.harmonic.replace("See ", "book ")})</span> : t.harmonic.split(" ").map((c) => <span key={c} className="bg-muted rounded-md px-2 py-0.5 font-mono text-xs">{c}</span>)}</dd>
         </div>
         <div className="rounded-xl border p-4">
-          <dt className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Root-chord extensions</dt>
+          <dt className="text-muted-foreground text-xs font-medium tracking-wide">Root-chord extensions</dt>
           <dd className="mt-2 text-sm font-semibold">{t.extensions}</dd>
         </div>
       </dl>

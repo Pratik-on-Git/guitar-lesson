@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { ChordStrip, formulaFromSemis } from "@/components/visuals/chord-grips";
 
 import Link from "next/link";
@@ -52,10 +54,10 @@ export function ScaleExplorer({ scaleId, notes }: { scaleId: string; notes: Reac
         description={def.mood ?? def.family}
         action={
           def.modesHref ? (
-            <Link href={def.modesHref} className={buttonVariants({ variant: "outline", size: "sm" })}>
+            <Link href={def.modesHref} className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<>
               See Its Modes
               <ArrowRight aria-hidden />
-            </Link>
+            </>)}</Link>
           ) : undefined
         }
       >

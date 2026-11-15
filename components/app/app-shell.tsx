@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, Suspense, useEffect, useState, useSyncExternalStore } from "react";
@@ -91,11 +93,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     aria-label="Open Menu"
                     onClick={() => setSheet(true)}
                     className="size-8 lg:hidden [&_svg]:size-5!"
-                  >
+                  >{titleCaseLabel(<>
                     <Menu />
-                  </Button>
+                  </>)}</Button>
                   <SheetContent>
-                    <DialogTitle className="sr-only">Study topics</DialogTitle>
+                    <DialogTitle className="sr-only">{titleCaseLabel(<>Study topics</>)}</DialogTitle>
                     <SidebarBrand collapsed={false} onNavigate={() => setSheet(false)} />
                     <div className="minimal-scrollbar min-h-0 flex-1 overflow-y-auto border-t pt-1">
                       <SidebarNav onNavigate={() => setSheet(false)} />
@@ -122,15 +124,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     aria-label={sidebarAction}
                     aria-keyshortcuts={apple ? "Meta+B" : "Control+B"}
                     className="hidden size-8 lg:inline-flex [&_svg]:size-5!"
-                  >
+                  >{titleCaseLabel(<>
                     {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
-                  </Button>
+                  </>)}</Button>
                 </Tooltip>
                 {/* Phones have no room for the trail; the mark says where you are instead. */}
-                <Link href="/" className="flex min-w-0 items-center gap-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/50 @xl/header:hidden">
+                <Link href="/" className="flex min-w-0 items-center gap-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/50 @xl/header:hidden">{titleCaseLabel(<>
                   <BrandMark className="size-7 rounded-md" />
                   <span className="truncate text-sm font-semibold">Guitar Notes</span>
-                </Link>
+                </>)}</Link>
                 <Separator orientation="vertical" className="hidden h-4! self-center @xl/header:block" />
                 <Suspense fallback={<div className="min-w-0 flex-1" />}>
                   <Breadcrumbs />
@@ -168,7 +170,7 @@ function SidebarBrand({ collapsed, onNavigate }: { collapsed: boolean; onNavigat
           MORPH,
           collapsed && "w-9 px-0",
         )}
-      >
+      >{titleCaseLabel(<>
         <BrandMark />
         <span
           className={cn(
@@ -179,7 +181,7 @@ function SidebarBrand({ collapsed, onNavigate }: { collapsed: boolean; onNavigat
           <span className="text-foreground truncate text-base font-semibold">Guitar Notes</span>
           <span className="text-sidebar-foreground/60 truncate text-xs">A little more musical.</span>
         </span>
-      </Link>
+      </>)}</Link>
     </div>
   );
 }
@@ -204,9 +206,9 @@ function SidebarProgress({ collapsed, onNavigate }: { collapsed: boolean; onNavi
             href={next?.href ?? "/"}
             aria-label={next ? `Continue with ${next.title}` : "Overview"}
             className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring/50 grid size-9 place-items-center rounded-lg outline-none focus-visible:ring-3"
-          >
+          >{titleCaseLabel(<>
             <GraduationCap className="size-4" aria-hidden />
-          </Link>
+          </>)}</Link>
         </Tooltip>
       </div>
     );
@@ -252,10 +254,10 @@ function SidebarProgress({ collapsed, onNavigate }: { collapsed: boolean; onNavi
               buttonVariants({ size: "sm" }),
               "bg-primary-foreground text-primary hover:bg-primary-foreground/90 dark:bg-primary-foreground dark:hover:bg-primary-foreground/90 h-8 w-full justify-between",
             )}
-          >
+          >{titleCaseLabel(<>
             <span className="min-w-0 truncate">Next: {next.title}</span>
             <ArrowRight aria-hidden />
-          </Link>
+          </>)}</Link>
         ) : (
           <p className="flex items-center gap-1.5 text-xs font-medium">
             <Sparkles className="size-3.5" aria-hidden />
@@ -287,14 +289,14 @@ function Breadcrumbs() {
               <li className={cn("min-w-0", !last && "hidden @3xl/header:block")}>
                 {last ? (
                   <span aria-current="page" className="text-primary block max-w-[16rem] truncate font-medium">
-                    {crumb.label}
+                    {titleCaseLabel(crumb.label)}
                   </span>
                 ) : crumb.href ? (
-                  <Link href={crumb.href} className="hover:text-foreground block max-w-[16rem] truncate transition-colors">
-                    {crumb.label}
-                  </Link>
+                  <Link href={crumb.href} className="hover:text-foreground block max-w-[16rem] truncate transition-colors">{titleCaseLabel(<>
+                    {titleCaseLabel(crumb.label)}
+                  </>)}</Link>
                 ) : (
-                  <span className="block max-w-[16rem] truncate">{crumb.label}</span>
+                  <span className="block max-w-[16rem] truncate">{titleCaseLabel(crumb.label)}</span>
                 )}
               </li>
             </Fragment>
@@ -311,16 +313,16 @@ function Footer() {
       <div className="text-muted-foreground mx-auto flex w-full max-w-360 items-center justify-between gap-3 px-4 py-3 max-sm:flex-col sm:gap-6 sm:px-6">
         <p className="text-sm text-balance max-sm:text-center">Guitar Notes · Theory & practice</p>
         <div className="flex flex-wrap items-center justify-center gap-5">
-          <Link href="/design-system" className="hover:text-foreground text-sm transition duration-300">Design system</Link>
-          <Link href="/scales" className="hover:text-foreground text-sm transition duration-300">
+          <Link href="/design-system" className="hover:text-foreground text-sm transition duration-300">{titleCaseLabel(<>Design system</>)}</Link>
+          <Link href="/scales" className="hover:text-foreground text-sm transition duration-300">{titleCaseLabel(<>
             Scales
-          </Link>
-          <Link href="/chords" className="hover:text-foreground text-sm transition duration-300">
+          </>)}</Link>
+          <Link href="/chords" className="hover:text-foreground text-sm transition duration-300">{titleCaseLabel(<>
             Chords
-          </Link>
-          <Link href="/circle-of-fifths" className="hover:text-foreground text-sm transition duration-300">
+          </>)}</Link>
+          <Link href="/circle-of-fifths" className="hover:text-foreground text-sm transition duration-300">{titleCaseLabel(<>
             Circle of Fifths
-          </Link>
+          </>)}</Link>
         </div>
       </div>
     </footer>

@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { CircleCheck, CircleDashed } from "lucide-react";
 import { useStudied } from "@/lib/store";
 import { Button } from "@/components/ui/button";
@@ -14,9 +16,9 @@ export function StudyToggle({ href, className }: { href: string; className?: str
       aria-pressed={done}
       onClick={() => toggle(href)}
       className={className}
-    >
+    >{titleCaseLabel(<>
       {done ? <CircleCheck aria-hidden /> : <CircleDashed aria-hidden />}
       {done ? "Studied" : "Mark as Studied"}
-    </Button>
+    </>)}</Button>
   );
 }

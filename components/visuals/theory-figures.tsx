@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { useState } from "react";
 import { buildScale, degreeSemitones, intervalShort, mod, noteName, parseDegree, parseNote, prettyDegree, spellDegree } from "@/lib/music/theory";
 import { findGrips } from "@/lib/music/chord-shapes";
@@ -91,7 +93,7 @@ function ChordFormulaTable({ rows, caption }: { rows: { name: string; formula: s
     <div className="overflow-x-auto rounded-xl border">
       <table className="w-full min-w-[560px] border-collapse text-center text-sm">
         <caption className="sr-only">{caption}</caption>
-        <thead className="bg-muted/70"><tr><th className="px-3 py-2 text-left">Chord</th><th colSpan={width} className="border-l">Formula</th><th className="border-l">Notes in C</th><th className="border-l">Shape</th></tr></thead>
+        <thead className="bg-muted/70"><tr><th className="px-3 py-2 text-left">{titleCaseLabel(<>Chord</>)}</th><th colSpan={width} className="border-l">{titleCaseLabel(<>Formula</>)}</th><th className="border-l">{titleCaseLabel(<>Notes in C</>)}</th><th className="border-l">{titleCaseLabel(<>Shape</>)}</th></tr></thead>
         <tbody>
           {rows.map((r) => {
             const f = r.formula.split(" ");
@@ -99,7 +101,7 @@ function ChordFormulaTable({ rows, caption }: { rows: { name: string; formula: s
             const grip = findGrips(0, f, { limit: 1 })[0];
             return (
               <tr key={r.name} className="border-t">
-                <th scope="row" className="px-3 py-1 text-left font-medium">{r.name}</th>
+                <th scope="row" className="px-3 py-1 text-left font-medium">{titleCaseLabel(<>{r.name}</>)}</th>
                 {Array.from({ length: width }, (_, i) => <td key={i} className="border-l px-2 font-mono">{f[i] ? pretty(f[i]) : ""}</td>)}
                 <td className="border-l px-2 font-semibold whitespace-nowrap">{notes.join(" ")}</td>
                 <td className="border-l px-1 py-1">{grip ? <ChordBox grip={grip} size="sm" className="mx-auto" /> : "—"}</td>
@@ -188,7 +190,7 @@ function KeyGrid({ exercise }: { exercise?: boolean }) {
           return { label: noteName(parseNote(k)), sub: theoretical ? "theoretical key" : undefined, cells: show ? [...notes, notes[0]] : [notes[0], ...Array(7).fill(null)] };
         })}
       />
-      {exercise && <Button variant="outline" size="sm" onClick={() => setReveal((r) => !r)}>{reveal ? "Hide answers" : "Reveal every scale"}</Button>}
+      {exercise && <Button variant="outline" size="sm" onClick={() => setReveal((r) => !r)}>{titleCaseLabel(<>{reveal ? "Hide answers" : "Reveal every scale"}</>)}</Button>}
     </div>
   );
 }
@@ -205,7 +207,7 @@ function ChromaticIntervalTable() {
     <div className="overflow-x-auto rounded-xl border">
       <table className="w-full min-w-[640px] border-collapse text-sm">
         <caption className="sr-only">Chromatic intervals: every major, minor and perfect interval with its enharmonic augmented or diminished name</caption>
-        <thead className="bg-muted/70 text-left text-xs"><tr><th className="px-3 py-2">Major, minor & perfect</th><th>Abbr.</th><th>Enharmonic aug./dim. name</th><th>Abbr.</th><th className="w-[30%]">Distance</th><th>Example (aug./dim. column)</th></tr></thead>
+        <thead className="bg-muted/70 text-left text-xs"><tr><th className="px-3 py-2">{titleCaseLabel(<>Major, minor & perfect</>)}</th><th>{titleCaseLabel(<>Abbr.</>)}</th><th>{titleCaseLabel(<>Enharmonic aug./dim. name</>)}</th><th>{titleCaseLabel(<>Abbr.</>)}</th><th className="w-[30%]">{titleCaseLabel(<>Distance</>)}</th><th>{titleCaseLabel(<>Example (aug./dim. column)</>)}</th></tr></thead>
         <tbody>
           {rows.map(([a, ab, d, db, semis, ex], i) => (
             <tr key={i} className="border-t">

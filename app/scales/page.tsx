@@ -1,3 +1,5 @@
+
+import { titleCaseLabel } from "@/lib/title-case";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ListMusic } from "lucide-react";
@@ -34,7 +36,7 @@ export default function ScalesPage() {
                 size="sm"
                 className="group/scale hover:ring-primary/30 has-focus-visible:ring-primary h-full transition-[box-shadow] hover:shadow-sm has-focus-visible:ring-2"
               >
-                <Link href={`/scales/${scale.id}`} className="flex h-full flex-col gap-3 px-(--card-spacing) outline-none">
+                <Link href={`/scales/${scale.id}`} className="flex h-full flex-col gap-3 px-(--card-spacing) outline-none">{titleCaseLabel(<>
                   <div className="flex items-start gap-3">
                     <IconTile icon={<ListMusic />} tone="primary" className="transition-transform group-hover/scale:scale-105" />
                     <div className="min-w-0 flex-1">
@@ -53,7 +55,7 @@ export default function ScalesPage() {
                     Explore
                     <ArrowRight className="size-3.5 transition-transform group-hover/scale:translate-x-0.5" aria-hidden />
                   </span>
-                </Link>
+                </>)}</Link>
               </Card>
             </li>
           );
@@ -71,11 +73,11 @@ export default function ScalesPage() {
                 <table className={cn(tableCls, "min-w-[760px] table-fixed")}>
                   <thead>
                     <tr>
-                      <th className={cn(thCls, "w-[180px]")}>Scale</th>
+                      <th className={cn(thCls, "w-[180px]")}>{titleCaseLabel(<>Scale</>)}</th>
                       {SEMITONE_HEADERS.map((h) => (
-                        <th key={h} className={cn(thCls, "px-0! text-center!")}>
+                        <th key={h} className={cn(thCls, "px-0! text-center!")}>{titleCaseLabel(<>
                           {h}
-                        </th>
+                        </>)}</th>
                       ))}
                     </tr>
                   </thead>
@@ -87,12 +89,12 @@ export default function ScalesPage() {
                       const steps = stepSizes(notes.map((n) => n.semis)).map(stepLabelTS);
                       return (
                         <tr key={id}>
-                          <th scope="row" className={cn(tdCls, "font-medium")}>
+                          <th scope="row" className={cn(tdCls, "font-medium")}>{titleCaseLabel(<>
                             <Link href={`/scales/${id}`} className="text-primary hover:underline">
                               {scale.short}
                             </Link>
                             <span className="text-muted-foreground mt-0.5 block font-mono text-xs font-normal">{steps.join(" ")}</span>
-                          </th>
+                          </>)}</th>
                           {SEMITONE_HEADERS.map((_, semi) => {
                             const n = semi === 12 ? notes[0] : bySemi.get(semi);
                             const root = semi === 0 || semi === 12;

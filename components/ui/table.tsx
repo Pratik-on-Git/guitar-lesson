@@ -1,3 +1,5 @@
+
+import { titleCaseLabel } from "@/lib/title-case";
 import { cn } from "@/lib/utils";
 
 /*
@@ -39,9 +41,9 @@ export function SimpleTable({
         <thead>
           <tr>
             {columns.map((c, i) => (
-              <th key={i} scope="col" className={thCls}>
+              <th key={i} scope="col" className={thCls}>{titleCaseLabel(<>
                 {c}
-              </th>
+              </>)}</th>
             ))}
           </tr>
         </thead>
@@ -50,9 +52,9 @@ export function SimpleTable({
             <tr key={r}>
               {row.map((cell, i) =>
                 i === 0 && firstColumnHeader ? (
-                  <th key={i} scope="row" className={cn(tdCls, "text-muted-foreground! font-medium whitespace-nowrap")}>
+                  <th key={i} scope="row" className={cn(tdCls, "text-muted-foreground! font-medium whitespace-nowrap")}>{titleCaseLabel(<>
                     {cell}
-                  </th>
+                  </>)}</th>
                 ) : (
                   <td key={i} className={cn(tdCls, i === 0 && "font-medium")}>
                     {cell}

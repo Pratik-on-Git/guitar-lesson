@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import Link from "next/link";
 import { BOOK_CHORD_TYPES } from "@/lib/content/book";
 import { BookSource } from "@/components/content/book-source";
@@ -61,13 +63,13 @@ export function VoicingExplorer() {
         <div className="mb-5 flex flex-wrap items-start gap-6">
           <ChordBox grip={boxOf(shape)} name={`${title} · ${["root", "1st inv.", "2nd inv.", "3rd inv."][inversion]}`} />
           <div className="min-w-0 flex-1">
-            <p className="text-muted-foreground mb-2 text-xs font-medium tracking-wide uppercase">Every inversion on strings {strings.map((s) => 6 - s).join("–")}</p>
+            <p className="text-muted-foreground mb-2 text-xs font-medium tracking-wide">Every inversion on strings {strings.map((s) => 6 - s).join("–")}</p>
             <ol className="flex flex-wrap gap-3">
               {inversionShapes.map((g, i) => g && (
                 <li key={i}>
-                  <button type="button" onClick={() => { setInv(String(i)); setRegister("0"); }} aria-pressed={i === inversion} className={`rounded-xl border p-2 transition-colors ${i === inversion ? "border-primary bg-primary/5" : "hover:bg-muted"}`}>
+                  <button type="button" onClick={() => { setInv(String(i)); setRegister("0"); }} aria-pressed={i === inversion} className={`rounded-xl border p-2 transition-colors ${i === inversion ? "border-primary bg-primary/5" : "hover:bg-muted"}`}>{titleCaseLabel(<>
                     <ChordBox grip={boxOf(g)} size="sm" name={["Root", "1st", "2nd", "3rd"][i]} />
-                  </button>
+                  </>)}</button>
                 </li>
               ))}
             </ol>
@@ -78,7 +80,7 @@ export function VoicingExplorer() {
       </> : <p className="text-sm leading-6">This exact spacing has no grip within frets 0–24 and a seven-fret span on the selected strings. Choose another string set or voicing type; use the source sheets to study practical alternatives and omitted-tone shapes.</p>}
     </Panel>
     <BookSource pages={kind === "close" ? "58–64" : kind === "drop-2" ? "65–73" : "74–81"} diagramPage={sourcePage} />
-    <Link href="/learn/voicings" className="text-sm font-medium text-primary hover:underline">Read the inversion and drop recipes →</Link>
+    <Link href="/learn/voicings" className="text-sm font-medium text-primary hover:underline">{titleCaseLabel(<>Read the inversion and drop recipes →</>)}</Link>
     <References entries={CHORD_REFERENCES} />
   </div>;
 }

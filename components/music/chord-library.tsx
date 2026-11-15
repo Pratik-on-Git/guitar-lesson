@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { useMemo, useState } from "react";
 import { CHORD_REFERENCES } from "@/lib/content/references";
 import { References } from "@/components/content/references";
@@ -70,9 +72,9 @@ export function ChordLibrary() {
               aria-label="Filter chords"
               trailing={
                 query ? (
-                  <Button variant="ghost" size="icon-xs" onClick={() => setQuery("")} aria-label="Clear filter">
+                  <Button variant="ghost" size="icon-xs" onClick={() => setQuery("")} aria-label="Clear filter">{titleCaseLabel(<>
                     <X />
-                  </Button>
+                  </>)}</Button>
                 ) : undefined
               }
             />
@@ -122,9 +124,9 @@ export function ChordLibrary() {
                   setQuery("");
                   setCategory("All");
                 }}
-              >
+              >{titleCaseLabel(<>
                 Clear Filters
-              </Button>
+              </>)}</Button>
             }
           />
         ) : view !== "table" ? (
@@ -141,12 +143,12 @@ export function ChordLibrary() {
                     onClick={() => setSelectedId(c.id)}
                     aria-pressed={active}
                     className={cn("hover:border-primary/60 hover:bg-primary/5 flex h-full w-full flex-col items-center gap-1 rounded-xl border p-3 text-center transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50", active && "border-primary bg-primary/5")}
-                  >
+                  >{titleCaseLabel(<>
                     <span className="text-base font-semibold">{noteName(root)}{c.symbol}</span>
                     <span className="text-muted-foreground line-clamp-1 text-xs">{c.name}</span>
                     {grip ? <ChordBox grip={grip} size="sm" className="my-1" /> : <span className="text-muted-foreground my-6 text-xs">No compact grip</span>}
                     <span className="font-mono text-xs">{degrees.map((d) => noteName(spellDegree(root, d))).join(" ")}</span>
-                  </button>
+                  </>)}</button>
                 </li>
               );
             })}
@@ -156,10 +158,10 @@ export function ChordLibrary() {
             <table className={cn(tableCls, "min-w-[680px]")}>
               <thead>
                 <tr>
-                  <th className={thCls}>Chord</th>
-                  <th className={thCls}>Symbol</th>
-                  <th className={thCls}>Formula</th>
-                  <th className={thCls}>Notes</th>
+                  <th className={thCls}>{titleCaseLabel(<>Chord</>)}</th>
+                  <th className={thCls}>{titleCaseLabel(<>Symbol</>)}</th>
+                  <th className={thCls}>{titleCaseLabel(<>Formula</>)}</th>
+                  <th className={thCls}>{titleCaseLabel(<>Notes</>)}</th>
                 </tr>
               </thead>
               <tbody>
@@ -185,9 +187,9 @@ export function ChordLibrary() {
                             "rounded-sm text-left font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
                             active && "text-primary",
                           )}
-                        >
+                        >{titleCaseLabel(<>
                           {c.name}
-                        </button>
+                        </>)}</button>
                         {c.fix && (
                           <Tooltip content="Corrected from your notes">
                             <span className="text-primary ml-1.5 inline-flex align-[-2px]" tabIndex={0} aria-label="Corrected from your notes">
@@ -238,9 +240,9 @@ function ChordDetail({ chordId, rootPc, onClose }: { chordId: string; rootPc: nu
       description={`${chord.name} · ${chord.category}`}
       action={
         <Tooltip content="Close" side="left">
-          <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label="Close chord">
+          <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label="Close chord">{titleCaseLabel(<>
             <X />
-          </Button>
+          </>)}</Button>
         </Tooltip>
       }
     >

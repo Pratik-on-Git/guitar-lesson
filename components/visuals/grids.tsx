@@ -1,3 +1,5 @@
+
+import { titleCaseLabel } from "@/lib/title-case";
 import { cn } from "@/lib/utils";
 
 /*
@@ -36,26 +38,26 @@ export function MatrixTable({
           {groups && (
             <tr className="bg-muted/70">
               <th className="border-b" />
-              {groups.map(([label, span]) => <th key={label} colSpan={span} className="border-b border-l px-2 py-1.5 font-semibold">{label}</th>)}
+              {groups.map(([label, span]) => <th key={label} colSpan={span} className="border-b border-l px-2 py-1.5 font-semibold">{titleCaseLabel(<>{label}</>)}</th>)}
             </tr>
           )}
           <tr className="bg-muted/70">
-            <th scope="col" rowSpan={subHead ? 2 : 1} className="px-3 py-2 text-left font-semibold">{corner}</th>
-            {head.map((h, i) => <th key={i} scope="col" className="border-l px-1.5 py-1.5 font-semibold">{h}</th>)}
+            <th scope="col" rowSpan={subHead ? 2 : 1} className="px-3 py-2 text-left font-semibold">{titleCaseLabel(<>{corner}</>)}</th>
+            {head.map((h, i) => <th key={i} scope="col" className="border-l px-1.5 py-1.5 font-semibold">{titleCaseLabel(<>{h}</>)}</th>)}
           </tr>
           {subHead && (
             <tr className="bg-muted/70">
-              {subHead.map((h, i) => <th key={i} scope="col" className="text-muted-foreground border-l px-1.5 pb-1.5 font-medium">{h}</th>)}
+              {subHead.map((h, i) => <th key={i} scope="col" className="text-muted-foreground border-l px-1.5 pb-1.5 font-medium">{titleCaseLabel(<>{h}</>)}</th>)}
             </tr>
           )}
         </thead>
         <tbody>
           {rows.map((row, r) => (
             <tr key={r} className="border-t">
-              <th scope="row" className="px-3 py-2 text-left font-medium whitespace-nowrap">
+              <th scope="row" className="px-3 py-2 text-left font-medium whitespace-nowrap">{titleCaseLabel(<>
                 {row.label}
                 {row.sub && <span className="text-muted-foreground block text-[11px] font-normal">{row.sub}</span>}
-              </th>
+              </>)}</th>
               {row.cells.map((cell, c) => (
                 <td key={c} className="border-l p-0.5">
                   {cell ? (
@@ -138,7 +140,7 @@ export function FormulaRows({ rows, caption }: { rows: { name: string; intervals
         <tbody>
           {rows.map((row) => (
             <tr key={row.name} className="border-t first:border-t-0">
-              <th scope="row" className="bg-muted/70 w-40 px-3 py-2 text-left text-sm font-semibold">{row.name}</th>
+              <th scope="row" className="bg-muted/70 w-40 px-3 py-2 text-left text-sm font-semibold">{titleCaseLabel(<>{row.name}</>)}</th>
               {row.degrees.map((d, i) => (
                 <td key={i} className="border-l px-1 py-1.5">
                   <span className="text-muted-foreground block text-xs">{row.intervals[i]}</span>

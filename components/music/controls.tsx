@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { ROOTS, ROOT_SLUGS, rootFromSlug } from "@/lib/music/theory";
 import { useFretLabel, type FretLabel } from "@/lib/store";
 import { useQueryState } from "@/lib/use-query-state";
@@ -20,8 +22,8 @@ export function RootPicker({
 }) {
   return (
     <div className={cn("space-y-2", className)}>
-      <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase" aria-hidden>
-        {label}
+      <p className="text-muted-foreground text-xs font-medium tracking-wide" aria-hidden>
+        {titleCaseLabel(label)}
       </p>
       <div
         role="radiogroup"
@@ -43,10 +45,10 @@ export function RootPicker({
               tabIndex={selected ? 0 : -1}
               onClick={() => onChange(root.pc)}
               className={cn(SEGMENTED_ITEM, "min-h-10 flex-col gap-0 px-1 leading-[1.15]", selected && SEGMENTED_ITEM_ACTIVE)}
-            >
+            >{titleCaseLabel(<>
               <span className="text-sm">{first}</span>
               {second && <span className="text-xs font-normal opacity-80">{second}</span>}
-            </button>
+            </>)}</button>
           );
         })}
       </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { titleCaseLabel } from "@/lib/title-case";
+
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -46,10 +48,10 @@ export function BarChart({ title, bars, unit, max, legend, labelWidth = "8rem" }
               onFocus={() => setActive(i)}
               onBlur={() => setActive(null)}
               aria-label={`${b.label}: ${b.display ?? b.value}${unit ? ` ${unit}` : ""}`}
-            >
+            >{titleCaseLabel(<>
               <span className={cn("h-3.5 rounded-r-[4px] transition-opacity", FILL[b.series ?? 1], active !== null && active !== i && "opacity-40")} style={{ width: `${Math.max(0.6, (b.value / top) * 100)}%` }} />
               <span className="text-xs font-semibold tabular-nums whitespace-nowrap">{b.display ?? b.value}</span>
-            </button>
+            </>)}</button>
           </li>
         ))}
       </ol>
@@ -80,13 +82,13 @@ export function DivergingChart({ title, bars, negative, positive, limit, unit }:
                 className="relative h-6 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)} onFocus={() => setActive(i)} onBlur={() => setActive(null)}
                 aria-label={`${b.label}: ${b.display ?? b.value}`}
-              >
+              >{titleCaseLabel(<>
                 <span className="bg-border absolute top-0 left-1/2 h-6 w-px" aria-hidden />
                 {b.value !== 0 && (
                   <span className={cn("absolute top-1.5 h-3 transition-opacity", b.value < 0 ? "bg-series-2 rounded-l-[4px]" : "bg-series-1 rounded-r-[4px]", active !== null && active !== i && "opacity-40")} style={b.value < 0 ? { right: "50%", width } : { left: "50%", width }} />
                 )}
                 <span className="absolute top-1 text-[11px] font-semibold tabular-nums" style={b.value < 0 ? { right: `calc(50% + ${width} + 4px)` } : { left: `calc(50% + ${width} + 4px)` }}>{b.display ?? b.value}</span>
-              </button>
+              </>)}</button>
             </li>
           );
         })}

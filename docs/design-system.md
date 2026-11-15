@@ -89,6 +89,10 @@ These gradients have the same stops in both themes, with dark `on-gradient: #202
 
 ## Typography
 
+### Capitalization
+
+Use Title Case for page and section headings, navigation, buttons, field labels, dropdown options, and table headers. Lowercase short connecting words such as “and”, “of”, “the”, and “to” within a title. Keep descriptions, instructions, lesson paragraphs, and feedback messages in sentence case. Preserve acronyms, intentional internal capitals, note spellings, chord symbols, and roman degrees. Format display labels through `lib/title-case.tsx`; never alter stored values, URLs, or music identifiers for capitalization. Avoid forced-uppercase CSS on interface labels.
+
 | Role | Family | Size | Weight | Line height |
 | --- | --- | --- | --- | --- |
 | Feature statement | Inter | 32–60px fluid | 300 | 1.05 |

@@ -1,3 +1,5 @@
+
+import { titleCaseLabel } from "@/lib/title-case";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -25,7 +27,7 @@ export function StatCard({
   const body = (
     <div className="flex items-stretch gap-3">
       <div className="min-w-0 flex-1">
-        <span className="text-muted-foreground block text-xs font-medium tracking-wide uppercase">{label}</span>
+        <span className="text-muted-foreground block text-xs font-medium tracking-wide">{titleCaseLabel(label)}</span>
         <div className="text-foreground mt-1 text-xl leading-tight font-semibold tabular-nums">{value}</div>
         {detail ? <div className="text-muted-foreground mt-0.5 truncate text-xs">{detail}</div> : null}
       </div>
@@ -51,9 +53,9 @@ export function StatCard({
           "hover:ring-primary/30 block outline-none hover:shadow-sm focus-visible:ring-2 focus-visible:ring-primary",
           className,
         )}
-      >
+      >{titleCaseLabel(<>
         {body}
-      </Link>
+      </>)}</Link>
     );
   }
   return <div className={cn(shell, className)}>{body}</div>;
