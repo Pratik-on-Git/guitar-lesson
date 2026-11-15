@@ -60,8 +60,19 @@
 .overview-mapLink { display: flex; align-items: center; justify-content: space-between; gap: .75rem; border-radius: var(--radius-sm); padding: .5rem; font-size: .75rem; line-height: 1.5; }
 .overview-footerStrip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem; background: linear-gradient(110deg, color-mix(in srgb, var(--glow-pink) 12%, var(--card)), color-mix(in srgb, var(--glow-violet) 10%, var(--card))); border: 1px solid var(--border); border-radius: var(--radius-xl); }
 .overview-metric:focus-visible, .overview-arrowLink:focus-visible, .overview-barButton:focus-visible, .overview-lessonLink:focus-visible, .overview-heatCell:focus-visible, .overview-toolLink:focus-visible, .overview-mapSummary:focus-visible, .overview-mapLink:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
+/* Share row sizing so both columns keep their card edges aligned as content changes. */
+@media (min-width: 1200px) {
+  .overview-dashboard { align-items: stretch; }
+  .overview-mainColumn, .overview-sideColumn { display: grid; grid-template-rows: subgrid; grid-row: 1 / span 4; }
+  .overview-mainColumn { grid-column: 1; }
+  .overview-sideColumn { grid-column: 2; }
+  .overview-sideColumn > :first-child { grid-row: 1 / span 2; }
+  .overview-sideColumn > :last-child { grid-row: 4; }
+}
+.overview-sideColumn > .overview-card:not(.overview-journey) > p:last-child { margin-top: auto; }
+.overview-journey > .overview-gauge { margin-block: auto; }
 @media (min-width: 1536px) { .overview-dashboard, .overview-mainColumn, .overview-sideColumn, .overview-chartsRow { gap: 1.25rem; } .overview-card { padding: 1.5rem; } .overview-barChart { height: 190px; } }
-@media (max-width: 1199px) { .overview-dashboard { grid-template-columns: minmax(0, 1fr); } .overview-sideColumn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); order: -1; align-items: start; } .overview-gauge { max-width: 290px; } .overview-gaugeValue > span { font-size: 2.75rem; } .overview-statusGauge { max-width: 250px; } }
+@media (max-width: 1199px) { .overview-dashboard { grid-template-columns: minmax(0, 1fr); } .overview-sideColumn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); order: -1; align-items: stretch; } .overview-gauge { max-width: 290px; } .overview-gaugeValue > span { font-size: 2.75rem; } .overview-statusGauge { max-width: 250px; } }
 @media (max-width: 639px) { .overview-chartsRow, .overview-activityBody { display: grid; grid-template-columns: minmax(0, 1fr); } .overview-card { padding: 1.125rem; } .overview-mainColumn, .overview-sideColumn { display: contents; } .overview-dashboard > .overview-mainColumn > :first-child { order: -3; } .overview-sideColumn > :first-child { order: -2; } .overview-chartsRow { order: -1; } .overview-gauge { max-width: 330px; } .overview-statusGauge { max-width: 245px; } .overview-heatCell { max-height: none; } .overview-activityBody { gap: 1.5rem; } }
 @media (prefers-reduced-motion: reduce) { .overview-barFill, .overview-metric, .overview-arrowLink, .overview-lessonLink, .overview-heatCell, .overview-toolLink { transition: none; } }
 
