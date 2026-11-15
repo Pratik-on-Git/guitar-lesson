@@ -7,6 +7,7 @@ import { Blocks } from "@/components/content/blocks";
 import { References } from "@/components/content/references";
 import { TOPIC_REFERENCES } from "@/lib/content/references";
 import { PageHeader } from "@/components/app/page-header";
+import { PageContents } from "@/components/app/page-contents";
 import { Panel } from "@/components/app/panel";
 import { PageSkeleton } from "@/components/app/skeleton";
 import { StatusBadge } from "@/components/app/status-badge";
@@ -49,7 +50,7 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
   const lesson = RAGA_LESSONS.find((entry) => entry.slug === topic.slug);
 
   return (
-    <div className="flex flex-col gap-6 md:gap-8">
+    <div className="flex flex-col gap-6 pb-20 md:gap-8">
       <PageHeader
         title={topic.title}
         description={topic.description}
@@ -64,7 +65,7 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
           </>
         }
       />
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_220px]">
+      <div className="min-w-0">
         <div className="flex min-w-0 flex-col gap-4 md:gap-6">
           {topic.sections.map((section) => (
             <div key={section.id} className="min-w-0 space-y-3">
@@ -82,27 +83,8 @@ async function TopicPageBody({ params }: { params: PageProps<"/learn/[topic]">["
             <Link href="/practice">{titleCaseLabel(<>Put this into practice →</>)}</Link>
           </nav>
         </div>
-        {topic.sections.length > 2 && (
-          <nav aria-label="On this page" className="hidden xl:block">
-            <div className="sticky top-24">
-              <p className="text-muted-foreground mb-3 text-xs font-medium tracking-wide">On This Page</p>
-              <ol className="border-border flex flex-col gap-0.5 border-l">
-                {topic.sections.map((s) => (
-                  <li key={s.id}>
-                    {s.part && <p className="pt-4 pb-1 pl-3.5 text-xs font-semibold text-foreground">{titleCaseLabel(s.part)}</p>}
-                    <a
-                      href={`#${s.id}`}
-                      className="text-muted-foreground hover:border-primary hover:text-primary -ml-px block border-l-2 border-transparent py-1.5 pl-3.5 text-sm transition-colors"
-                    >
-                      {s.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </nav>
-        )}
       </div>
+      <PageContents key={topic.slug} sections={topic.sections.map(({ id, title, part }) => ({ id, title, part }))} />
     </div>
   );
 }

@@ -94,7 +94,7 @@ test("melakarta construction links to the selected corrected scale and filters c
   await expect(results.getByRole("button")).toHaveCount(1);
   await expect(detail).toContainText("Melakarta 27");
   await page.getByRole("button", { name: "Reset filters", exact: true }).click();
-  await chooseOption(page, page.getByRole("combobox", { name: "Chakra", exact: true }), "11 · Vasu");
+  await chooseOption(page, page.getByRole("combobox", { name: "Chakra", exact: true }), "8 · Vasu");
   await expect(results.getByRole("button")).toHaveCount(6);
   await page.getByRole("radio", { name: /M1 · 1–36/ }).click();
   await expect(chart.getByRole("heading", { name: "No matching melakartas" })).toBeVisible();

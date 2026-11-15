@@ -62,21 +62,26 @@ function DialogContent({
   );
 }
 
-// A panel pinned to the left edge: the sidebar's phone layout.
+// Edge panels share focus management and dismissal behavior.
 function SheetContent({
   className,
   children,
+  side = "left",
   showCloseButton = true,
   ...props
-}: DialogPrimitive.Popup.Props & { showCloseButton?: boolean }) {
+}: DialogPrimitive.Popup.Props & { showCloseButton?: boolean; side?: "left" | "right" }) {
   return (
     <DialogPrimitive.Portal>
       <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="sheet-content"
+        data-side={side}
         className={cn(
-          "bg-sidebar text-sidebar-foreground fixed inset-y-0 left-0 z-50 flex h-full w-72 max-w-[85vw] flex-col border-r shadow-lg outline-none",
-          "transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] data-[ending-style]:-translate-x-full data-[starting-style]:-translate-x-full motion-reduce:transition-none",
+          "bg-sidebar text-sidebar-foreground fixed inset-y-0 z-50 flex h-dvh w-72 max-w-[85vw] flex-col shadow-lg outline-none",
+          "transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] motion-reduce:transition-none",
+          side === "left"
+            ? "left-0 border-r data-[ending-style]:-translate-x-full data-[starting-style]:-translate-x-full"
+            : "right-0 border-l data-[ending-style]:translate-x-full data-[starting-style]:translate-x-full",
           className,
         )}
         {...props}
