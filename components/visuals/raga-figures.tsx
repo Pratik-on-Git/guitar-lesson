@@ -54,8 +54,8 @@ function TeentalCycle() {
 }
 
 export const RAGA_VISUALS: Record<string, () => React.ReactNode> = {
-  "raga-pitch-map": PitchMap,
-  "raga-comparison": RagaComparison,
-  "raga-tala-chart": TalaChart,
-  "raga-teental": TeentalCycle,
+  "raga-pitch-map": () => <PitchMap />,
+  "raga-comparison": () => <RagaComparison />,
+  "raga-tala-chart": () => <TalaChart />,
+  "raga-teental": () => <TeentalCycle />,
 };

@@ -77,7 +77,7 @@ test("practice filters, chart detail and gauges use saved data", async ({ page }
   await page.goto("/");
   const activity = page.getByRole("region", { name: /Practice activity/i });
   await expect(activity).toContainText("90 minutes across 3 saved sessions");
-  await expect(page.getByRole("region", { name: /Learning status/i }).getByRole("img")).toHaveAttribute("aria-label", /^2 complete, 1 in progress, 7 not started/);
+  await expect(page.getByRole("region", { name: /Learning status/i }).getByRole("img")).toHaveAttribute("aria-label", /^2 complete, 1 in progress, 8 not started/);
   await expect(page.locator("main").getByRole("link", { name: /^Practice logged/i })).toContainText("90");
   await activity.getByRole("button", { name: /15 November: 20 minutes, 1 session/i }).click();
   await expect(activity.locator('[aria-live="polite"]')).toContainText("15 Nov · 20 min · 1 saved session");
@@ -113,7 +113,7 @@ test("complete learners get revision actions and a full gauge", async ({ page })
   await expect(page.getByRole("img", { name: `100.0% studied: ${STUDY_PAGES.length} of ${STUDY_PAGES.length} pages` })).toBeVisible();
   await expect(page.getByRole("link", { name: /^Put it into practice$/i, exact: true })).toHaveAttribute("href", "/practice");
   await expect(page.getByRole("region", { name: /Revisit your foundations/i })).toBeVisible();
-  await expect(page.getByRole("region", { name: /Learning status/i }).getByRole("img")).toHaveAttribute("aria-label", /^10 complete, 0 in progress, 0 not started/);
+  await expect(page.getByRole("region", { name: /Learning status/i }).getByRole("img")).toHaveAttribute("aria-label", /^11 complete, 0 in progress, 0 not started/);
 });
 
 test("overview fits phone, tablet and desktop in both themes without runtime errors", async ({ page }) => {

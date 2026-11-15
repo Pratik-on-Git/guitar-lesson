@@ -73,7 +73,7 @@ function NavWithPath(props: { collapsed: boolean; onNavigate?: () => void }) {
   return <NavList pathname={pathname} {...props} />;
 }
 
-const SECTION_ICONS = [BookOpen, AudioWaveform, Drum, KeyRound, ListMusic, Layers, Guitar, Shapes, Palette, Music2];
+const SECTION_ICONS = [BookOpen, AudioWaveform, Drum, KeyRound, ListMusic, Music2, Layers, Guitar, Shapes, Palette, Music2];
 
 function NavList({ pathname, collapsed, onNavigate }: { pathname: string; collapsed: boolean; onNavigate?: () => void }) {
   const { isStudied } = useStudied();
