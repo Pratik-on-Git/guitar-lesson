@@ -169,7 +169,7 @@ Card defines the material, perimeter, radius, and spacing variable. Panel compos
 
 - Default: luminous cyan/lime surface, dark text, one upper highlight.
 - Outline: neutral card fill and clear border; tint on hover.
-- Secondary: muted solid fill.
+- Secondary: visible neutral fill, input-strength border, and subtle upper highlight. Use for supporting actions beside a primary action, navigation to related tools, playback, export, and previous/next controls. Hover strengthens the fill and boundary; disabled actions retain reduced opacity. Reserve ghost buttons for compact utilities such as theme, search, close, and sidebar toggles.
 - Soft: low-opacity primary fill, useful for related actions.
 - Ghost: minimal chrome for navigation and utility controls.
 - Success/destructive: semantic fill and text, always with a label.

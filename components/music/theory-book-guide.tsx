@@ -21,8 +21,8 @@ export function TheoryBookGuide() {
       <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
         <StudySelect label="Figure" value={figure.id} onChange={setFigure} options={THEORY_FIGURES.map((f) => ({ value: f.id, label: `PDF p. ${f.page} · ${f.title}` }))} />
         <div className="flex gap-2">
-          <button type="button" className={buttonVariants({ variant: "outline", size: "sm" })} disabled={index === 0} onClick={() => setFigure(THEORY_FIGURES[index - 1].id)}>{titleCaseLabel(<>Previous</>)}</button>
-          <button type="button" className={buttonVariants({ variant: "outline", size: "sm" })} disabled={index === THEORY_FIGURES.length - 1} onClick={() => setFigure(THEORY_FIGURES[index + 1].id)}>{titleCaseLabel(<>Next</>)}</button>
+          <button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })} disabled={index === 0} onClick={() => setFigure(THEORY_FIGURES[index - 1].id)}>{titleCaseLabel(<>Previous</>)}</button>
+          <button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })} disabled={index === THEORY_FIGURES.length - 1} onClick={() => setFigure(THEORY_FIGURES[index + 1].id)}>{titleCaseLabel(<>Next</>)}</button>
         </div>
       </div>
       <figure className="mt-5">

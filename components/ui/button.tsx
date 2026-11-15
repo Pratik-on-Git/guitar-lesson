@@ -11,11 +11,11 @@ const buttonVariants = cva(
         // `button-sheen` (globals.css) is the hover sweep and glow.
         default: "button-sheen bg-primary text-primary-foreground hover:bg-[var(--button-primary-hover)]",
         outline:
-          "border-border text-foreground bg-card hover:bg-accent hover:border-input aria-expanded:bg-primary/10 aria-expanded:border-primary dark:bg-background dark:hover:bg-primary/15",
+          "button-outline border-border text-foreground bg-card hover:bg-accent hover:border-input aria-expanded:bg-primary/10 aria-expanded:border-primary",
         "outline-destructive":
           "border-destructive/40 text-destructive bg-background hover:bg-destructive/10 hover:border-destructive aria-expanded:bg-destructive/10 aria-expanded:border-destructive focus-visible:border-destructive/60 focus-visible:ring-destructive/20 dark:border-destructive/60 dark:bg-background dark:hover:bg-destructive/15",
         secondary:
-          "bg-secondary text-secondary-foreground aria-expanded:bg-secondary aria-expanded:text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]",
+          "button-secondary border-border bg-secondary text-secondary-foreground hover:border-input aria-expanded:bg-accent aria-expanded:text-accent-foreground",
         ghost:
           "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
         soft: "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 hover:border-primary/30 font-semibold",

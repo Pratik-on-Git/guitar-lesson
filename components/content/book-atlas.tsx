@@ -40,8 +40,8 @@ export function BookAtlas() {
         <RootPicker value={rootPc} onChange={setRootPc} label="Key (the book uses A)" />
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex gap-2">
-            <button type="button" disabled={index === 0} className={buttonVariants({ variant: "outline", size: "sm" })} onClick={() => setPage(String(sheets[index - 1].page))}>{titleCaseLabel(<>Previous sheet</>)}</button>
-            <button type="button" disabled={index === sheets.length - 1} className={buttonVariants({ variant: "outline", size: "sm" })} onClick={() => setPage(String(sheets[index + 1].page))}>{titleCaseLabel(<>Next sheet</>)}</button>
+            <button type="button" disabled={index === 0} className={buttonVariants({ variant: "secondary", size: "sm" })} onClick={() => setPage(String(sheets[index - 1].page))}>{titleCaseLabel(<>Previous sheet</>)}</button>
+            <button type="button" disabled={index === sheets.length - 1} className={buttonVariants({ variant: "secondary", size: "sm" })} onClick={() => setPage(String(sheets[index + 1].page))}>{titleCaseLabel(<>Next sheet</>)}</button>
           </div>
           <p className="text-muted-foreground text-xs">{index + 1} of {sheets.length} · {markers} notes on this sheet</p>
           <Link className={buttonVariants({ variant: "soft", size: "sm" })} href={selected.href}>{titleCaseLabel(<>Open interactive lesson →</>)}</Link>

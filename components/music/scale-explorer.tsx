@@ -54,7 +54,7 @@ export function ScaleExplorer({ scaleId, notes }: { scaleId: string; notes: Reac
         description={def.mood ?? def.family}
         action={
           def.modesHref ? (
-            <Link href={def.modesHref} className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<>
+            <Link href={def.modesHref} className={buttonVariants({ variant: "secondary", size: "sm" })}>{titleCaseLabel(<>
               See Its Modes
               <ArrowRight aria-hidden />
             </>)}</Link>

@@ -44,5 +44,5 @@ export function PlayNotes({ midis, label = "Play notes", simultaneous = false }:
       timer.current = setTimeout(stop, (simultaneous ? 1.8 : midis.length * 0.32 + 0.2) * 1000);
     } catch { setError("Audio is unavailable in this browser. The note sequence is shown below."); stop(); }
   }
-  return <div className="space-y-2"><button type="button" onClick={playing ? stop : play} className={buttonVariants({ variant: "outline", size: "sm" })}>{titleCaseLabel(<>{playing ? "Stop playback" : label}</>)}</button>{error && <p role="status" className="text-sm text-muted-foreground">{error}</p>}</div>;
+  return <div className="space-y-2"><button type="button" onClick={playing ? stop : play} className={buttonVariants({ variant: "secondary", size: "sm" })}>{titleCaseLabel(<>{playing ? "Stop playback" : label}</>)}</button>{error && <p role="status" className="text-sm text-muted-foreground">{error}</p>}</div>;
 }
