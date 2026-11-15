@@ -5,7 +5,7 @@ The app uses Better Auth with MongoDB for email/password accounts, Google OAuth,
 ## Local setup
 
 1. Set `MONGODB_URI` in `.env` to a MongoDB connection string with a database name. Use `MONGODB_DB_NAME` to override that name if needed. The database user needs read/write and index creation permissions.
-2. Set `BETTER_AUTH_URL=http://localhost:3000` and a random `BETTER_AUTH_SECRET` of at least 32 characters. Generate it with `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"`. Keep the secret stable across restarts and instances.
+2. Set `BETTER_AUTH_URL=http://localhost:3000` in `.env.development` to override the production URL in `.env` during `npm run dev`. Keep a random `BETTER_AUTH_SECRET` of at least 32 characters in `.env`. Generate it with `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"`. Keep the secret stable across restarts and instances.
 3. Run `npm install` and `npm run dev`. Create an account at `/sign-up`.
 
 MongoDB collections and indexes are managed by the adapter; no SQL migration is needed. Authentication initializes on the first request, not during builds. Passwords are hashed by Better Auth; sessions use HttpOnly cookies. Authentication requests have database-backed rate limiting. Credential endpoints retain Better Auth’s strict defaults; the read-only session endpoint has a separate limit of 1,000 requests per minute to accommodate navigation, prefetches, and shared networks. Do not place secrets in `NEXT_PUBLIC_` variables.
@@ -25,6 +25,19 @@ Follow the [Better Auth Google guide](https://better-auth.com/docs/authenticatio
 ## Deployment
 
 Set the same environment variables in your hosting environment, change `BETTER_AUTH_URL` to the public HTTPS origin, and register the corresponding Google origin and `/api/auth/callback/google` redirect URI. Ensure the MongoDB firewall permits connections from the host. All instances must use the same database and auth secret. Session and account responses must not be publicly cached.
+
+The production domain is `https://guitar-lesson-nine.vercel.app`. In Vercel project settings, configure these variables for the **Production** environment, then redeploy:
+
+| Variable | Value |
+| --- | --- |
+| `BETTER_AUTH_URL` | `https://guitar-lesson-nine.vercel.app` |
+| `BETTER_AUTH_SECRET` | Your existing secret from `.env` |
+| `MONGODB_URI` | Your existing MongoDB connection string |
+| `MONGODB_DB_NAME` | Only if overriding the database in the connection string |
+| `GOOGLE_CLIENT_ID` | Your Google OAuth client ID, when configured |
+| `GOOGLE_CLIENT_SECRET` | Your Google OAuth client secret, when configured |
+
+In Google Cloud, register `https://guitar-lesson-nine.vercel.app` as an authorized JavaScript origin and `https://guitar-lesson-nine.vercel.app/api/auth/callback/google` as an authorized redirect URI. Keep the localhost entries for development. The local `.env` files are ignored by Git and do not update Vercel settings automatically. Do not copy `.env.development` to Vercel.
 
 Email verification and password recovery require a transactional email service and are not enabled. Email/password accounts therefore show “Not verified”; Google verifies its own email addresses. Study progress and practice sessions still use the existing browser storage and are not synced or isolated by account. The account pages disclose that behavior.
 
